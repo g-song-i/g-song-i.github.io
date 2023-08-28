@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;600;700;800&family=Frank+Ruhl+Libre:wght@200;300;400;500;600&family=Encode+Sans+Semi+Condensed:wght@400&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/all.min.css">
+    <link disabled id="dark-mode-theme" rel="stylesheet" href="/css/dark.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/my_style.css">
+    
+    
+    
+    <title>Zongi Diary | Into the eBPF (1): Introduction &amp; Installation of eBPF</title>
+    <meta name="description" content="Introduction &amp; Installation of eBPF">
+</head><body><nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="https://g-song-i.github.com">
+            
+            <b style="font-weight: 800;">SI</b>
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ms-auto mt-2 mt-lg-0"><li class='nav-item '>
+                    <a class="nav-link" href="/recent_projects/"> Posts</a>
+                </li>
+            <li class='nav-item '>
+                    <a class="nav-link" href="/projects/"> Korean Posts</a>
+                </li>
+            <li class='nav-item '>
+                    <a class="nav-link" href="/garden/"> Another</a>
+                </li>
+            <li class='nav-item '>
+                    <a class="nav-link" href="/about/"> About</a>
+                </li>
+             
+            <li class="nav-item px-2 pt-1">
+                <a class="btn fas fa-moon" id="dark-mode-toggle"></a>
+            </li>
+            </ul>
+        </div>
+    </div>
+</nav><div id="content">
+
+<div class="container" style="max-width: 800px;">
+    <div class="py-4 rounded-3">
+        <div class="container-fluid py-2">
+            <h1 class="display-2 mb-4 text-center">Into the eBPF (1): Introduction &amp; Installation of eBPF</h1>
+        </div>
+        
+        <p class="text-center fs-4 fst-italic serif">Introduction &amp; Installation of eBPF</p>
+        
+        <div class="text-center pt-4">
+            
+        </div>
+    </div>
+    <div class="row justify-content-center mb-5">
+        <div class="col-12">
+            <p class="card-date m-0">
+                
+                
+                    Created Aug 28, 2023 - 
+                
+                Last updated: Aug 28, 2023
+            </p>
+            <hr class="dropdown-divider">
+            <div class="row justify-content-between">
+                <div class="col-sm-4">
+                    
+    
+    <span class="status">Evergreen 🌳</span>
+    
+
+                </div>
+                <div class="col-sm-8" style="text-align: right;">
+                    
+                
+                
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid py-2">
+        <div class="serif main-content">
+            <h2 id="introduction-of-ebpf">Introduction of eBPF</h2>
+<ul>
+<li>
+<p>eBPF (extended Berkeley Packet Filter, now called BPF) is an in-kernel virtual machine that helps users dynamically load custom code into the kernel. Programming BPF makes users attach smaller BPF programs to the various kernel hook points. By doing so, users can extend the kernel’s capabilities effectively and safely since BPF does not require users to reboot the entire kernel to add functionalities, and BPF programs are supposed to be passed by the verifier, which is a crucial component of BPF and checks if BPF programs have security-critical problems such as loops. It prevents the kernel from crashing due to the eBPF programs.</p>
+</li>
+<li>
+<p>BPF is event-driven and runs when a kernel passes particular hook points such as system call, function entry/exit, tracepoints, network stack, and etc.</p>
+</li>
+<li>
+<p>The execution flow of BPF programs is as follows:</p>
+<ul>
+<li>Developers write BPF programs.</li>
+<li>These are compiled into BPF bytecode programs.</li>
+<li>BPF bytecode programs go through BPF verifier to check if there are some security-critical problems.</li>
+<li>When these pass BPF verifier, they are compiled into native kernel code (machine code) using the JIT compiler.</li>
+<li>Finally, these programs are attached to the pre-defined hooks. Whenever hooks are called, the event is stored in the Maps and accessed from userspace programs.</li>
+</ul>
+</li>
+</ul>
+<br>
+<h2 id="bpf-installation">BPF Installation</h2>
+<ol>
+<li>Install build dependencies for Ubuntu 18.04 version</li>
+</ol>
+<pre tabindex="0"><code>sudo apt-get -y install bison build-essential cmake flex git libedit-dev \
+  libllvm6.0 llvm-6.0-dev libclang-6.0-dev python zlib1g-dev libelf-dev libfl-dev python3-setuptools
+</code></pre><br>
+<ol start="2">
+<li>Install and compile BCC</li>
+</ol>
+<pre tabindex="0"><code>git clone https://github.com/iovisor/bcc.git
+mkdir bcc/build; cd bcc/build
+cmake ..
+make
+sudo make install
+cmake -DPYTHON_CMD=python3 .. # build python3 binding
+pushd src/python/
+make
+sudo make install
+popd
+</code></pre><br>
+<h3 id="note-1">Note 1</h3>
+<p>If you face an error due to the LLVM version, you can remove the existing LLVM 6.0 and installed latest llvm and clang version.</p>
+<pre tabindex="0"><code>sudo apt-get remove --purge llvm-6.0
+sudo apt-get install llvm-12 clang-12
+</code></pre><br>
+<h3 id="note-2">Note 2</h3>
+<p>You can install dev package if the file &rsquo;libclang.so&rsquo; didn&rsquo;t exist in /usr/lib/llvm-12/lib/ directory.</p>
+<pre tabindex="0"><code>sudo apt install libclang-12-dev
+</code></pre><br>
+<p>Then now, you can process the remaining procedure 😊. You can test by running the hello_world.py program in the bcc/example directory. From the next post, I will post what I study and do with eBPF!</p>
+
+        </div>
+    </div>
+</div>
+
+
+        </div><div class="container">
+    <div class="row justify-content-between">
+        <div class="col-sm-4">
+            <p class="footer"> 2023 </p>
+        </div>
+        <div class="col-sm-6 d-flex flex-row-reverse">
+            
+            <a class="footer-social px-2"  href="https://github.com/g-song-i" target="_blank"><i class="fab fa-github"></i></a>
+            
+            <a class="footer-social px-2"  href="https://www.linkedin.com/in/songi-gwak-934666227" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+            
+        </div>
+    </div>
+</div>
+<script src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script src="/js/isotope.pkgd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
+<script src="/js/dark.js"></script>
+<script src="/js/isotope.js"></script>
+<script src="/js/mermaid.min.js"></script>
+<script>mermaid.initialize({ startOnLoad: true, securityLevel: 'loose'});</script></body>
+</html>

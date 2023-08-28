@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>eBPF on Zongi Diary</title>
+    <link>https://g-song-i.github.com/recent_projects_tags/ebpf/</link>
+    <description>Recent content in eBPF on Zongi Diary</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 28 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://g-song-i.github.com/recent_projects_tags/ebpf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Into the eBPF (1): Introduction &amp; Installation of eBPF</title>
+      <link>https://g-song-i.github.com/recent_projects/project2/</link>
+      <pubDate>Mon, 28 Aug 2023 00:00:00 +0000</pubDate>
+      
+      <guid>https://g-song-i.github.com/recent_projects/project2/</guid>
+      <description>Introduction &amp;amp; Installation of eBPF</description>
+    </item>
+    
+  </channel>
+</rss>

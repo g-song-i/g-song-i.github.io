@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;600;700;800&family=Frank+Ruhl+Libre:wght@200;300;400;500;600&family=Encode+Sans+Semi+Condensed:wght@400&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/all.min.css">
+    <link disabled id="dark-mode-theme" rel="stylesheet" href="/css/dark.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/my_style.css">
+    
+    
+    
+    <title>Zongi Diary | Truffle을 이용하여 이더리움 블록체인에 스마트 컨트랙 배포하기 (4)</title>
+    <meta name="description" content="web3 js 모듈을 통해 해당 트랜잭션에 접근해 정보를 삽입, 가져오기">
+</head><body><nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="https://g-song-i.github.com">
+            
+            <b style="font-weight: 800;">SI</b>
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ms-auto mt-2 mt-lg-0"><li class='nav-item '>
+                    <a class="nav-link" href="/recent_projects/"> Posts</a>
+                </li>
+            <li class='nav-item '>
+                    <a class="nav-link" href="/projects/"> Korean Posts</a>
+                </li>
+            <li class='nav-item '>
+                    <a class="nav-link" href="/garden/"> Another</a>
+                </li>
+            <li class='nav-item '>
+                    <a class="nav-link" href="/about/"> About</a>
+                </li>
+             
+            <li class="nav-item px-2 pt-1">
+                <a class="btn fas fa-moon" id="dark-mode-toggle"></a>
+            </li>
+            </ul>
+        </div>
+    </div>
+</nav><div id="content">
+
+<div class="container" style="max-width: 800px;">
+    <div class="py-4 rounded-3">
+        <div class="container-fluid py-2">
+            <h1 class="display-2 mb-4 text-center">Truffle을 이용하여 이더리움 블록체인에 스마트 컨트랙 배포하기 (4)</h1>
+        </div>
+        
+        <p class="text-center fs-4 fst-italic serif">web3 js 모듈을 통해 해당 트랜잭션에 접근해 정보를 삽입, 가져오기</p>
+        
+        <div class="text-center pt-4">
+            
+        </div>
+    </div>
+    <div class="row justify-content-center mb-5">
+        <div class="col-12">
+            <p class="card-date m-0">
+                
+                
+                    Created May 16, 2020 - 
+                
+                Last updated: May 16, 2020
+            </p>
+            <hr class="dropdown-divider">
+            <div class="row justify-content-between">
+                <div class="col-sm-4">
+                    
+    
+    <span class="status">Evergreen 🌳</span>
+    
+
+                </div>
+                <div class="col-sm-8" style="text-align: right;">
+                    
+                
+                
+                    
+                    <span class="badge tag-badge">Blockchain</span>
+                    
+                    <span class="badge tag-badge">Smart contract</span>
+                    
+                
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid py-2">
+        <div class="serif main-content">
+            <p>이제 블록체인 마지막 포스트가 되겠네요. 해당 프로젝트의 다음 포스트부터는 multer 라이브러리로 이미지 업로드하는 방법과 안드로이드에서 어려움을 겪었던 구현 등을 포스팅할게요.
+</br>
+</br>
+이번 포스트에서는 js에서 web3 js 모듈을 이용하여 컨트랙에 접근/ 사용하는 방법을 포스팅하려고 해요. 우선 물건을 삽입하고, 가져오는 코드를 보여드리려고 합니다. 우선 파일 가장 위에, 사용하려는 모듈을  const 변수로 선언해 놓았어요.
+</br></p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#00a8c8">const</span> <span style="color:#75af00">infuraKey</span> <span style="color:#f92672">=</span> <span style="color:#d88200">&#34;자신의 인퓨라 키★&#34;</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#00a8c8">const</span> <span style="color:#75af00">Web3</span> <span style="color:#f92672">=</span> <span style="color:#75af00">require</span><span style="color:#111">(</span><span style="color:#d88200">&#39;web3&#39;</span><span style="color:#111">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#00a8c8">const</span> <span style="color:#75af00">url</span> <span style="color:#f92672">=</span> <span style="color:#d88200">`https://ropsten.infura.io/v3/</span><span style="color:#d88200">${</span><span style="color:#75af00">infuraKey</span><span style="color:#d88200">}</span><span style="color:#d88200">`</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#00a8c8">const</span> <span style="color:#75af00">web3</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#75af00">Web3</span><span style="color:#111">(</span><span style="color:#00a8c8">new</span> <span style="color:#75af00">Web3</span><span style="color:#111">.</span><span style="color:#75af00">providers</span><span style="color:#111">.</span><span style="color:#75af00">HttpProvider</span><span style="color:#111">(</span><span style="color:#75af00">url</span><span style="color:#111">));</span>
+</span></span><span style="display:flex;"><span><span style="color:#00a8c8">const</span> <span style="color:#75af00">mysql</span> <span style="color:#f92672">=</span> <span style="color:#75af00">require</span><span style="color:#111">(</span><span style="color:#d88200">&#39;mysql&#39;</span><span style="color:#111">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#00a8c8">const</span> <span style="color:#75af00">bodyParser</span> <span style="color:#f92672">=</span> <span style="color:#75af00">require</span><span style="color:#111">(</span><span style="color:#d88200">&#39;body-parser&#39;</span><span style="color:#111">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#00a8c8">const</span> <span style="color:#75af00">express</span> <span style="color:#f92672">=</span> <span style="color:#75af00">require</span><span style="color:#111">(</span><span style="color:#d88200">&#39;express&#39;</span><span style="color:#111">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#00a8c8">var</span> <span style="color:#75af00">Tx</span> <span style="color:#f92672">=</span> <span style="color:#75af00">require</span><span style="color:#111">(</span><span style="color:#d88200">&#39;ethereumjs-tx&#39;</span><span style="color:#111">).</span><span style="color:#75af00">Transaction</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#00a8c8">const</span> <span style="color:#75af00">rootAccount</span> <span style="color:#f92672">=</span> <span style="color:#d88200">&#34;자신의 메타마스크 계정★&#34;</span><span style="color:#111">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#00a8c8">const</span> <span style="color:#75af00">privateKey</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#75af00">Buffer</span><span style="color:#111">.</span><span style="color:#75af00">from</span><span style="color:#111">(</span><span style="color:#d88200">&#39;자신의 메타마스크 비밀 키★&#39;</span><span style="color:#111">,</span> <span style="color:#d88200">&#39;hex&#39;</span><span style="color:#111">);</span>
+</span></span></code></pre></div></br>
+Tx는 계정에 서명을 해주기 위해서 사용하는 모듈입니다. ethereumjs-tx는 npm 명령어로 설치해주어야 해요. 비밀 키도 buffer 형태로 선언해줍니다.
+</br>
+</br>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#00a8c8">function</span> <span style="color:#75af00">insertBlock</span><span style="color:#111">(</span><span style="color:#75af00">transactionNumber</span><span style="color:#111">,</span> <span style="color:#75af00">registerNumber</span><span style="color:#111">,</span> <span style="color:#75af00">sellerId</span><span style="color:#111">,</span> <span style="color:#75af00">buyerId</span><span style="color:#111">,</span> <span style="color:#75af00">completeTime</span><span style="color:#111">)</span> <span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#00a8c8">var</span> <span style="color:#75af00">transactionContract</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#75af00">web3</span><span style="color:#111">.</span><span style="color:#75af00">eth</span><span style="color:#111">.</span><span style="color:#75af00">Contract</span><span style="color:#111">([{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#d88200">&#34;constant&#34;</span><span style="color:#f92672">:</span> <span style="color:#00a8c8">true</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#d88200">&#34;inputs&#34;</span><span style="color:#f92672">:</span> <span style="color:#111">[</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#d88200">&#34;internalType&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;uint256&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#d88200">&#34;name&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;_transactionNumber&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#d88200">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;uint256&#34;</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#111">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#111">],</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#d88200">&#34;name&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;getTransactionInfo&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#d88200">&#34;outputs&#34;</span><span style="color:#f92672">:</span> <span style="color:#111">[</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#d88200">&#34;internalType&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;uint256&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#d88200">&#34;name&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#d88200">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;uint256&#34;</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#111">},</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#d88200">&#34;internalType&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;uint256&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#d88200">&#34;name&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#d88200">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;uint256&#34;</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#111">},</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#d88200">&#34;internalType&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;string&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#d88200">&#34;name&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#d88200">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;string&#34;</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#111">},</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#d88200">&#34;internalType&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;string&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#d88200">&#34;name&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#d88200">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;string&#34;</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#111">},</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#d88200">&#34;internalType&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;string&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#d88200">&#34;name&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#d88200">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;string&#34;</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#111">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#111">],</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#d88200">&#34;payable&#34;</span><span style="color:#f92672">:</span> <span style="color:#00a8c8">false</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#d88200">&#34;stateMutability&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;view&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#d88200">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;function&#34;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#111">},</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#d88200">&#34;constant&#34;</span><span style="color:#f92672">:</span> <span style="color:#00a8c8">false</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#d88200">&#34;inputs&#34;</span><span style="color:#f92672">:</span> <span style="color:#111">[</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#d88200">&#34;internalType&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;uint256&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#d88200">&#34;name&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;_transactionNumber&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#d88200">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;uint256&#34;</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#111">},</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#d88200">&#34;internalType&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;uint256&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#d88200">&#34;name&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;_registerNumber&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#d88200">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;uint256&#34;</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#111">},</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#d88200">&#34;internalType&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;string&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#d88200">&#34;name&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;_sellerId&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#d88200">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;string&#34;</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#111">},</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#d88200">&#34;internalType&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;string&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#d88200">&#34;name&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;_buyerId&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#d88200">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;string&#34;</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#111">},</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#d88200">&#34;internalType&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;string&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#d88200">&#34;name&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;_completeTime&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#d88200">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;string&#34;</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#111">}</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#111">],</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#d88200">&#34;name&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;setTransactionInfo&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#d88200">&#34;outputs&#34;</span><span style="color:#f92672">:</span> <span style="color:#111">[],</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#d88200">&#34;payable&#34;</span><span style="color:#f92672">:</span> <span style="color:#00a8c8">false</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#d88200">&#34;stateMutability&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;nonpayable&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#d88200">&#34;type&#34;</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;function&#34;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#111">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#111">],</span><span style="color:#d88200">&#34;본인의 컨트랙 주소★&#34;</span><span style="color:#111">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75af00">web3</span><span style="color:#111">.</span><span style="color:#75af00">eth</span><span style="color:#111">.</span><span style="color:#75af00">getTransactionCount</span><span style="color:#111">(</span><span style="color:#75af00">rootAccount</span><span style="color:#111">,</span> <span style="color:#111">(</span><span style="color:#75af00">err</span><span style="color:#111">,</span> <span style="color:#75af00">txCount</span><span style="color:#111">)</span> <span style="color:#111">=&gt;</span> <span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#00a8c8">const</span> <span style="color:#75af00">txObject</span> <span style="color:#f92672">=</span> <span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75af00">nonce</span><span style="color:#f92672">:</span> <span style="color:#75af00">web3</span><span style="color:#111">.</span><span style="color:#75af00">utils</span><span style="color:#111">.</span><span style="color:#75af00">toHex</span><span style="color:#111">(</span><span style="color:#75af00">txCount</span><span style="color:#111">),</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75af00">gasLimit</span><span style="color:#f92672">:</span> <span style="color:#75af00">web3</span><span style="color:#111">.</span><span style="color:#75af00">utils</span><span style="color:#111">.</span><span style="color:#75af00">toHex</span><span style="color:#111">(</span><span style="color:#ae81ff">800000</span><span style="color:#111">),</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75af00">gasPrice</span><span style="color:#f92672">:</span> <span style="color:#75af00">web3</span><span style="color:#111">.</span><span style="color:#75af00">utils</span><span style="color:#111">.</span><span style="color:#75af00">toHex</span><span style="color:#111">(</span><span style="color:#75af00">web3</span><span style="color:#111">.</span><span style="color:#75af00">utils</span><span style="color:#111">.</span><span style="color:#75af00">toWei</span><span style="color:#111">(</span><span style="color:#d88200">&#39;10&#39;</span><span style="color:#111">,</span> <span style="color:#d88200">&#39;gwei&#39;</span><span style="color:#111">)),</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75af00">to</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;본인의 컨트랙 주소★&#34;</span><span style="color:#111">,</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75af00">data</span><span style="color:#f92672">:</span> <span style="color:#75af00">transactionContract</span><span style="color:#111">.</span><span style="color:#75af00">methods</span><span style="color:#111">.</span><span style="color:#75af00">setTransactionInfo</span><span style="color:#111">(</span><span style="color:#75af00">transactionNumber</span><span style="color:#111">,</span> <span style="color:#75af00">registerNumber</span><span style="color:#111">,</span> <span style="color:#75af00">sellerId</span><span style="color:#111">,</span> <span style="color:#75af00">buyerId</span><span style="color:#111">,</span> <span style="color:#75af00">completeTime</span><span style="color:#111">).</span><span style="color:#75af00">encodeABI</span><span style="color:#111">()</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#111">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#00a8c8">const</span> <span style="color:#75af00">tx</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#75af00">Tx</span><span style="color:#111">(</span><span style="color:#75af00">txObject</span><span style="color:#111">,</span> <span style="color:#111">{</span><span style="color:#75af00">chain</span> <span style="color:#f92672">:</span> <span style="color:#d88200">&#39;ropsten&#39;</span><span style="color:#111">,</span> <span style="color:#75af00">hardfork</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#39;petersburg&#39;</span><span style="color:#111">});</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75af00">tx</span><span style="color:#111">.</span><span style="color:#75af00">sign</span><span style="color:#111">(</span><span style="color:#75af00">privateKey</span><span style="color:#111">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#00a8c8">const</span> <span style="color:#75af00">serializedTx</span> <span style="color:#f92672">=</span> <span style="color:#75af00">tx</span><span style="color:#111">.</span><span style="color:#75af00">serialize</span><span style="color:#111">()</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#00a8c8">const</span> <span style="color:#75af00">raw</span> <span style="color:#f92672">=</span> <span style="color:#d88200">&#39;0x&#39;</span> <span style="color:#f92672">+</span> <span style="color:#75af00">serializedTx</span><span style="color:#111">.</span><span style="color:#75af00">toString</span><span style="color:#111">(</span><span style="color:#d88200">&#39;hex&#39;</span><span style="color:#111">)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75af00">web3</span><span style="color:#111">.</span><span style="color:#75af00">eth</span><span style="color:#111">.</span><span style="color:#75af00">sendSignedTransaction</span><span style="color:#111">(</span><span style="color:#75af00">raw</span><span style="color:#111">,</span> <span style="color:#111">(</span><span style="color:#75af00">err</span><span style="color:#111">,</span> <span style="color:#75af00">txHash</span><span style="color:#111">)</span> <span style="color:#111">=&gt;</span> <span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75af00">console</span><span style="color:#111">.</span><span style="color:#75af00">log</span><span style="color:#111">(</span><span style="color:#d88200">&#39;err:&#39;</span><span style="color:#111">,</span> <span style="color:#75af00">err</span><span style="color:#111">,</span> <span style="color:#d88200">&#39;txHash:&#39;</span><span style="color:#111">,</span> <span style="color:#75af00">txHash</span><span style="color:#111">)</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75715e">// Use this txHash to find the contract on Etherscan!
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#111">});</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#111">});</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">//transactionContract
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#75af00">transactionContract</span><span style="color:#111">.</span><span style="color:#75af00">methods</span><span style="color:#111">.</span><span style="color:#75af00">setTransactionInfo</span><span style="color:#111">(</span><span style="color:#75af00">transactionNumber</span><span style="color:#111">,</span> <span style="color:#75af00">registerNumber</span><span style="color:#111">,</span> <span style="color:#75af00">sellerId</span><span style="color:#111">,</span> <span style="color:#75af00">buyerId</span><span style="color:#111">,</span> <span style="color:#75af00">completeTime</span><span style="color:#111">).</span><span style="color:#75af00">send</span><span style="color:#111">({</span> <span style="color:#75af00">from</span><span style="color:#f92672">:</span> <span style="color:#d88200">&#34;보내는 계정★&#34;</span><span style="color:#111">})</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#111">.</span><span style="color:#75af00">on</span><span style="color:#111">(</span><span style="color:#d88200">&#34;receipt&#34;</span><span style="color:#111">,</span> <span style="color:#00a8c8">function</span> <span style="color:#111">(</span><span style="color:#75af00">receipt</span><span style="color:#111">)</span> <span style="color:#111">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75af00">consolei</span><span style="color:#111">.</span><span style="color:#75af00">log</span><span style="color:#111">(</span><span style="color:#75af00">receipt</span><span style="color:#111">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#111">})</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#111">.</span><span style="color:#75af00">on</span><span style="color:#111">(</span><span style="color:#d88200">&#34;error&#34;</span><span style="color:#111">,</span> <span style="color:#00a8c8">function</span> <span style="color:#111">(</span><span style="color:#75af00">err</span><span style="color:#111">){</span> 
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>				<span style="color:#75af00">console</span><span style="color:#111">.</span><span style="color:#75af00">log</span><span style="color:#111">(</span><span style="color:#75af00">err</span><span style="color:#111">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#111">});</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#111">}</span>
+</span></span></code></pre></div></br>
+abi는 컨트랙의 json 형태예요. 저는 remix에 코드를 넣고 abi를 추출하였습니다. web3.eth.Contract(abi, 컨트랙주소) 형태로 컨트랙을 불러와 var 형태로 선언해줍니다. 아래 web3.eth.getTransactionCount 는 블로그마다 조금씩 다를 거예요. 그런데 처음에는 Tx를 사용하지 않아서, 다음으로는 sendTransaction이라는 함수가 안되어서, 이런 이유들로 다음의 코드가 결론적으로 나왔던 것 같아요. 코딩한 지 살짝 오래되어서 엄청 고생했는데도 기억이 잘 안 나네요... 
+</br>
+</br>
+어쨌든, sendTransaction이 안되어서 sendSignedTransaction을 따로 만들어 주었어요. tx는 비밀 키에 서명을 해주는 역할인데, tx를 선언할 때 chain과 hardfork를 명시하게 되어있어요. hardfork는 web3 api 사용 설명서에 보면 여러 단어가 있습니다. 원하는 걸 사용하시면 될 거 같아요. web3 api 설명서 링크를 첨부할게요.
+</br>
+<p><a href="https://web3js.readthedocs.io/en/v1.2.7/">https://web3js.readthedocs.io/en/v1.2.7/</a></p>
+<p>제일 아래에 transactionContract는 제가 위에서 선언해서 var에 넣어놓은 함수인데요, transactionContrac.methods라는 메서드를 통해 내부 함수를 추출합니다. setTransactionInfo는 제가 만든 솔리디티 함수예요. 보낼 때는 receipt 혹은 err 메시지를 받아 콘솔에 로그로 확인하는데, 트랜잭션을 보내는 과정이 성공했다면 receipt를 확인할 수 있습니다.</p>
+<p>이상 연결하는 코드의 전문입니다.</p>
+
+        </div>
+    </div>
+</div>
+
+
+        </div><div class="container">
+    <div class="row justify-content-between">
+        <div class="col-sm-4">
+            <p class="footer"> 2023 </p>
+        </div>
+        <div class="col-sm-6 d-flex flex-row-reverse">
+            
+            <a class="footer-social px-2"  href="https://github.com/g-song-i" target="_blank"><i class="fab fa-github"></i></a>
+            
+            <a class="footer-social px-2"  href="https://www.linkedin.com/in/songi-gwak-934666227" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+            
+        </div>
+    </div>
+</div>
+<script src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script src="/js/isotope.pkgd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
+<script src="/js/dark.js"></script>
+<script src="/js/isotope.js"></script>
+<script src="/js/mermaid.min.js"></script>
+<script>mermaid.initialize({ startOnLoad: true, securityLevel: 'loose'});</script></body>
+</html>

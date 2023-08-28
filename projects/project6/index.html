@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;600;700;800&family=Frank+Ruhl+Libre:wght@200;300;400;500;600&family=Encode+Sans+Semi+Condensed:wght@400&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/all.min.css">
+    <link disabled id="dark-mode-theme" rel="stylesheet" href="/css/dark.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/my_style.css">
+    
+    
+    
+    <title>Zongi Diary | Node.js - Multer를 이용해 안드로이드에서 이미지 업/다운로드</title>
+    <meta name="description" content="Multer를 이용해 안드로이드에서 이미지 업/다운로드하기">
+</head><body><nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="https://g-song-i.github.com">
+            
+            <b style="font-weight: 800;">SI</b>
+            
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ms-auto mt-2 mt-lg-0"><li class='nav-item '>
+                    <a class="nav-link" href="/recent_projects/"> Posts</a>
+                </li>
+            <li class='nav-item '>
+                    <a class="nav-link" href="/projects/"> Korean Posts</a>
+                </li>
+            <li class='nav-item '>
+                    <a class="nav-link" href="/garden/"> Another</a>
+                </li>
+            <li class='nav-item '>
+                    <a class="nav-link" href="/about/"> About</a>
+                </li>
+             
+            <li class="nav-item px-2 pt-1">
+                <a class="btn fas fa-moon" id="dark-mode-toggle"></a>
+            </li>
+            </ul>
+        </div>
+    </div>
+</nav><div id="content">
+
+<div class="container" style="max-width: 800px;">
+    <div class="py-4 rounded-3">
+        <div class="container-fluid py-2">
+            <h1 class="display-2 mb-4 text-center">Node.js - Multer를 이용해 안드로이드에서 이미지 업/다운로드</h1>
+        </div>
+        
+        <p class="text-center fs-4 fst-italic serif">Multer를 이용해 안드로이드에서 이미지 업/다운로드하기</p>
+        
+        <div class="text-center pt-4">
+            
+        </div>
+    </div>
+    <div class="row justify-content-center mb-5">
+        <div class="col-12">
+            <p class="card-date m-0">
+                
+                
+                    Created May 20, 2020 - 
+                
+                Last updated: May 20, 2020
+            </p>
+            <hr class="dropdown-divider">
+            <div class="row justify-content-between">
+                <div class="col-sm-4">
+                    
+    
+    <span class="status">Evergreen 🌳</span>
+    
+
+                </div>
+                <div class="col-sm-8" style="text-align: right;">
+                    
+                
+                
+                    
+                    <span class="badge tag-badge">Blockchain</span>
+                    
+                    <span class="badge tag-badge">Smart contract</span>
+                    
+                    <span class="badge tag-badge">Node.js</span>
+                    
+                
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid py-2">
+        <div class="serif main-content">
+            <p>이 부분은 이 중고거래 플랫폼을 만들면서 이더리움으로 고생했던 것만큼 오래 걸렸던 부분이에요. 파트너에게 부탁했는데 도저히 안되어서 넘겨받았는데 저도 힘들더라고요. 누군가 저에게 Multer 라이브러리가 아주 사용하기 쉽게 되어있다고 해서 금방 할 거라고 생각했는데 완전 오판이었습니다.
+</br>
+</br>
+이 부분을 구현하는데 엄청난 도움을 준 블로그를 제일 아래에 첨부하도록 하겠습니다. 우선 통신에는 레트로핏 라이브러리를 사용합니다. 그래들 파일에 레트로핏을 implementation 해주세요.
+</br></p>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#111">implementation</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#111">com</span><span style="color:#f92672">.</span><span style="color:#75af00">squareup</span><span style="color:#f92672">.</span><span style="color:#75af00">retrofit2</span><span style="color:#f92672">:</span><span style="color:#111">retrofit</span><span style="color:#f92672">:</span><span style="color:#ae81ff">2.4.0</span><span style="color:#960050;background-color:#1e0010">&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#111">implementation</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#111">com</span><span style="color:#f92672">.</span><span style="color:#75af00">squareup</span><span style="color:#f92672">.</span><span style="color:#75af00">retrofit2</span><span style="color:#f92672">:</span><span style="color:#111">converter</span><span style="color:#f92672">-</span><span style="color:#111">gson</span><span style="color:#f92672">:</span><span style="color:#ae81ff">2.4.0</span><span style="color:#960050;background-color:#1e0010">&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#111">implementation</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#111">com</span><span style="color:#f92672">.</span><span style="color:#75af00">squareup</span><span style="color:#f92672">.</span><span style="color:#75af00">retrofit2</span><span style="color:#f92672">:</span><span style="color:#111">converter</span><span style="color:#f92672">-</span><span style="color:#111">scalars</span><span style="color:#f92672">:</span><span style="color:#ae81ff">2.4.0</span><span style="color:#960050;background-color:#1e0010">&#39;</span>
+</span></span></code></pre></div></br>
+저는 이렇게 세개가 implementation 되어 있습니다. 다음으로 안드로이드에서 retrofit2.http.Multipart를 import 하는 ApiService 인터페이스를 구현해야 합니다. 아래는 ApiService.java입니다.
+</br>
+</br>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#111">com.example.myapplication</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">okhttp3.MultipartBody</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">okhttp3.RequestBody</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">okhttp3.ResponseBody</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">retrofit2.Call</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">retrofit2.http.Multipart</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">retrofit2.http.POST</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">retrofit2.http.Part</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#00a8c8">interface</span> <span style="color:#75af00">ApiService</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75af00">@Multipart</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75af00">@POST</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;/upload&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#111">Call</span><span style="color:#f92672">&lt;</span><span style="color:#111">ResponseBody</span><span style="color:#f92672">&gt;</span> <span style="color:#75af00">postImage</span><span style="color:#f92672">(</span><span style="color:#75af00">@Part</span> <span style="color:#111">MultipartBody</span><span style="color:#f92672">.</span><span style="color:#75af00">Part</span> <span style="color:#111">image</span><span style="color:#f92672">,</span> <span style="color:#75af00">@Part</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;upload&#34;</span><span style="color:#f92672">)</span> <span style="color:#111">RequestBody</span> <span style="color:#111">name</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div></br>
+이제 실제 업로드하는 java 코드를 볼 건데요. 주석과 토스트 메시지, 로그가 좀 많아요. 저희가 이 코드를 테스트로 구현하고, 실제 코드와 합쳤는데 실제 코드에서 변경해야 할 부분을 체크해 놓은 것이에요. 만약 이 코드를 적용하려면 저희가 체크해 놓은 부분을 다들 변경하실 것 같아 대부분의 주석은 일단 두겠습니다. 아래는 TestUploadImage.java입니다.
+</br>
+</br>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#f92672">package</span> <span style="color:#111">com.example.myapplication</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">android.annotation.TargetApi</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">android.app.Activity</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">android.app.AlertDialog</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">android.content.ClipData</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">android.content.ComponentName</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">android.content.DialogInterface</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">android.content.Intent</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">android.content.pm.PackageManager</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">android.content.pm.ResolveInfo</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">android.database.Cursor</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">android.graphics.Bitmap</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">android.graphics.BitmapFactory</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">android.graphics.Color</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">android.net.Uri</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">android.nfc.Tag</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">android.os.Build</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">android.os.Bundle</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">android.os.Parcelable</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">android.os.PersistableBundle</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">android.provider.MediaStore</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">android.util.Log</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">android.view.View</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">android.widget.Button</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">android.widget.ImageView</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">android.widget.TextView</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">android.widget.Toast</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">androidx.annotation.NonNull</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">androidx.annotation.Nullable</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">androidx.appcompat.app.AppCompatActivity</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">com.bumptech.glide.Glide</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">com.esafirm.imagepicker.features.ImagePicker</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">com.esafirm.imagepicker.features.ImagePickerComponentHolder</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">com.esafirm.imagepicker.features.ReturnMode</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">com.esafirm.imagepicker.features.imageloader.ImageLoader</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">com.esafirm.imagepicker.features.imageloader.ImageType</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">com.esafirm.imagepicker.model.Image</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">com.google.android.gms.common.util.ArrayUtils</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">com.google.android.material.floatingactionbutton.FloatingActionButton</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">com.yongbeam.y_photopicker.util.photopicker.PhotoPagerActivity</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">com.yongbeam.y_photopicker.util.photopicker.PhotoPickerActivity</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">com.yongbeam.y_photopicker.util.photopicker.utils.YPhotoPickerIntent</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">java.io.ByteArrayOutputStream</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">java.io.File</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">java.io.FileNotFoundException</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">java.io.FileOutputStream</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">java.io.IOException</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">java.io.InputStream</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">java.nio.ByteBuffer</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">java.util.ArrayList</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">java.util.List</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//import io.reactivex.functions.Action;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#f92672">import</span> <span style="color:#111">okhttp3.MediaType</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">okhttp3.MultipartBody</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">okhttp3.OkHttpClient</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">okhttp3.RequestBody</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">okhttp3.ResponseBody</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">retrofit2.Call</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">retrofit2.Callback</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">retrofit2.Response</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> <span style="color:#111">retrofit2.Retrofit</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import static</span> <span style="color:#111">android.Manifest.permission.READ_EXTERNAL_STORAGE</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import static</span> <span style="color:#111">android.Manifest.permission.WRITE_EXTERNAL_STORAGE</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import static</span> <span style="color:#111">com.example.myapplication.URLS.URL_UPLOAD</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#00a8c8">public</span> <span style="color:#00a8c8">class</span> <span style="color:#75af00">TestUploadImage</span> <span style="color:#00a8c8">extends</span> <span style="color:#111">AppCompatActivity</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//이미지 뷰 5장
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#111">ImageView</span> <span style="color:#111">image1</span><span style="color:#f92672">,</span> <span style="color:#111">image2</span><span style="color:#f92672">,</span> <span style="color:#111">image3</span><span style="color:#f92672">,</span> <span style="color:#111">image4</span><span style="color:#f92672">,</span> <span style="color:#111">image5</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//이미지 업로드를 위해 상속한 인터페이스
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#111">ApiService</span> <span style="color:#111">apiService</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//유저 아이디 가져오기 위함
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#111">User</span> <span style="color:#111">user</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#111">String</span> <span style="color:#111">user_id</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00a8c8">private</span> <span style="color:#111">ArrayList</span><span style="color:#f92672">&lt;</span><span style="color:#111">String</span><span style="color:#f92672">&gt;</span> <span style="color:#111">permissionsToRequest</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00a8c8">private</span> <span style="color:#111">ArrayList</span><span style="color:#f92672">&lt;</span><span style="color:#111">String</span><span style="color:#f92672">&gt;</span> <span style="color:#111">permissionsRejected</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">ArrayList</span><span style="color:#f92672">&lt;&gt;();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00a8c8">private</span> <span style="color:#111">ArrayList</span><span style="color:#f92672">&lt;</span><span style="color:#111">String</span><span style="color:#f92672">&gt;</span> <span style="color:#111">permissions</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">ArrayList</span><span style="color:#f92672">&lt;&gt;();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00a8c8">private</span> <span style="color:#00a8c8">final</span> <span style="color:#00a8c8">static</span> <span style="color:#00a8c8">int</span> <span style="color:#111">ALL_PERMISSIONS_RESULT</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">107</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00a8c8">private</span> <span style="color:#00a8c8">final</span> <span style="color:#00a8c8">static</span> <span style="color:#00a8c8">int</span> <span style="color:#111">IMAGE_RESULT</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">200</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00a8c8">public</span> <span style="color:#00a8c8">final</span> <span style="color:#00a8c8">static</span> <span style="color:#00a8c8">int</span> <span style="color:#111">REQUEST_CODE</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//FloatingActionButton fabUpload;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//Bitmap[] mBitmap = new Bitmap[5];
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#111">ArrayList</span><span style="color:#f92672">&lt;</span><span style="color:#111">Bitmap</span><span style="color:#f92672">&gt;</span> <span style="color:#111">mBitmap</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">ArrayList</span><span style="color:#f92672">&lt;&gt;();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#111">TextView</span> <span style="color:#111">textView</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#111">Button</span> <span style="color:#111">fabUpload</span><span style="color:#f92672">,</span> <span style="color:#111">fab</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#111">Uri</span> <span style="color:#111">picUri</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75af00">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00a8c8">protected</span> <span style="color:#00a8c8">void</span> <span style="color:#75af00">onCreate</span><span style="color:#f92672">(</span><span style="color:#111">Bundle</span> <span style="color:#111">savedInstanceState</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00a8c8">super</span><span style="color:#f92672">.</span><span style="color:#75af00">onCreate</span><span style="color:#f92672">(</span><span style="color:#111">savedInstanceState</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">setContentView</span><span style="color:#f92672">(</span><span style="color:#111">R</span><span style="color:#f92672">.</span><span style="color:#75af00">layout</span><span style="color:#f92672">.</span><span style="color:#75af00">activity_test_upload_image</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">askPermission</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">initRetrofitClient</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">image1</span> <span style="color:#f92672">=</span> <span style="color:#f92672">(</span><span style="color:#111">ImageView</span><span style="color:#f92672">)</span><span style="color:#111">findViewById</span><span style="color:#f92672">(</span><span style="color:#111">R</span><span style="color:#f92672">.</span><span style="color:#75af00">id</span><span style="color:#f92672">.</span><span style="color:#75af00">imageView1</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">image2</span> <span style="color:#f92672">=</span> <span style="color:#f92672">(</span><span style="color:#111">ImageView</span><span style="color:#f92672">)</span><span style="color:#111">findViewById</span><span style="color:#f92672">(</span><span style="color:#111">R</span><span style="color:#f92672">.</span><span style="color:#75af00">id</span><span style="color:#f92672">.</span><span style="color:#75af00">imageView2</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">image3</span> <span style="color:#f92672">=</span> <span style="color:#f92672">(</span><span style="color:#111">ImageView</span><span style="color:#f92672">)</span><span style="color:#111">findViewById</span><span style="color:#f92672">(</span><span style="color:#111">R</span><span style="color:#f92672">.</span><span style="color:#75af00">id</span><span style="color:#f92672">.</span><span style="color:#75af00">imageView3</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">image4</span> <span style="color:#f92672">=</span> <span style="color:#f92672">(</span><span style="color:#111">ImageView</span><span style="color:#f92672">)</span><span style="color:#111">findViewById</span><span style="color:#f92672">(</span><span style="color:#111">R</span><span style="color:#f92672">.</span><span style="color:#75af00">id</span><span style="color:#f92672">.</span><span style="color:#75af00">imageView4</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">image5</span> <span style="color:#f92672">=</span> <span style="color:#f92672">(</span><span style="color:#111">ImageView</span><span style="color:#f92672">)</span><span style="color:#111">findViewById</span><span style="color:#f92672">(</span><span style="color:#111">R</span><span style="color:#f92672">.</span><span style="color:#75af00">id</span><span style="color:#f92672">.</span><span style="color:#75af00">imageView5</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">fabUpload</span> <span style="color:#f92672">=</span> <span style="color:#111">findViewById</span><span style="color:#f92672">(</span><span style="color:#111">R</span><span style="color:#f92672">.</span><span style="color:#75af00">id</span><span style="color:#f92672">.</span><span style="color:#75af00">fabUpload</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">textView</span> <span style="color:#f92672">=</span> <span style="color:#111">findViewById</span><span style="color:#f92672">(</span><span style="color:#111">R</span><span style="color:#f92672">.</span><span style="color:#75af00">id</span><span style="color:#f92672">.</span><span style="color:#75af00">textView</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">fab</span> <span style="color:#f92672">=</span> <span style="color:#111">findViewById</span><span style="color:#f92672">(</span><span style="color:#111">R</span><span style="color:#f92672">.</span><span style="color:#75af00">id</span><span style="color:#f92672">.</span><span style="color:#75af00">fab</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">fab</span><span style="color:#f92672">.</span><span style="color:#75af00">setOnClickListener</span><span style="color:#f92672">(</span><span style="color:#00a8c8">new</span> <span style="color:#111">View</span><span style="color:#f92672">.</span><span style="color:#75af00">OnClickListener</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75af00">@Override</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#00a8c8">public</span> <span style="color:#00a8c8">void</span> <span style="color:#75af00">onClick</span><span style="color:#f92672">(</span><span style="color:#111">View</span> <span style="color:#111">v</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">//startActivityForResult(getPickImageChooserIntent(), IMAGE_RESULT);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                <span style="color:#111">getPickImageChooserIntent</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">});</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">fabUpload</span><span style="color:#f92672">.</span><span style="color:#75af00">setOnClickListener</span><span style="color:#f92672">(</span><span style="color:#00a8c8">new</span> <span style="color:#111">View</span><span style="color:#f92672">.</span><span style="color:#75af00">OnClickListener</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75af00">@Override</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#00a8c8">public</span> <span style="color:#00a8c8">void</span> <span style="color:#75af00">onClick</span><span style="color:#f92672">(</span><span style="color:#111">View</span> <span style="color:#111">v</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#00a8c8">if</span> <span style="color:#f92672">(</span><span style="color:#111">mBitmap</span> <span style="color:#f92672">!=</span> <span style="color:#00a8c8">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#00a8c8">for</span> <span style="color:#f92672">(</span><span style="color:#00a8c8">int</span> <span style="color:#111">i</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span> <span style="color:#111">i</span> <span style="color:#f92672">&lt;</span> <span style="color:#111">mBitmap</span><span style="color:#f92672">.</span><span style="color:#75af00">size</span><span style="color:#f92672">();</span> <span style="color:#111">i</span><span style="color:#f92672">++)</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#111">multipartImageUpload</span><span style="color:#f92672">(</span><span style="color:#111">i</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span> <span style="color:#00a8c8">else</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#111">Toast</span><span style="color:#f92672">.</span><span style="color:#75af00">makeText</span><span style="color:#f92672">(</span><span style="color:#111">getApplicationContext</span><span style="color:#f92672">(),</span> <span style="color:#d88200">&#34;Bitmap is null. Try again&#34;</span><span style="color:#f92672">,</span> <span style="color:#111">Toast</span><span style="color:#f92672">.</span><span style="color:#75af00">LENGTH_SHORT</span><span style="color:#f92672">).</span><span style="color:#75af00">show</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">});</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00a8c8">final</span> <span style="color:#111">PrefManager</span> <span style="color:#111">prefManager</span> <span style="color:#f92672">=</span> <span style="color:#111">PrefManager</span><span style="color:#f92672">.</span><span style="color:#75af00">getInstance</span><span style="color:#f92672">(</span><span style="color:#111">TestUploadImage</span><span style="color:#f92672">.</span><span style="color:#75af00">this</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">user</span> <span style="color:#f92672">=</span> <span style="color:#111">prefManager</span><span style="color:#f92672">.</span><span style="color:#75af00">getUser</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00a8c8">if</span> <span style="color:#f92672">(</span><span style="color:#111">prefManager</span><span style="color:#f92672">.</span><span style="color:#75af00">isLoggedIn</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#111">user_id</span> <span style="color:#f92672">=</span> <span style="color:#111">String</span><span style="color:#f92672">.</span><span style="color:#75af00">valueOf</span><span style="color:#f92672">(</span><span style="color:#111">user</span><span style="color:#f92672">.</span><span style="color:#75af00">getUser_id</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//initRetrofitClient();
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00a8c8">private</span> <span style="color:#00a8c8">void</span> <span style="color:#75af00">askPermission</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">permissions</span><span style="color:#f92672">.</span><span style="color:#75af00">add</span><span style="color:#f92672">(</span><span style="color:#111">WRITE_EXTERNAL_STORAGE</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">permissions</span><span style="color:#f92672">.</span><span style="color:#75af00">add</span><span style="color:#f92672">(</span><span style="color:#111">READ_EXTERNAL_STORAGE</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">permissionsToRequest</span> <span style="color:#f92672">=</span> <span style="color:#111">findUnAskedPermissions</span><span style="color:#f92672">(</span><span style="color:#111">permissions</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00a8c8">if</span> <span style="color:#f92672">(</span><span style="color:#111">Build</span><span style="color:#f92672">.</span><span style="color:#75af00">VERSION</span><span style="color:#f92672">.</span><span style="color:#75af00">SDK_INT</span> <span style="color:#f92672">&gt;=</span> <span style="color:#111">Build</span><span style="color:#f92672">.</span><span style="color:#75af00">VERSION_CODES</span><span style="color:#f92672">.</span><span style="color:#75af00">M</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#00a8c8">if</span> <span style="color:#f92672">(</span><span style="color:#111">permissionsToRequest</span><span style="color:#f92672">.</span><span style="color:#75af00">size</span><span style="color:#f92672">()</span> <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#111">requestPermissions</span><span style="color:#f92672">(</span><span style="color:#111">permissionsToRequest</span><span style="color:#f92672">.</span><span style="color:#75af00">toArray</span><span style="color:#f92672">(</span><span style="color:#00a8c8">new</span> <span style="color:#111">String</span><span style="color:#f92672">[</span><span style="color:#111">permissionsToRequest</span><span style="color:#f92672">.</span><span style="color:#75af00">size</span><span style="color:#f92672">()]),</span> <span style="color:#111">ALL_PERMISSIONS_RESULT</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>   
+</span></span><span style="display:flex;"><span>    <span style="color:#00a8c8">private</span> <span style="color:#00a8c8">void</span> <span style="color:#75af00">initRetrofitClient</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">OkHttpClient</span> <span style="color:#111">client</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">OkHttpClient</span><span style="color:#f92672">.</span><span style="color:#75af00">Builder</span><span style="color:#f92672">().</span><span style="color:#75af00">build</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">apiService</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">Retrofit</span><span style="color:#f92672">.</span><span style="color:#75af00">Builder</span><span style="color:#f92672">().</span><span style="color:#75af00">baseUrl</span><span style="color:#f92672">(</span><span style="color:#111">URL_UPLOAD</span><span style="color:#f92672">).</span><span style="color:#75af00">client</span><span style="color:#f92672">(</span><span style="color:#111">client</span><span style="color:#f92672">).</span><span style="color:#75af00">build</span><span style="color:#f92672">().</span><span style="color:#75af00">create</span><span style="color:#f92672">(</span><span style="color:#111">ApiService</span><span style="color:#f92672">.</span><span style="color:#75af00">class</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//이미지 가져오기 
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#00a8c8">public</span> <span style="color:#00a8c8">void</span> <span style="color:#75af00">getPickImageChooserIntent</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">List</span><span style="color:#f92672">&lt;</span><span style="color:#111">Intent</span><span style="color:#f92672">&gt;</span> <span style="color:#111">allIntents</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">ArrayList</span><span style="color:#f92672">&lt;&gt;();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">PackageManager</span> <span style="color:#111">packageManager</span> <span style="color:#f92672">=</span> <span style="color:#111">getPackageManager</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">ArrayList</span><span style="color:#f92672">&lt;</span><span style="color:#111">Image</span><span style="color:#f92672">&gt;</span> <span style="color:#111">images</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">ArrayList</span><span style="color:#f92672">&lt;&gt;();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//Intent intent = new Intent(Intent.ACTION_PICK);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#111">Intent</span> <span style="color:#111">intent</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">Intent</span><span style="color:#f92672">(</span><span style="color:#111">Intent</span><span style="color:#f92672">.</span><span style="color:#75af00">ACTION_GET_CONTENT</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">intent</span><span style="color:#f92672">.</span><span style="color:#75af00">setType</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;image/*&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">intent</span><span style="color:#f92672">.</span><span style="color:#75af00">putExtra</span><span style="color:#f92672">(</span><span style="color:#111">Intent</span><span style="color:#f92672">.</span><span style="color:#75af00">EXTRA_ALLOW_MULTIPLE</span><span style="color:#f92672">,</span> <span style="color:#00a8c8">true</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">//intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>        <span style="color:#111">startActivityForResult</span><span style="color:#f92672">(</span><span style="color:#111">Intent</span><span style="color:#f92672">.</span><span style="color:#75af00">createChooser</span><span style="color:#f92672">(</span><span style="color:#111">intent</span><span style="color:#f92672">,</span> <span style="color:#d88200">&#34;이미지 다중 선택&#34;</span><span style="color:#f92672">),</span> <span style="color:#111">REQUEST_CODE</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//이미지 촬영 후 Uri 근데 안쓸거 같지만 일단 놔두자
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#00a8c8">private</span> <span style="color:#111">Uri</span> <span style="color:#75af00">getCaptureImageOutputUri</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">Uri</span> <span style="color:#111">outputFileUri</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">File</span> <span style="color:#111">getImage</span> <span style="color:#f92672">=</span> <span style="color:#111">getExternalFilesDir</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00a8c8">if</span> <span style="color:#f92672">(</span><span style="color:#111">getImage</span> <span style="color:#f92672">!=</span> <span style="color:#00a8c8">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#111">outputFileUri</span> <span style="color:#f92672">=</span> <span style="color:#111">Uri</span><span style="color:#f92672">.</span><span style="color:#75af00">fromFile</span><span style="color:#f92672">(</span><span style="color:#00a8c8">new</span> <span style="color:#111">File</span><span style="color:#f92672">(</span><span style="color:#111">getImage</span><span style="color:#f92672">.</span><span style="color:#75af00">getPath</span><span style="color:#f92672">(),</span> <span style="color:#d88200">&#34;profile.png&#34;</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00a8c8">return</span> <span style="color:#111">outputFileUri</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//getPickImageChooserIntent()에서 startActivitiForResult하고 난 결과를 받는 메소드
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75af00">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00a8c8">protected</span> <span style="color:#00a8c8">void</span> <span style="color:#75af00">onActivityResult</span><span style="color:#f92672">(</span><span style="color:#00a8c8">int</span> <span style="color:#111">requestCode</span><span style="color:#f92672">,</span> <span style="color:#00a8c8">int</span> <span style="color:#111">resultCode</span><span style="color:#f92672">,</span> <span style="color:#75af00">@Nullable</span> <span style="color:#111">Intent</span> <span style="color:#111">data</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00a8c8">super</span><span style="color:#f92672">.</span><span style="color:#75af00">onActivityResult</span><span style="color:#f92672">(</span><span style="color:#111">requestCode</span><span style="color:#f92672">,</span> <span style="color:#111">resultCode</span><span style="color:#f92672">,</span> <span style="color:#111">data</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">String</span> <span style="color:#111">imagePath</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">null</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">ArrayList</span><span style="color:#f92672">&lt;</span><span style="color:#111">String</span><span style="color:#f92672">&gt;</span> <span style="color:#111">imageListUri</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">ArrayList</span><span style="color:#f92672">&lt;&gt;();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">ArrayList</span><span style="color:#f92672">&lt;</span><span style="color:#111">Uri</span><span style="color:#f92672">&gt;</span> <span style="color:#111">realUri</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">ArrayList</span><span style="color:#f92672">&lt;&gt;();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00a8c8">if</span> <span style="color:#f92672">(</span><span style="color:#111">requestCode</span> <span style="color:#f92672">==</span> <span style="color:#111">REQUEST_CODE</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#111">Toast</span><span style="color:#f92672">.</span><span style="color:#75af00">makeText</span><span style="color:#f92672">(</span><span style="color:#00a8c8">this</span><span style="color:#f92672">,</span> <span style="color:#d88200">&#34;여기 드가욤&#34;</span><span style="color:#f92672">,</span> <span style="color:#111">Toast</span><span style="color:#f92672">.</span><span style="color:#75af00">LENGTH_SHORT</span><span style="color:#f92672">).</span><span style="color:#75af00">show</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// photos = data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#00a8c8">if</span> <span style="color:#f92672">(</span><span style="color:#111">data</span><span style="color:#f92672">.</span><span style="color:#75af00">getClipData</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> <span style="color:#00a8c8">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#111">Toast</span><span style="color:#f92672">.</span><span style="color:#75af00">makeText</span><span style="color:#f92672">(</span><span style="color:#00a8c8">this</span><span style="color:#f92672">,</span> <span style="color:#d88200">&#34;다중 선택이 불가능한 기기입니다&#34;</span><span style="color:#f92672">,</span> <span style="color:#111">Toast</span><span style="color:#f92672">.</span><span style="color:#75af00">LENGTH_SHORT</span><span style="color:#f92672">).</span><span style="color:#75af00">show</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span> <span style="color:#00a8c8">else</span> <span style="color:#f92672">{</span> <span style="color:#75715e">//다중 선택 했을 경우
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>                <span style="color:#111">ClipData</span> <span style="color:#111">clipData</span> <span style="color:#f92672">=</span> <span style="color:#111">data</span><span style="color:#f92672">.</span><span style="color:#75af00">getClipData</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">//Log.i(&#34;clipdata1 : &#34;, String.valueOf(clipData.getItemCount()));
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                <span style="color:#75715e">//Log.i(&#34;clipdata2 : &#34;, String.valueOf(clipData.getItemCount()));
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                <span style="color:#75715e">//Log.i(&#34;clipdata3 : &#34;, String.valueOf(clipData.getItemCount()));
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#00a8c8">if</span> <span style="color:#f92672">(</span><span style="color:#111">clipData</span><span style="color:#f92672">.</span><span style="color:#75af00">getItemCount</span><span style="color:#f92672">()</span> <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">5</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#111">Toast</span><span style="color:#f92672">.</span><span style="color:#75af00">makeText</span><span style="color:#f92672">(</span><span style="color:#111">TestUploadImage</span><span style="color:#f92672">.</span><span style="color:#75af00">this</span><span style="color:#f92672">,</span> <span style="color:#d88200">&#34;사진은 5장까지 선택 가능합니다&#34;</span><span style="color:#f92672">,</span> <span style="color:#111">Toast</span><span style="color:#f92672">.</span><span style="color:#75af00">LENGTH_SHORT</span><span style="color:#f92672">).</span><span style="color:#75af00">show</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span> <span style="color:#00a8c8">else</span> <span style="color:#00a8c8">if</span> <span style="color:#f92672">(</span><span style="color:#111">clipData</span><span style="color:#f92672">.</span><span style="color:#75af00">getItemCount</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#111">Uri</span> <span style="color:#111">tempUri</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#111">tempUri</span> <span style="color:#f92672">=</span> <span style="color:#111">clipData</span><span style="color:#f92672">.</span><span style="color:#75af00">getItemAt</span><span style="color:#f92672">(</span><span style="color:#ae81ff">0</span><span style="color:#f92672">).</span><span style="color:#75af00">getUri</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#111">imagePath</span> <span style="color:#f92672">=</span> <span style="color:#111">tempUri</span><span style="color:#f92672">.</span><span style="color:#75af00">toString</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#111">mBitmap</span><span style="color:#f92672">.</span><span style="color:#75af00">add</span><span style="color:#f92672">(</span><span style="color:#111">BitmapFactory</span><span style="color:#f92672">.</span><span style="color:#75af00">decodeFile</span><span style="color:#f92672">(</span><span style="color:#111">imagePath</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#111">image1</span><span style="color:#f92672">.</span><span style="color:#75af00">setImageBitmap</span><span style="color:#f92672">(</span><span style="color:#111">mBitmap</span><span style="color:#f92672">.</span><span style="color:#75af00">get</span><span style="color:#f92672">(</span><span style="color:#ae81ff">0</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#75715e">//File file = new File(imagePath);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                    <span style="color:#75715e">//imageView1.setImageURI(Uri.fromFile(file));
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>                <span style="color:#f92672">}</span> <span style="color:#00a8c8">else</span> <span style="color:#00a8c8">if</span> <span style="color:#f92672">((</span><span style="color:#111">clipData</span><span style="color:#f92672">.</span><span style="color:#75af00">getItemCount</span><span style="color:#f92672">()</span> <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">)</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">(</span><span style="color:#111">clipData</span><span style="color:#f92672">.</span><span style="color:#75af00">getItemCount</span><span style="color:#f92672">()</span> <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">5</span><span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#00a8c8">for</span> <span style="color:#f92672">(</span><span style="color:#00a8c8">int</span> <span style="color:#111">i</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span> <span style="color:#111">i</span> <span style="color:#f92672">&lt;</span> <span style="color:#111">clipData</span><span style="color:#f92672">.</span><span style="color:#75af00">getItemCount</span><span style="color:#f92672">();</span> <span style="color:#111">i</span><span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#111">Uri</span> <span style="color:#111">tempUri</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#111">tempUri</span> <span style="color:#f92672">=</span> <span style="color:#111">clipData</span><span style="color:#f92672">.</span><span style="color:#75af00">getItemAt</span><span style="color:#f92672">(</span><span style="color:#111">i</span><span style="color:#f92672">).</span><span style="color:#75af00">getUri</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#111">Log</span><span style="color:#f92672">.</span><span style="color:#75af00">i</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;temp: &#34;</span><span style="color:#f92672">,</span> <span style="color:#111">i</span> <span style="color:#f92672">+</span> <span style="color:#d88200">&#34; &#34;</span> <span style="color:#f92672">+</span> <span style="color:#111">tempUri</span><span style="color:#f92672">.</span><span style="color:#75af00">toString</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#111">imageListUri</span><span style="color:#f92672">.</span><span style="color:#75af00">add</span><span style="color:#f92672">(</span><span style="color:#111">tempUri</span><span style="color:#f92672">.</span><span style="color:#75af00">toString</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#111">realUri</span><span style="color:#f92672">.</span><span style="color:#75af00">add</span><span style="color:#f92672">(</span><span style="color:#111">tempUri</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#75715e">//mBitmap.add(i, BitmapFactory.decodeFile(imageListUri.get(i)));
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#00a8c8">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#111">mBitmap</span><span style="color:#f92672">.</span><span style="color:#75af00">add</span><span style="color:#f92672">(</span><span style="color:#111">i</span><span style="color:#f92672">,</span><span style="color:#111">BitmapFactory</span><span style="color:#f92672">.</span><span style="color:#75af00">decodeStream</span><span style="color:#f92672">(</span><span style="color:#111">getContentResolver</span><span style="color:#f92672">().</span><span style="color:#75af00">openInputStream</span><span style="color:#f92672">(</span><span style="color:#111">realUri</span><span style="color:#f92672">.</span><span style="color:#75af00">get</span><span style="color:#f92672">(</span><span style="color:#111">i</span><span style="color:#f92672">))));</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">}</span> <span style="color:#00a8c8">catch</span> <span style="color:#f92672">(</span><span style="color:#111">FileNotFoundException</span> <span style="color:#111">e</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#111">e</span><span style="color:#f92672">.</span><span style="color:#75af00">printStackTrace</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#00a8c8">if</span><span style="color:#f92672">(</span><span style="color:#111">clipData</span><span style="color:#f92672">.</span><span style="color:#75af00">getItemCount</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#111">image1</span><span style="color:#f92672">.</span><span style="color:#75af00">setImageBitmap</span><span style="color:#f92672">(</span><span style="color:#111">mBitmap</span><span style="color:#f92672">.</span><span style="color:#75af00">get</span><span style="color:#f92672">(</span><span style="color:#ae81ff">0</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#111">image2</span><span style="color:#f92672">.</span><span style="color:#75af00">setImageBitmap</span><span style="color:#f92672">(</span><span style="color:#111">mBitmap</span><span style="color:#f92672">.</span><span style="color:#75af00">get</span><span style="color:#f92672">(</span><span style="color:#ae81ff">1</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">}</span> <span style="color:#00a8c8">if</span> <span style="color:#f92672">(</span><span style="color:#111">clipData</span><span style="color:#f92672">.</span><span style="color:#75af00">getItemCount</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">3</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#111">image1</span><span style="color:#f92672">.</span><span style="color:#75af00">setImageBitmap</span><span style="color:#f92672">(</span><span style="color:#111">mBitmap</span><span style="color:#f92672">.</span><span style="color:#75af00">get</span><span style="color:#f92672">(</span><span style="color:#ae81ff">0</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#111">image2</span><span style="color:#f92672">.</span><span style="color:#75af00">setImageBitmap</span><span style="color:#f92672">(</span><span style="color:#111">mBitmap</span><span style="color:#f92672">.</span><span style="color:#75af00">get</span><span style="color:#f92672">(</span><span style="color:#ae81ff">1</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#111">image3</span><span style="color:#f92672">.</span><span style="color:#75af00">setImageBitmap</span><span style="color:#f92672">(</span><span style="color:#111">mBitmap</span><span style="color:#f92672">.</span><span style="color:#75af00">get</span><span style="color:#f92672">(</span><span style="color:#ae81ff">2</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">}</span> <span style="color:#00a8c8">if</span><span style="color:#f92672">(</span><span style="color:#111">clipData</span><span style="color:#f92672">.</span><span style="color:#75af00">getItemCount</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">4</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#111">image1</span><span style="color:#f92672">.</span><span style="color:#75af00">setImageBitmap</span><span style="color:#f92672">(</span><span style="color:#111">mBitmap</span><span style="color:#f92672">.</span><span style="color:#75af00">get</span><span style="color:#f92672">(</span><span style="color:#ae81ff">0</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#111">image2</span><span style="color:#f92672">.</span><span style="color:#75af00">setImageBitmap</span><span style="color:#f92672">(</span><span style="color:#111">mBitmap</span><span style="color:#f92672">.</span><span style="color:#75af00">get</span><span style="color:#f92672">(</span><span style="color:#ae81ff">1</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#111">image3</span><span style="color:#f92672">.</span><span style="color:#75af00">setImageBitmap</span><span style="color:#f92672">(</span><span style="color:#111">mBitmap</span><span style="color:#f92672">.</span><span style="color:#75af00">get</span><span style="color:#f92672">(</span><span style="color:#ae81ff">2</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#111">image4</span><span style="color:#f92672">.</span><span style="color:#75af00">setImageBitmap</span><span style="color:#f92672">(</span><span style="color:#111">mBitmap</span><span style="color:#f92672">.</span><span style="color:#75af00">get</span><span style="color:#f92672">(</span><span style="color:#ae81ff">3</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">}</span> <span style="color:#00a8c8">if</span><span style="color:#f92672">(</span><span style="color:#111">clipData</span><span style="color:#f92672">.</span><span style="color:#75af00">getItemCount</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">5</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#111">image1</span><span style="color:#f92672">.</span><span style="color:#75af00">setImageBitmap</span><span style="color:#f92672">(</span><span style="color:#111">mBitmap</span><span style="color:#f92672">.</span><span style="color:#75af00">get</span><span style="color:#f92672">(</span><span style="color:#ae81ff">0</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#111">image2</span><span style="color:#f92672">.</span><span style="color:#75af00">setImageBitmap</span><span style="color:#f92672">(</span><span style="color:#111">mBitmap</span><span style="color:#f92672">.</span><span style="color:#75af00">get</span><span style="color:#f92672">(</span><span style="color:#ae81ff">1</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#111">image3</span><span style="color:#f92672">.</span><span style="color:#75af00">setImageBitmap</span><span style="color:#f92672">(</span><span style="color:#111">mBitmap</span><span style="color:#f92672">.</span><span style="color:#75af00">get</span><span style="color:#f92672">(</span><span style="color:#ae81ff">2</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#111">image4</span><span style="color:#f92672">.</span><span style="color:#75af00">setImageBitmap</span><span style="color:#f92672">(</span><span style="color:#111">mBitmap</span><span style="color:#f92672">.</span><span style="color:#75af00">get</span><span style="color:#f92672">(</span><span style="color:#ae81ff">3</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#111">image5</span><span style="color:#f92672">.</span><span style="color:#75af00">setImageBitmap</span><span style="color:#f92672">(</span><span style="color:#111">mBitmap</span><span style="color:#f92672">.</span><span style="color:#75af00">get</span><span style="color:#f92672">(</span><span style="color:#ae81ff">4</span><span style="color:#f92672">));</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00a8c8">private</span> <span style="color:#111">String</span> <span style="color:#75af00">getImageFromFilePath</span><span style="color:#f92672">(</span><span style="color:#111">Intent</span> <span style="color:#111">data</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00a8c8">return</span> <span style="color:#111">getPathFromUri</span><span style="color:#f92672">(</span><span style="color:#111">data</span><span style="color:#f92672">.</span><span style="color:#75af00">getData</span><span style="color:#f92672">());</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00a8c8">public</span> <span style="color:#111">String</span> <span style="color:#75af00">getImageFilePath</span><span style="color:#f92672">(</span><span style="color:#111">Intent</span> <span style="color:#111">data</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00a8c8">return</span> <span style="color:#111">getImageFromFilePath</span><span style="color:#f92672">(</span><span style="color:#111">data</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00a8c8">private</span> <span style="color:#111">String</span> <span style="color:#75af00">getPathFromUri</span><span style="color:#f92672">(</span><span style="color:#111">Uri</span> <span style="color:#111">contentUri</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">String</span><span style="color:#f92672">[]</span> <span style="color:#111">proj</span> <span style="color:#f92672">=</span> <span style="color:#f92672">{</span><span style="color:#111">MediaStore</span><span style="color:#f92672">.</span><span style="color:#75af00">Audio</span><span style="color:#f92672">.</span><span style="color:#75af00">Media</span><span style="color:#f92672">.</span><span style="color:#75af00">DATA</span><span style="color:#f92672">};</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">Cursor</span> <span style="color:#111">cursor</span> <span style="color:#f92672">=</span> <span style="color:#111">getContentResolver</span><span style="color:#f92672">().</span><span style="color:#75af00">query</span><span style="color:#f92672">(</span><span style="color:#111">contentUri</span><span style="color:#f92672">,</span> <span style="color:#111">proj</span><span style="color:#f92672">,</span> <span style="color:#00a8c8">null</span><span style="color:#f92672">,</span> <span style="color:#00a8c8">null</span><span style="color:#f92672">,</span> <span style="color:#00a8c8">null</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00a8c8">int</span> <span style="color:#111">column_index</span> <span style="color:#f92672">=</span> <span style="color:#111">cursor</span><span style="color:#f92672">.</span><span style="color:#75af00">getColumnIndexOrThrow</span><span style="color:#f92672">(</span><span style="color:#111">MediaStore</span><span style="color:#f92672">.</span><span style="color:#75af00">Audio</span><span style="color:#f92672">.</span><span style="color:#75af00">Media</span><span style="color:#f92672">.</span><span style="color:#75af00">DATA</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">cursor</span><span style="color:#f92672">.</span><span style="color:#75af00">moveToFirst</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00a8c8">return</span> <span style="color:#111">cursor</span><span style="color:#f92672">.</span><span style="color:#75af00">getString</span><span style="color:#f92672">(</span><span style="color:#111">column_index</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75af00">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00a8c8">public</span> <span style="color:#00a8c8">void</span> <span style="color:#75af00">onSaveInstanceState</span><span style="color:#f92672">(</span><span style="color:#75af00">@NonNull</span> <span style="color:#111">Bundle</span> <span style="color:#111">outState</span><span style="color:#f92672">,</span> <span style="color:#75af00">@NonNull</span> <span style="color:#111">PersistableBundle</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#111">outPersistentState</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00a8c8">super</span><span style="color:#f92672">.</span><span style="color:#75af00">onSaveInstanceState</span><span style="color:#f92672">(</span><span style="color:#111">outState</span><span style="color:#f92672">,</span> <span style="color:#111">outPersistentState</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">outState</span><span style="color:#f92672">.</span><span style="color:#75af00">putParcelable</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;pic_uri&#34;</span><span style="color:#f92672">,</span> <span style="color:#111">picUri</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75af00">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00a8c8">protected</span> <span style="color:#00a8c8">void</span> <span style="color:#75af00">onRestoreInstanceState</span><span style="color:#f92672">(</span><span style="color:#75af00">@NonNull</span> <span style="color:#111">Bundle</span> <span style="color:#111">savedInstanceState</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00a8c8">super</span><span style="color:#f92672">.</span><span style="color:#75af00">onRestoreInstanceState</span><span style="color:#f92672">(</span><span style="color:#111">savedInstanceState</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">picUri</span> <span style="color:#f92672">=</span> <span style="color:#111">savedInstanceState</span><span style="color:#f92672">.</span><span style="color:#75af00">getParcelable</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;pic_uri&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00a8c8">private</span> <span style="color:#111">ArrayList</span><span style="color:#f92672">&lt;</span><span style="color:#111">String</span><span style="color:#f92672">&gt;</span> <span style="color:#75af00">findUnAskedPermissions</span><span style="color:#f92672">(</span><span style="color:#111">ArrayList</span><span style="color:#f92672">&lt;</span><span style="color:#111">String</span><span style="color:#f92672">&gt;</span> <span style="color:#111">wanted</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#111">ArrayList</span><span style="color:#f92672">&lt;</span><span style="color:#111">String</span><span style="color:#f92672">&gt;</span> <span style="color:#111">result</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">ArrayList</span><span style="color:#f92672">&lt;</span><span style="color:#111">String</span><span style="color:#f92672">&gt;();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00a8c8">for</span> <span style="color:#f92672">(</span><span style="color:#111">String</span> <span style="color:#111">perm</span> <span style="color:#f92672">:</span> <span style="color:#111">wanted</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#00a8c8">if</span> <span style="color:#f92672">(!</span><span style="color:#111">hasPermissions</span><span style="color:#f92672">(</span><span style="color:#111">perm</span><span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#111">result</span><span style="color:#f92672">.</span><span style="color:#75af00">add</span><span style="color:#f92672">(</span><span style="color:#111">perm</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00a8c8">return</span> <span style="color:#111">result</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00a8c8">private</span> <span style="color:#00a8c8">boolean</span> <span style="color:#75af00">hasPermissions</span><span style="color:#f92672">(</span><span style="color:#111">String</span> <span style="color:#111">permissions</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00a8c8">if</span> <span style="color:#f92672">(</span><span style="color:#111">canMakeSmores</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#00a8c8">if</span> <span style="color:#f92672">(</span><span style="color:#111">Build</span><span style="color:#f92672">.</span><span style="color:#75af00">VERSION</span><span style="color:#f92672">.</span><span style="color:#75af00">SDK_INT</span> <span style="color:#f92672">&gt;=</span> <span style="color:#111">Build</span><span style="color:#f92672">.</span><span style="color:#75af00">VERSION_CODES</span><span style="color:#f92672">.</span><span style="color:#75af00">M</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#00a8c8">return</span> <span style="color:#f92672">(</span><span style="color:#111">checkSelfPermission</span><span style="color:#f92672">(</span><span style="color:#111">permissions</span><span style="color:#f92672">)</span> <span style="color:#f92672">==</span> <span style="color:#111">PackageManager</span><span style="color:#f92672">.</span><span style="color:#75af00">PERMISSION_GRANTED</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00a8c8">return</span> <span style="color:#00a8c8">true</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00a8c8">private</span> <span style="color:#00a8c8">void</span> <span style="color:#75af00">showMessageOKCancel</span><span style="color:#f92672">(</span><span style="color:#111">String</span> <span style="color:#111">message</span><span style="color:#f92672">,</span> <span style="color:#111">DialogInterface</span><span style="color:#f92672">.</span><span style="color:#75af00">OnClickListener</span> <span style="color:#111">okListener</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00a8c8">new</span> <span style="color:#111">AlertDialog</span><span style="color:#f92672">.</span><span style="color:#75af00">Builder</span><span style="color:#f92672">(</span><span style="color:#00a8c8">this</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#75af00">setMessage</span><span style="color:#f92672">(</span><span style="color:#111">message</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#75af00">setPositiveButton</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;OK&#34;</span><span style="color:#f92672">,</span> <span style="color:#111">okListener</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#75af00">setNegativeButton</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;Cancel&#34;</span><span style="color:#f92672">,</span> <span style="color:#00a8c8">null</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#75af00">create</span><span style="color:#f92672">()</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">.</span><span style="color:#75af00">show</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00a8c8">private</span> <span style="color:#00a8c8">boolean</span> <span style="color:#75af00">canMakeSmores</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00a8c8">return</span> <span style="color:#f92672">(</span><span style="color:#111">Build</span><span style="color:#f92672">.</span><span style="color:#75af00">VERSION</span><span style="color:#f92672">.</span><span style="color:#75af00">SDK_INT</span> <span style="color:#f92672">&gt;</span> <span style="color:#111">Build</span><span style="color:#f92672">.</span><span style="color:#75af00">VERSION_CODES</span><span style="color:#f92672">.</span><span style="color:#75af00">LOLLIPOP_MR1</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75af00">@TargetApi</span><span style="color:#f92672">(</span><span style="color:#111">Build</span><span style="color:#f92672">.</span><span style="color:#75af00">VERSION_CODES</span><span style="color:#f92672">.</span><span style="color:#75af00">M</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75af00">@Override</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#00a8c8">public</span> <span style="color:#00a8c8">void</span> <span style="color:#75af00">onRequestPermissionsResult</span><span style="color:#f92672">(</span><span style="color:#00a8c8">int</span> <span style="color:#111">requestCode</span><span style="color:#f92672">,</span> <span style="color:#75af00">@NonNull</span> <span style="color:#111">String</span><span style="color:#f92672">[]</span> <span style="color:#111">permissions</span><span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>                                           <span style="color:#75af00">@NonNull</span> <span style="color:#00a8c8">int</span><span style="color:#f92672">[]</span> <span style="color:#111">grantResults</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00a8c8">super</span><span style="color:#f92672">.</span><span style="color:#75af00">onRequestPermissionsResult</span><span style="color:#f92672">(</span><span style="color:#111">requestCode</span><span style="color:#f92672">,</span> <span style="color:#111">permissions</span><span style="color:#f92672">,</span> <span style="color:#111">grantResults</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00a8c8">switch</span> <span style="color:#f92672">(</span><span style="color:#111">requestCode</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#00a8c8">case</span> <span style="color:#111">ALL_PERMISSIONS_RESULT</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#00a8c8">for</span> <span style="color:#f92672">(</span><span style="color:#111">String</span> <span style="color:#111">perms</span> <span style="color:#f92672">:</span> <span style="color:#111">permissionsToRequest</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#00a8c8">if</span> <span style="color:#f92672">(!</span><span style="color:#111">hasPermissions</span><span style="color:#f92672">(</span><span style="color:#111">perms</span><span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#111">permissionsRejected</span><span style="color:#f92672">.</span><span style="color:#75af00">add</span><span style="color:#f92672">(</span><span style="color:#111">perms</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#00a8c8">if</span> <span style="color:#f92672">(</span><span style="color:#111">permissionsRejected</span><span style="color:#f92672">.</span><span style="color:#75af00">size</span><span style="color:#f92672">()</span> <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#00a8c8">if</span> <span style="color:#f92672">(</span><span style="color:#111">Build</span><span style="color:#f92672">.</span><span style="color:#75af00">VERSION</span><span style="color:#f92672">.</span><span style="color:#75af00">SDK_INT</span> <span style="color:#f92672">&gt;=</span> <span style="color:#111">Build</span><span style="color:#f92672">.</span><span style="color:#75af00">VERSION_CODES</span><span style="color:#f92672">.</span><span style="color:#75af00">M</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#00a8c8">if</span> <span style="color:#f92672">(</span><span style="color:#111">shouldShowRequestPermissionRationale</span><span style="color:#f92672">(</span><span style="color:#111">permissionsRejected</span><span style="color:#f92672">.</span><span style="color:#75af00">get</span><span style="color:#f92672">(</span><span style="color:#ae81ff">0</span><span style="color:#f92672">)))</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#111">showMessageOKCancel</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;These permissions are mandatory for the application. Please allow access&#34;</span><span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>                                    <span style="color:#00a8c8">new</span> <span style="color:#111">DialogInterface</span><span style="color:#f92672">.</span><span style="color:#75af00">OnClickListener</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                                        <span style="color:#75af00">@Override</span>
+</span></span><span style="display:flex;"><span>                                        <span style="color:#00a8c8">public</span> <span style="color:#00a8c8">void</span> <span style="color:#75af00">onClick</span><span style="color:#f92672">(</span><span style="color:#111">DialogInterface</span> <span style="color:#111">dialog</span><span style="color:#f92672">,</span> <span style="color:#00a8c8">int</span> <span style="color:#111">which</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                                            <span style="color:#111">requestPermissions</span><span style="color:#f92672">(</span><span style="color:#111">permissionsRejected</span><span style="color:#f92672">.</span><span style="color:#75af00">toArray</span><span style="color:#f92672">(</span><span style="color:#00a8c8">new</span> <span style="color:#111">String</span><span style="color:#f92672">[</span><span style="color:#111">permissionsRejected</span><span style="color:#f92672">.</span><span style="color:#75af00">size</span><span style="color:#f92672">()]),</span> <span style="color:#111">ALL_PERMISSIONS_RESULT</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                                        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>                                    <span style="color:#f92672">});</span>
+</span></span><span style="display:flex;"><span>                            <span style="color:#00a8c8">return</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#00a8c8">break</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//실제 이미지를 업로드 하는 파트
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#75715e">//여기서 파일의 이름을 바꿔야함
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#00a8c8">private</span> <span style="color:#00a8c8">void</span> <span style="color:#75af00">multipartImageUpload</span><span style="color:#f92672">(</span><span style="color:#00a8c8">int</span> <span style="color:#111">index</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#00a8c8">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#111">File</span> <span style="color:#111">filesDir</span> <span style="color:#f92672">=</span> <span style="color:#111">getApplicationContext</span><span style="color:#f92672">().</span><span style="color:#75af00">getFilesDir</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#111">File</span> <span style="color:#111">file</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">File</span><span style="color:#f92672">(</span><span style="color:#111">filesDir</span><span style="color:#f92672">,</span> <span style="color:#111">filesDir</span><span style="color:#f92672">.</span><span style="color:#75af00">getName</span><span style="color:#f92672">()</span> <span style="color:#f92672">+</span> <span style="color:#d88200">&#34;.png&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#111">ByteArrayOutputStream</span> <span style="color:#111">bos</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">ByteArrayOutputStream</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#111">mBitmap</span><span style="color:#f92672">.</span><span style="color:#75af00">get</span><span style="color:#f92672">(</span><span style="color:#111">index</span><span style="color:#f92672">).</span><span style="color:#75af00">compress</span><span style="color:#f92672">(</span><span style="color:#111">Bitmap</span><span style="color:#f92672">.</span><span style="color:#75af00">CompressFormat</span><span style="color:#f92672">.</span><span style="color:#75af00">PNG</span><span style="color:#f92672">,</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">,</span> <span style="color:#111">bos</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#00a8c8">byte</span><span style="color:#f92672">[]</span> <span style="color:#111">bitmapdata</span> <span style="color:#f92672">=</span> <span style="color:#111">bos</span><span style="color:#f92672">.</span><span style="color:#75af00">toByteArray</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#111">FileOutputStream</span> <span style="color:#111">fos</span> <span style="color:#f92672">=</span> <span style="color:#00a8c8">new</span> <span style="color:#111">FileOutputStream</span><span style="color:#f92672">(</span><span style="color:#111">file</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#111">fos</span><span style="color:#f92672">.</span><span style="color:#75af00">write</span><span style="color:#f92672">(</span><span style="color:#111">bitmapdata</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#111">fos</span><span style="color:#f92672">.</span><span style="color:#75af00">flush</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#111">fos</span><span style="color:#f92672">.</span><span style="color:#75af00">close</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#111">RequestBody</span> <span style="color:#111">reqFile</span> <span style="color:#f92672">=</span> <span style="color:#111">RequestBody</span><span style="color:#f92672">.</span><span style="color:#75af00">create</span><span style="color:#f92672">(</span><span style="color:#111">MediaType</span><span style="color:#f92672">.</span><span style="color:#75af00">parse</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;image/*&#34;</span><span style="color:#f92672">),</span> <span style="color:#111">file</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#111">MultipartBody</span><span style="color:#f92672">.</span><span style="color:#75af00">Part</span> <span style="color:#111">body</span> <span style="color:#f92672">=</span> <span style="color:#111">MultipartBody</span><span style="color:#f92672">.</span><span style="color:#75af00">Part</span><span style="color:#f92672">.</span><span style="color:#75af00">createFormData</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;upload&#34;</span><span style="color:#f92672">,</span> <span style="color:#111">file</span><span style="color:#f92672">.</span><span style="color:#75af00">getName</span><span style="color:#f92672">(),</span> <span style="color:#111">reqFile</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#111">RequestBody</span> <span style="color:#111">name</span> <span style="color:#f92672">=</span> <span style="color:#111">RequestBody</span><span style="color:#f92672">.</span><span style="color:#75af00">create</span><span style="color:#f92672">(</span><span style="color:#111">MediaType</span><span style="color:#f92672">.</span><span style="color:#75af00">parse</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;text/plain&#34;</span><span style="color:#f92672">),</span> <span style="color:#d88200">&#34;upload&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#111">Call</span><span style="color:#f92672">&lt;</span><span style="color:#111">ResponseBody</span><span style="color:#f92672">&gt;</span> <span style="color:#111">req</span> <span style="color:#f92672">=</span> <span style="color:#111">apiService</span><span style="color:#f92672">.</span><span style="color:#75af00">postImage</span><span style="color:#f92672">(</span><span style="color:#111">body</span><span style="color:#f92672">,</span> <span style="color:#111">name</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#111">req</span><span style="color:#f92672">.</span><span style="color:#75af00">enqueue</span><span style="color:#f92672">(</span><span style="color:#00a8c8">new</span> <span style="color:#111">Callback</span><span style="color:#f92672">&lt;</span><span style="color:#111">ResponseBody</span><span style="color:#f92672">&gt;()</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75af00">@Override</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#00a8c8">public</span> <span style="color:#00a8c8">void</span> <span style="color:#75af00">onResponse</span><span style="color:#f92672">(</span><span style="color:#111">Call</span><span style="color:#f92672">&lt;</span><span style="color:#111">ResponseBody</span><span style="color:#f92672">&gt;</span> <span style="color:#111">call</span><span style="color:#f92672">,</span> <span style="color:#111">Response</span><span style="color:#f92672">&lt;</span><span style="color:#111">ResponseBody</span><span style="color:#f92672">&gt;</span> <span style="color:#111">response</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#00a8c8">if</span> <span style="color:#f92672">(</span><span style="color:#111">response</span><span style="color:#f92672">.</span><span style="color:#75af00">code</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> <span style="color:#ae81ff">200</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#111">textView</span><span style="color:#f92672">.</span><span style="color:#75af00">setText</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;uploaded success&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                        <span style="color:#111">textView</span><span style="color:#f92672">.</span><span style="color:#75af00">setTextColor</span><span style="color:#f92672">(</span><span style="color:#111">Color</span><span style="color:#f92672">.</span><span style="color:#75af00">BLUE</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#111">Toast</span><span style="color:#f92672">.</span><span style="color:#75af00">makeText</span><span style="color:#f92672">(</span><span style="color:#111">getApplicationContext</span><span style="color:#f92672">(),</span> <span style="color:#111">response</span><span style="color:#f92672">.</span><span style="color:#75af00">code</span><span style="color:#f92672">()</span> <span style="color:#f92672">+</span> <span style="color:#d88200">&#34;&#34;</span><span style="color:#f92672">,</span> <span style="color:#111">Toast</span><span style="color:#f92672">.</span><span style="color:#75af00">LENGTH_SHORT</span><span style="color:#f92672">).</span><span style="color:#75af00">show</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75af00">@Override</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#00a8c8">public</span> <span style="color:#00a8c8">void</span> <span style="color:#75af00">onFailure</span><span style="color:#f92672">(</span><span style="color:#111">Call</span><span style="color:#f92672">&lt;</span><span style="color:#111">ResponseBody</span><span style="color:#f92672">&gt;</span> <span style="color:#111">call</span><span style="color:#f92672">,</span> <span style="color:#111">Throwable</span> <span style="color:#111">t</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#111">textView</span><span style="color:#f92672">.</span><span style="color:#75af00">setText</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;uploaded fail&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#111">textView</span><span style="color:#f92672">.</span><span style="color:#75af00">setTextColor</span><span style="color:#f92672">(</span><span style="color:#111">Color</span><span style="color:#f92672">.</span><span style="color:#75af00">RED</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#111">Toast</span><span style="color:#f92672">.</span><span style="color:#75af00">makeText</span><span style="color:#f92672">(</span><span style="color:#111">getApplicationContext</span><span style="color:#f92672">(),</span> <span style="color:#d88200">&#34;req fail&#34;</span><span style="color:#f92672">,</span> <span style="color:#111">Toast</span><span style="color:#f92672">.</span><span style="color:#75af00">LENGTH_SHORT</span><span style="color:#f92672">).</span><span style="color:#75af00">show</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#111">t</span><span style="color:#f92672">.</span><span style="color:#75af00">printStackTrace</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">});</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#00a8c8">catch</span> <span style="color:#f92672">(</span><span style="color:#111">FileNotFoundException</span> <span style="color:#111">e</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#111">e</span><span style="color:#f92672">.</span><span style="color:#75af00">printStackTrace</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span> <span style="color:#00a8c8">catch</span> <span style="color:#f92672">(</span><span style="color:#111">IOException</span> <span style="color:#111">e</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#111">e</span><span style="color:#f92672">.</span><span style="color:#75af00">printStackTrace</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span></code></pre></div></br>
+실제 구현하신 분의 코드에 조금의 변형과 주석을 추가한 코드입니다. 기본적인 코딩에 대한 지식이 있다고 가정했기 때문에 거의 이해하실 것이라 생각합니다.
+</br>
+</br>
+여기서 getCaptureImageOutputUri는 사진 촬영 후 Uri를 가져오는 메서드인데, 저희의 앱에서는 사진 촬영 없이 기존 앨범 이미지를 가져오기만 합니다. 그래서 해당 부분은 사용하지 않습니다. 또한 실제 전송 전에는 askPermission()으로 퍼미션을 확인해야 하고, initRetrofitClient()를 이용해 레트로핏 클라이언트를 초기화해야 합니다. 
+</br>
+</br>
+getPickImageChooserIntent()를 이용해서 이미지를 선택해오게 되는데요, 이때 EXTRA_ALLOW_MULTIPLE 속성을 이용하여 다중 선택을 할 수 있습니다. 해당 메서드 마지막에서 startActivityForResult를 호출하게 되면 해당 메서드를 onActicityResult에서 결과로 받습니다. onAcitivityResult에서 이 결과를 어떻게 처리할 건지 오버라이딩하면 됩니다. 제 코드에 있는 수많은 if문은 머쓱하니 지나가 주세요ㅠ. Result를 처리하는 함수에서 비트맵을 초기화합니다.
+</br>
+</br>
+실제로 upload는 multipartImageUpload에서 진행합니다. 이미지를 가져와서 비트맵이 있는 만큼 업로드를 하게 됩니다. 그러면 이제 Node.js 서버로 요청하게 되는데, 서버에서 이를 처리하는 코드를 보여드리겠습니다. 아래는 server.js입니다. 
+</br>
+</br>
+<div class="highlight"><pre tabindex="0" style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-java" data-lang="java"><span style="display:flex;"><span><span style="color:#111">var</span> <span style="color:#111">_storage</span> <span style="color:#f92672">=</span> <span style="color:#111">multer</span><span style="color:#f92672">.</span><span style="color:#75af00">diskStorage</span><span style="color:#f92672">({</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">/*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	destination: function (req, file, callback) {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		//case: file type is image
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		if(file.mimetype == &#34;image/jpg&#34; || file.mimetype == &#34;image/jpeg&#34; || file.mimetype == &#34;image/png&#34;) {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			console.log(&#34;image&#34;);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			callback(null, &#34;uploads/&#34;);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		} else {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">			console.log(&#34;not image&#34;);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		}
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	},
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	filename: function (req, file, callback) {
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">		callback(null, register_number + &#34;_&#34; + file.originalname);
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	}
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">	*/</span>
+</span></span><span style="display:flex;"><span><span style="color:#111">
+</span></span></span><span style="display:flex;"><span><span style="color:#111">	destination:</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#111">uploads</span><span style="color:#f92672">/</span><span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#111">filename</span><span style="color:#f92672">:</span> <span style="color:#111">function</span><span style="color:#f92672">(</span><span style="color:#111">req</span><span style="color:#f92672">,</span> <span style="color:#111">file</span><span style="color:#f92672">,</span> <span style="color:#111">cb</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#00a8c8">return</span> <span style="color:#111">crypto</span><span style="color:#f92672">.</span><span style="color:#75af00">pseudoRandomBytes</span><span style="color:#f92672">(</span><span style="color:#ae81ff">16</span><span style="color:#f92672">,</span> <span style="color:#111">function</span><span style="color:#f92672">(</span><span style="color:#111">err</span><span style="color:#f92672">,</span> <span style="color:#111">raw</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#00a8c8">if</span><span style="color:#f92672">(</span><span style="color:#111">err</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#00a8c8">return</span> <span style="color:#111">cb</span><span style="color:#f92672">(</span><span style="color:#111">err</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#75715e">//return cb(null, &#34;&#34;+(raw.toString(&#39;hex&#39;)) + (path.extname(file.originalname)));
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#00a8c8">return</span> <span style="color:#111">cb</span><span style="color:#f92672">(</span><span style="color:#00a8c8">null</span><span style="color:#f92672">,</span> <span style="color:#111">file</span><span style="color:#f92672">.</span><span style="color:#75af00">originalname</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">});</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">});</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//업로드
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#111">app</span><span style="color:#f92672">.</span><span style="color:#75af00">post</span><span style="color:#f92672">(</span><span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#f92672">/</span><span style="color:#111">upload</span><span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#f92672">,</span> 
+</span></span><span style="display:flex;"><span>	<span style="color:#111">multer</span><span style="color:#f92672">({</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#111">storage</span><span style="color:#f92672">:</span> <span style="color:#111">_storage</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}).</span><span style="color:#75af00">single</span><span style="color:#f92672">(</span><span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#111">upload</span><span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#f92672">),</span> <span style="color:#111">function</span> <span style="color:#f92672">(</span><span style="color:#111">req</span><span style="color:#f92672">,</span> <span style="color:#111">res</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#00a8c8">try</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#111">let</span> <span style="color:#111">file</span> <span style="color:#f92672">=</span> <span style="color:#111">req</span><span style="color:#f92672">.</span><span style="color:#75af00">file</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#75715e">//const files = req.files;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>		<span style="color:#111">let</span> <span style="color:#111">originalName</span> <span style="color:#f92672">=</span> <span style="color:#960050;background-color:#1e0010">&#39;&#39;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#111">let</span> <span style="color:#111">fileName</span> <span style="color:#f92672">=</span> <span style="color:#960050;background-color:#1e0010">&#39;&#39;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#111">let</span> <span style="color:#111">mimeType</span> <span style="color:#f92672">=</span> <span style="color:#960050;background-color:#1e0010">&#39;&#39;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#111">let</span> <span style="color:#111">size</span> <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#00a8c8">if</span><span style="color:#f92672">(</span><span style="color:#111">file</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#111">originalName</span> <span style="color:#f92672">=</span> <span style="color:#111">file</span><span style="color:#f92672">.</span><span style="color:#75af00">originalname</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#111">filename</span> <span style="color:#f92672">=</span> <span style="color:#111">file</span><span style="color:#f92672">.</span><span style="color:#75af00">fileName</span><span style="color:#f92672">;</span><span style="color:#75715e">//file.fileName
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>			<span style="color:#111">mimeType</span> <span style="color:#f92672">=</span> <span style="color:#111">file</span><span style="color:#f92672">.</span><span style="color:#75af00">mimetype</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#111">size</span> <span style="color:#f92672">=</span> <span style="color:#111">file</span><span style="color:#f92672">.</span><span style="color:#75af00">size</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#111">console</span><span style="color:#f92672">.</span><span style="color:#75af00">log</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;execute&#34;</span><span style="color:#f92672">+</span><span style="color:#111">fileName</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span> <span style="color:#00a8c8">else</span><span style="color:#f92672">{</span> 
+</span></span><span style="display:flex;"><span>			<span style="color:#111">console</span><span style="color:#f92672">.</span><span style="color:#75af00">log</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;request is null&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span> <span style="color:#00a8c8">catch</span> <span style="color:#f92672">(</span><span style="color:#111">err</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#111">console</span><span style="color:#f92672">.</span><span style="color:#75af00">dir</span><span style="color:#f92672">(</span><span style="color:#111">err</span><span style="color:#f92672">.</span><span style="color:#75af00">stack</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#111">console</span><span style="color:#f92672">.</span><span style="color:#75af00">log</span><span style="color:#f92672">(</span><span style="color:#111">req</span><span style="color:#f92672">.</span><span style="color:#75af00">file</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#111">console</span><span style="color:#f92672">.</span><span style="color:#75af00">log</span><span style="color:#f92672">(</span><span style="color:#111">req</span><span style="color:#f92672">.</span><span style="color:#75af00">body</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#111">res</span><span style="color:#f92672">.</span><span style="color:#75af00">redirect</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;/uploads/&#34;</span> <span style="color:#f92672">+</span> <span style="color:#111">req</span><span style="color:#f92672">.</span><span style="color:#75af00">file</span><span style="color:#f92672">.</span><span style="color:#75af00">originalname</span><span style="color:#f92672">);</span><span style="color:#75715e">//fileName
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>	<span style="color:#00a8c8">return</span> <span style="color:#111">res</span><span style="color:#f92672">.</span><span style="color:#75af00">status</span><span style="color:#f92672">(</span><span style="color:#ae81ff">200</span><span style="color:#f92672">).</span><span style="color:#75af00">end</span><span style="color:#f92672">();</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">});</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#111">app</span><span style="color:#f92672">.</span><span style="color:#75af00">get</span><span style="color:#f92672">(</span><span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#f92672">/</span><span style="color:#111">uploads</span><span style="color:#f92672">/:</span><span style="color:#111">upload</span><span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#f92672">,</span> <span style="color:#111">function</span><span style="color:#f92672">(</span><span style="color:#111">req</span><span style="color:#f92672">,</span> <span style="color:#111">res</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#111">var</span> <span style="color:#111">file</span> <span style="color:#f92672">=</span> <span style="color:#111">req</span><span style="color:#f92672">.</span><span style="color:#75af00">params</span><span style="color:#f92672">.</span><span style="color:#75af00">upload</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#111">console</span><span style="color:#f92672">.</span><span style="color:#75af00">log</span><span style="color:#f92672">(</span><span style="color:#111">file</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#111">var</span> <span style="color:#111">img</span> <span style="color:#f92672">=</span> <span style="color:#111">fs</span><span style="color:#f92672">.</span><span style="color:#75af00">readFileSync</span><span style="color:#f92672">(</span><span style="color:#111">__dirname</span> <span style="color:#f92672">+</span> <span style="color:#d88200">&#34;/uploads/&#34;</span> <span style="color:#f92672">+</span> <span style="color:#111">file</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#111">res</span><span style="color:#f92672">.</span><span style="color:#75af00">writeHead</span><span style="color:#f92672">(</span><span style="color:#ae81ff">200</span><span style="color:#f92672">,</span> <span style="color:#f92672">{</span><span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#111">Content</span><span style="color:#f92672">-</span><span style="color:#111">Type</span><span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#f92672">:</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#111">image</span><span style="color:#f92672">/</span><span style="color:#111">png</span><span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#f92672">});</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#111">res</span><span style="color:#f92672">.</span><span style="color:#75af00">end</span><span style="color:#f92672">(</span><span style="color:#111">img</span><span style="color:#f92672">,</span> <span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#111">binary</span><span style="color:#960050;background-color:#1e0010">&#39;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">});</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span> <span style="color:#75715e">/* 다운로드 요청 처리 */</span>
+</span></span><span style="display:flex;"><span><span style="color:#111">var</span> <span style="color:#111">register_number_for_img</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span><span style="color:#111">var</span> <span style="color:#111">img_cnt</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#111">app</span><span style="color:#f92672">.</span><span style="color:#75af00">post</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;/getimgmain&#34;</span><span style="color:#f92672">,</span> <span style="color:#111">function</span><span style="color:#f92672">(</span><span style="color:#111">req</span><span style="color:#f92672">,</span> <span style="color:#111">res</span><span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#111">console</span><span style="color:#f92672">.</span><span style="color:#75af00">log</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;이미지요청&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#111">console</span><span style="color:#f92672">.</span><span style="color:#75af00">log</span><span style="color:#f92672">(</span><span style="color:#111">req</span><span style="color:#f92672">.</span><span style="color:#75af00">body</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#75715e">//var register_number = req.body.register_number;
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	<span style="color:#111">var</span> <span style="color:#111">register_number</span> <span style="color:#f92672">=</span> <span style="color:#111">req</span><span style="color:#f92672">.</span><span style="color:#75af00">body</span><span style="color:#f92672">.</span><span style="color:#75af00">register_number</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#111">var</span> <span style="color:#111">i</span><span style="color:#f92672">=</span><span style="color:#111">req</span><span style="color:#f92672">.</span><span style="color:#75af00">body</span><span style="color:#f92672">.</span><span style="color:#75af00">img_cnt</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#111">var</span> <span style="color:#111">filename</span> <span style="color:#f92672">=</span> <span style="color:#111">register_number</span><span style="color:#f92672">+</span><span style="color:#d88200">&#34;_&#34;</span><span style="color:#f92672">+</span><span style="color:#111">i</span><span style="color:#f92672">+</span><span style="color:#d88200">&#34;.png&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#111">var</span> <span style="color:#111">filePath</span> <span style="color:#f92672">=</span> <span style="color:#111">__dirname</span> <span style="color:#f92672">+</span> <span style="color:#d88200">&#34;/uploads/&#34;</span> <span style="color:#f92672">+</span> <span style="color:#111">filename</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#111">fs</span><span style="color:#f92672">.</span><span style="color:#75af00">readFile</span><span style="color:#f92672">(</span><span style="color:#111">filePath</span><span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#111">function</span> <span style="color:#f92672">(</span><span style="color:#111">err</span><span style="color:#f92672">,</span> <span style="color:#111">data</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">{</span>	
+</span></span><span style="display:flex;"><span>				<span style="color:#00a8c8">if</span><span style="color:#f92672">(</span><span style="color:#111">err</span><span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#111">console</span><span style="color:#f92672">.</span><span style="color:#75af00">log</span><span style="color:#f92672">(</span><span style="color:#111">err</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#111">filename</span> <span style="color:#f92672">=</span> <span style="color:#d88200">&#34;defaltImg.png&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#111">filePath</span> <span style="color:#f92672">=</span> <span style="color:#111">__dirname</span> <span style="color:#f92672">+</span> <span style="color:#d88200">&#34;/uploads/&#34;</span> <span style="color:#f92672">+</span> <span style="color:#111">filename</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#111">fs</span><span style="color:#f92672">.</span><span style="color:#75af00">readFile</span><span style="color:#f92672">(</span><span style="color:#111">filePath</span><span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#111">function</span> <span style="color:#f92672">(</span><span style="color:#111">err</span><span style="color:#f92672">,</span> <span style="color:#111">data</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>							<span style="color:#111">console</span><span style="color:#f92672">.</span><span style="color:#75af00">log</span><span style="color:#f92672">(</span><span style="color:#111">filePath</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>							<span style="color:#111">console</span><span style="color:#f92672">.</span><span style="color:#75af00">log</span><span style="color:#f92672">(</span><span style="color:#111">data</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>							<span style="color:#111">res</span><span style="color:#f92672">.</span><span style="color:#75af00">end</span><span style="color:#f92672">(</span><span style="color:#111">data</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>						<span style="color:#f92672">});</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span><span style="color:#00a8c8">else</span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#111">console</span><span style="color:#f92672">.</span><span style="color:#75af00">log</span><span style="color:#f92672">(</span><span style="color:#111">filePath</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#111">console</span><span style="color:#f92672">.</span><span style="color:#75af00">log</span><span style="color:#f92672">(</span><span style="color:#111">data</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#111">res</span><span style="color:#f92672">.</span><span style="color:#75af00">end</span><span style="color:#f92672">(</span><span style="color:#111">data</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>				
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>		
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">});</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#111">app</span><span style="color:#f92672">.</span><span style="color:#75af00">post</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;/getimg&#34;</span><span style="color:#f92672">,</span> <span style="color:#111">function</span><span style="color:#f92672">(</span><span style="color:#111">req</span><span style="color:#f92672">,</span> <span style="color:#111">res</span><span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#111">console</span><span style="color:#f92672">.</span><span style="color:#75af00">log</span><span style="color:#f92672">(</span><span style="color:#d88200">&#34;이미지요청&#34;</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#111">console</span><span style="color:#f92672">.</span><span style="color:#75af00">log</span><span style="color:#f92672">(</span><span style="color:#111">req</span><span style="color:#f92672">.</span><span style="color:#75af00">body</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#111">var</span> <span style="color:#111">register_number</span> <span style="color:#f92672">=</span> <span style="color:#111">req</span><span style="color:#f92672">.</span><span style="color:#75af00">body</span><span style="color:#f92672">.</span><span style="color:#75af00">register_number</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#111">var</span> <span style="color:#111">i</span><span style="color:#f92672">=</span><span style="color:#111">req</span><span style="color:#f92672">.</span><span style="color:#75af00">body</span><span style="color:#f92672">.</span><span style="color:#75af00">img_cnt</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#111">var</span> <span style="color:#111">filename</span> <span style="color:#f92672">=</span> <span style="color:#111">register_number</span><span style="color:#f92672">+</span><span style="color:#d88200">&#34;_&#34;</span><span style="color:#f92672">+</span><span style="color:#111">i</span><span style="color:#f92672">+</span><span style="color:#d88200">&#34;.png&#34;</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#111">var</span> <span style="color:#111">filePath</span> <span style="color:#f92672">=</span> <span style="color:#111">__dirname</span> <span style="color:#f92672">+</span> <span style="color:#d88200">&#34;/uploads/&#34;</span> <span style="color:#f92672">+</span> <span style="color:#111">filename</span><span style="color:#f92672">;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>		<span style="color:#111">fs</span><span style="color:#f92672">.</span><span style="color:#75af00">readFile</span><span style="color:#f92672">(</span><span style="color:#111">filePath</span><span style="color:#f92672">,</span>
+</span></span><span style="display:flex;"><span>			<span style="color:#111">function</span> <span style="color:#f92672">(</span><span style="color:#111">err</span><span style="color:#f92672">,</span> <span style="color:#111">data</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">{</span>	
+</span></span><span style="display:flex;"><span>				<span style="color:#00a8c8">if</span><span style="color:#f92672">(</span><span style="color:#111">err</span><span style="color:#f92672">){</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#111">console</span><span style="color:#f92672">.</span><span style="color:#75af00">log</span><span style="color:#f92672">(</span><span style="color:#111">err</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>					<span style="color:#111">res</span><span style="color:#f92672">.</span><span style="color:#75af00">end</span><span style="color:#f92672">(</span><span style="color:#00a8c8">null</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span><span style="color:#00a8c8">else</span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#111">console</span><span style="color:#f92672">.</span><span style="color:#75af00">log</span><span style="color:#f92672">(</span><span style="color:#111">filePath</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#111">console</span><span style="color:#f92672">.</span><span style="color:#75af00">log</span><span style="color:#f92672">(</span><span style="color:#111">data</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#111">res</span><span style="color:#f92672">.</span><span style="color:#75af00">end</span><span style="color:#f92672">(</span><span style="color:#111">data</span><span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>				<span style="color:#f92672">}</span>				
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span>		<span style="color:#f92672">);</span>
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>		
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">});</span>
+</span></span></code></pre></div></br>
+먼저 사용할 storage를 만들어주어야 합니다. storage의 주석은, 제가 코딩한 걸 파트너가 원래 코드에 합치는 작업을 하면서 주석 처리했습니다. 검색해보면 저렇게 사용하시는 분이 많아서 참고하시라고 일단 놔둡니다. 기본적인 자바 스크립트를 아신다는 가정 하에 아마 거의 다 이해하실 거라 생각합니다. 이해 안 되는 부분 댓글 남겨주세요!
+</br>
+</br>
+이미지 요청을 처리하는 부분이 두 군데인 이유는, 저희 앱에서 사진을 여러 장 등록할 수 있지만 메인에서 보이는 이미지는 제일 처음 이미지, 혹은 디폴트 이미지입니다. 그래서 메인에서 이미지를 보여주는 걸 처리하는 function 하나, 내부에서 이미지를 모두 보여주는 걸 처리하는 function 하나 총 두 개입니다.
+</br>
+<h2 id="reference">REFERENCE</h2>
+<p><a href="https://www.journaldev.com/23709/android-image-uploading-with-retrofit-and-node-js">https://www.journaldev.com/23709/android-image-uploading-with-retrofit-and-node-js</a></p>
+<h2 id="recent-comment">Recent Comment</h2>
+<p>일일이 수정하는 게 힘들어 일단 업로드 하겠습니다.</p>
+
+        </div>
+    </div>
+</div>
+
+
+        </div><div class="container">
+    <div class="row justify-content-between">
+        <div class="col-sm-4">
+            <p class="footer"> 2023 </p>
+        </div>
+        <div class="col-sm-6 d-flex flex-row-reverse">
+            
+            <a class="footer-social px-2"  href="https://github.com/g-song-i" target="_blank"><i class="fab fa-github"></i></a>
+            
+            <a class="footer-social px-2"  href="https://www.linkedin.com/in/songi-gwak-934666227" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+            
+        </div>
+    </div>
+</div>
+<script src="/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script src="/js/isotope.pkgd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
+<script src="/js/dark.js"></script>
+<script src="/js/isotope.js"></script>
+<script src="/js/mermaid.min.js"></script>
+<script>mermaid.initialize({ startOnLoad: true, securityLevel: 'loose'});</script></body>
+</html>
