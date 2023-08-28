@@ -2,26 +2,26 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Recent_projects_tags on Zongi Diary</title>
-    <link>https://g-song-i.github.com/recent_projects_tags/</link>
+    <link>https://g-song-i.github.io/recent_projects_tags/</link>
     <description>Recent content in Recent_projects_tags on Zongi Diary</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 28 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://g-song-i.github.com/recent_projects_tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 28 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://g-song-i.github.io/recent_projects_tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>bcc</title>
-      <link>https://g-song-i.github.com/recent_projects_tags/bcc/</link>
+      <link>https://g-song-i.github.io/recent_projects_tags/bcc/</link>
       <pubDate>Mon, 28 Aug 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://g-song-i.github.com/recent_projects_tags/bcc/</guid>
+      <guid>https://g-song-i.github.io/recent_projects_tags/bcc/</guid>
       <description></description>
     </item>
     
     <item>
       <title>eBPF</title>
-      <link>https://g-song-i.github.com/recent_projects_tags/ebpf/</link>
+      <link>https://g-song-i.github.io/recent_projects_tags/ebpf/</link>
       <pubDate>Mon, 28 Aug 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://g-song-i.github.com/recent_projects_tags/ebpf/</guid>
+      <guid>https://g-song-i.github.io/recent_projects_tags/ebpf/</guid>
       <description></description>
     </item>
     

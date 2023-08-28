@@ -2,44 +2,44 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Project_tags on Zongi Diary</title>
-    <link>https://g-song-i.github.com/project_tags/</link>
+    <link>https://g-song-i.github.io/project_tags/</link>
     <description>Recent content in Project_tags on Zongi Diary</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 20 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://g-song-i.github.com/project_tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 20 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://g-song-i.github.io/project_tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Blockchain</title>
-      <link>https://g-song-i.github.com/project_tags/blockchain/</link>
+      <link>https://g-song-i.github.io/project_tags/blockchain/</link>
       <pubDate>Wed, 20 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://g-song-i.github.com/project_tags/blockchain/</guid>
+      <guid>https://g-song-i.github.io/project_tags/blockchain/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Node.js</title>
-      <link>https://g-song-i.github.com/project_tags/node.js/</link>
+      <link>https://g-song-i.github.io/project_tags/node.js/</link>
       <pubDate>Wed, 20 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://g-song-i.github.com/project_tags/node.js/</guid>
+      <guid>https://g-song-i.github.io/project_tags/node.js/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Smart contract</title>
-      <link>https://g-song-i.github.com/project_tags/smart-contract/</link>
+      <link>https://g-song-i.github.io/project_tags/smart-contract/</link>
       <pubDate>Wed, 20 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://g-song-i.github.com/project_tags/smart-contract/</guid>
+      <guid>https://g-song-i.github.io/project_tags/smart-contract/</guid>
       <description></description>
     </item>
     
     <item>
       <title>SENS API</title>
-      <link>https://g-song-i.github.com/project_tags/sens-api/</link>
+      <link>https://g-song-i.github.io/project_tags/sens-api/</link>
       <pubDate>Sat, 16 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://g-song-i.github.com/project_tags/sens-api/</guid>
+      <guid>https://g-song-i.github.io/project_tags/sens-api/</guid>
       <description></description>
     </item>
     

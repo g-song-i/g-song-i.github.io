@@ -2,53 +2,53 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Smart contract on Zongi Diary</title>
-    <link>https://g-song-i.github.com/project_tags/smart-contract/</link>
+    <link>https://g-song-i.github.io/project_tags/smart-contract/</link>
     <description>Recent content in Smart contract on Zongi Diary</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 20 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://g-song-i.github.com/project_tags/smart-contract/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 20 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://g-song-i.github.io/project_tags/smart-contract/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Node.js - Multer를 이용해 안드로이드에서 이미지 업/다운로드</title>
-      <link>https://g-song-i.github.com/projects/project6/</link>
+      <link>https://g-song-i.github.io/projects/project6/</link>
       <pubDate>Wed, 20 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://g-song-i.github.com/projects/project6/</guid>
+      <guid>https://g-song-i.github.io/projects/project6/</guid>
       <description>Multer를 이용해 안드로이드에서 이미지 업/다운로드하기</description>
     </item>
     
     <item>
       <title>Truffle을 이용하여 이더리움 블록체인에 스마트 컨트랙 배포하기 (1)</title>
-      <link>https://g-song-i.github.com/projects/project1/</link>
+      <link>https://g-song-i.github.io/projects/project1/</link>
       <pubDate>Sat, 16 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://g-song-i.github.com/projects/project1/</guid>
+      <guid>https://g-song-i.github.io/projects/project1/</guid>
       <description>Truffle을 통해 이더리움 ropsten 네트워크에 블록체인 스마트 컨트랙 배포하기</description>
     </item>
     
     <item>
       <title>Truffle을 이용하여 이더리움 블록체인에 스마트 컨트랙 배포하기 (2)</title>
-      <link>https://g-song-i.github.com/projects/project2/</link>
+      <link>https://g-song-i.github.io/projects/project2/</link>
       <pubDate>Sat, 16 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://g-song-i.github.com/projects/project2/</guid>
+      <guid>https://g-song-i.github.io/projects/project2/</guid>
       <description>Truffle project 내부의 truffle-config 파일에서 이더리움 ropsten 테스트 네트워크를 설정</description>
     </item>
     
     <item>
       <title>Truffle을 이용하여 이더리움 블록체인에 스마트 컨트랙 배포하기 (3)</title>
-      <link>https://g-song-i.github.com/projects/project3/</link>
+      <link>https://g-song-i.github.io/projects/project3/</link>
       <pubDate>Sat, 16 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://g-song-i.github.com/projects/project3/</guid>
+      <guid>https://g-song-i.github.io/projects/project3/</guid>
       <description>컨트랙 배포, 결과 확인</description>
     </item>
     
     <item>
       <title>Truffle을 이용하여 이더리움 블록체인에 스마트 컨트랙 배포하기 (4)</title>
-      <link>https://g-song-i.github.com/projects/project5/</link>
+      <link>https://g-song-i.github.io/projects/project5/</link>
       <pubDate>Sat, 16 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://g-song-i.github.com/projects/project5/</guid>
+      <guid>https://g-song-i.github.io/projects/project5/</guid>
       <description>web3 js 모듈을 통해 해당 트랜잭션에 접근해 정보를 삽입, 가져오기</description>
     </item>
     

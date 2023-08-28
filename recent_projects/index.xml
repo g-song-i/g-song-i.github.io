@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Zongi Diary</title>
-    <link>https://g-song-i.github.com/recent_projects/</link>
+    <link>https://g-song-i.github.io/recent_projects/</link>
     <description>Recent content in Posts on Zongi Diary</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 28 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://g-song-i.github.com/recent_projects/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 28 Aug 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://g-song-i.github.io/recent_projects/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Into the eBPF (1): Introduction &amp; Installation of eBPF</title>
-      <link>https://g-song-i.github.com/recent_projects/project2/</link>
+      <link>https://g-song-i.github.io/recent_projects/project2/</link>
       <pubDate>Mon, 28 Aug 2023 00:00:00 +0000</pubDate>
       
-      <guid>https://g-song-i.github.com/recent_projects/project2/</guid>
+      <guid>https://g-song-i.github.io/recent_projects/project2/</guid>
       <description>Introduction &amp;amp; Installation of eBPF</description>
     </item>
     
