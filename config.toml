@@ -170,9 +170,6 @@ navbar_items = [
     { code = "en", nav_items = [
         { url = "$BASE_URL/", name = "Home" },
         { url = "$BASE_URL/posts", name = "Posts" },
-        { url = "$BASE_URL/docs", name = "Docs" },
-        { url = "$BASE_URL/tags", name = "Tags" },
-        { url = "$BASE_URL/categories", name = "Categories" },
     ] },
 ]
 
@@ -184,13 +181,13 @@ safari_pinned_tab = "/icons/safari-pinned-tab.svg"
 webmanifest = "/icons/site.webmanifest"
 
 [extra.author]
-name = "DeepThought"
-avatar = "images/avatar.png"
+name = "Cecil Gwak"
+avatar = "images/cecil_profile.jpeg"
 
 [extra.social]
-github = "RatanShreshtha"
-linkedin = "ratanshreshtha"
-email = "deepthought@gmail.com"
+github = "https://github.com/g-song-i"
+linkedin = "www.linkedin.com/in/songi-gwak-934666227"
+email = "rkdlem1613@gmail.com"
 
 [extra.analytics]
 google = "G-JPHGX4YXVE"
