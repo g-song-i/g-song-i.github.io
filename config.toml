@@ -197,4 +197,4 @@ disqus = "deepthought-theme"
 
 [extra.mapbox]
 enabled = true
-access_token = "pk.eyJ1IjoicmF0YW5zaHJlc2h0aGEiLCJhIjoiY2tla2s2NmM3MDd0ZzJzbXFtc3Y2YmU0NyJ9.0RhUnJPKbxHWw3xGPnnBlA"
+access_token = "A"
