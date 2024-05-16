@@ -182,7 +182,7 @@ webmanifest = "/icons/site.webmanifest"
 
 [extra.author]
 name = "Cecil Gwak"
-avatar = "images/cecil_profile.jpeg"
+avatar = "https://github.com/g-song-i/g-song-i.github.io/assets/57793091/7998258f-92d4-4019-8297-0dfc07e4d5f8"
 
 [extra.social]
 github = "https://github.com/g-song-i"
