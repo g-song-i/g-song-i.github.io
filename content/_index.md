@@ -7,7 +7,7 @@ During my academic journey in graduate school, I was engaged in a project focuse
 
 During runtime, a program operates as an active process rather than merely existing as a binary file. Therefore, it needs robust, privileged, yet safe protection mechanisms. One such tool is eBPF (extended Berkeley Packet Filter), which provides the capability to enforce security policies effectively.
 
-I implemented several security solutions using eBPF to enforce these security policies, thereby monitoring and protecting the entire cloud-native infrastructure. Here, you can see how to enhance security during a typical SDLC, along with my patents and papers that detail the implementation of these improvements.
+I implemented several security solutions using eBPF to enforce these security policies, thereby monitoring and protecting the entire cloud-native infrastructure. Here, you can see how to enhance security during a typical SDLC, along with my patents and papers that detail the implementation of these improvements. If you would like to see more of my achievements, you can find them here. ([notion page](https://cuboid-authority-f7b.notion.site/bec4d8208f754ccfb6044cce8c9c1a3d?pvs=4)).
 
 ![secure SDLC](https://github.com/g-song-i/g-song-i.github.io/assets/57793091/e352eb22-8e12-4008-924d-93a9163bd54e)
 
