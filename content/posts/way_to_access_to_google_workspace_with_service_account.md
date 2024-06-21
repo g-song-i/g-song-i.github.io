@@ -3,7 +3,7 @@ title="The Way to Access to Google Workspace with Google Cloud’s Service Accou
 date=2024-06-21
 
 [taxonomies]
-categories = ["Sample Post"]
+categories = ["CIEM", "Google Cloud", "Google Workspace"]
 tags = ["post"]
 +++
 
