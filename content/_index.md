@@ -20,3 +20,15 @@ My technical stack and background, which were essential in my research for CSPM,
 ![develop CSPM](https://github.com/g-song-i/g-song-i.github.io/assets/57793091/cc5298f7-69a7-4c0b-8a8c-c619b040c9bf)
 
 Beyond this, I've researched other components of Cloud-Native Application Protection Platforms (CNAPP) to support a broad range of protection for cloud assets, including Cloud Infrastructure Entitlement Management (CIEM), Cloud Workload Protection Platforms (CWPP), and Application Security Posture Management (ASPM).
+
+My current research objective is to research and develop PoC for CIEM (Cloud Identity and Entitlement Management). This project targets **Google Cloud** and **Google Workspace**, so far.
+* Here, I research and develop functions for CIEM solutions:
+    - **List up members and their roles, permissions**
+    - **List up resources the role can access**, and what permissions actually they use when they access the resource
+* Moreover, I set up all the software components myself to implement functions I listed up
+    - **Configured the backend server using Go** for efficient data handling and operations.
+    - **Developed the frontend server with JavaScript**, optimizing client-server interactions.
+    - **Established API communications** between frontend and backend.
+    - **Deployed MongoDB** for comprehensive data management, including database design and data insertion/retrieval operations
+
+![develop CIEM](https://github.com/g-song-i/g-song-i.github.io/assets/57793091/54133400-e4dc-4324-a9cd-dd34fecebeae)
