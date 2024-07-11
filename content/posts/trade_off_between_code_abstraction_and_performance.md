@@ -11,7 +11,7 @@ tags = ["post"]
 [Before Reading…](#before-reading) <br/>
 [Chaotic Situation](#chaotic-situation) <br/>
 [Testing Operation: More Chaotic](#testing-operation-more-chaotic) <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[But isn’t it too abstract?](#but-isnt-it-too-abstract) <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[But isn’t it too abstract?](#isnt-it-too-abstract) <br/>
 [How to decide to abstract or not to abstract?](#how-to-decide-to-abstract-or-not-to-abstract) <br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Resuability](#resuability) <br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Complexity](#complexity) <br/>
@@ -103,14 +103,18 @@ func listFirewall(projectId string) (*ListResponseFirewallListItemResponse, erro
 	return httpclient.SendRequest[ListResponseFirewallListItemResponse]("GET", fullURL, config.AppConfig.AccessKey, config.AppConfig.AccessSecretKey, projectId, config.AppConfig.HeaderClientType)
 }
 ```
+
 - However, when I tried to test it, I encountered an error because I could not initialize the `config()` function during local tests; it does not support this since `config` locates the executable path and imports `config.yaml` from that position. I considered rewriting `config` to use a relative path, but I realized that would not address the core problem.
 - To resolve this, I modified the code as follows:
+
 ```go
 func listFirewall(projectId string, fullURL string, accessKey string, accessSecretKey string, headerClientType string) (*ListResponseFirewallListItemResponse, error) {
 	return httpclient.SendRequest[ListResponseFirewallListItemResponse]("GET", fullURL, accessKey, accessSecretKey, projectId, headerClientType)
 }
 ```
+
 - I also created common_test.go to include the test code:
+
 ```go
 func TestListFirewall(t *testing.T) {
 	projectID := ""
@@ -129,7 +133,7 @@ func TestListFirewall(t *testing.T) {
 
 This modification successfully resolved the issue.
 
-## But isn’t it too abstract?
+## Isn’t it too abstract?
 Okay, now I've resolved the problem. But have I really addressed the root issue? Let me summarize the current situation:
   - Common functions, such as `listFirewall`, merely act as bridges between callers and evaluators.
   - They do not directly use `config`.
