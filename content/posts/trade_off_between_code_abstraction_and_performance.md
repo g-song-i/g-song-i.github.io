@@ -11,9 +11,9 @@ tags = ["post"]
 [Before Reading…](#before-reading) <br/>
 [Chaotic Situation](#chaotic-situation) <br/>
 [Testing Operation: More Chaotic](#testing-operation-more-chaotic) <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[But isn’t it too abstract?](#isnt-it-too-abstract) <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Isn’t it too abstract?](#isnt-it-too-abstract) <br/>
 [How to decide to abstract or not to abstract?](#how-to-decide-to-abstract-or-not-to-abstract) <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Resuability](#resuability) <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Reusability](#reusability) <br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Complexity](#complexity) <br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Testability](#testability) <br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Scalability](#scalability) <br/>
@@ -156,7 +156,7 @@ for i in {1..10}; do curl -X 'GET' 'http://172.16.0.120:10902/Firewall/test-01' 
 
 Here, I summarize some points, which can be discussed when you decide whether to abstract the code or not. I read articles and papers, then discuss them with GPT. 🙂 Hope it will be fun
 
-## Resuability
+## Reusability
 
 Reusability is paramount in software development as it significantly reduces the time and effort required to develop and maintain code. By designing modules and components that can be reused in different parts of the application or even in different projects, developers can ensure consistency, reduce errors, and accelerate development cycles. Effective reusability promotes a DRY (Don't Repeat Yourself) approach and can lead to more efficient, cleaner code.
 
