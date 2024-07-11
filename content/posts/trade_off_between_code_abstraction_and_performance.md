@@ -7,6 +7,18 @@ categories = ["Clean Code", "Coding Convention"]
 tags = ["post"]
 +++
 
+# Table of Contents
+[Before Reading…](#before-reading) <br/>
+[Chaotic Situation](#chaotic-situation) <br/>
+[Testing Operation: More Chaotic](#testing-operation-more-chaotic) <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[But isn’t it too abstract?](#but-isnt-it-too-abstract) <br/>
+[How to decide to abstract or not to abstract?](#how-to-decide-to-abstract-or-not-to-abstract) <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Resuability](#resuability) <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Complexity](#complexity) <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Testability](#testability) <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Scalability](#scalability) <br/>
+[Results?](#results) <br/>
+
 # Before Reading…
 When I was in graduate school, I didn’t really need to code in a “well-structured” manner. What I needed was to implement code to prove that my academic theories worked. So, I had an idea of “how to code,” but it definitely differed from “how to code well.”
 
