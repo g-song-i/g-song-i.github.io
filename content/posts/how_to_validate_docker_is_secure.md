@@ -5,7 +5,7 @@ date=2024-08-27
 [taxonomies]
 categories = ["Docker", "Compliance", "CIS Benchmark"]
 tags = ["post"]
-+++ d
++++
 
 # Overview
 
