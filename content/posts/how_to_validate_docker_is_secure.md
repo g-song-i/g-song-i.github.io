@@ -5,21 +5,7 @@ date=2024-08-27
 [taxonomies]
 categories = ["Docker", "Compliance", "CIS Benchmark"]
 tags = ["post"]
-+++
-
-# Table of Contents
-[Overview](#overview) <br/>
-[Get Docker's Configuration from a Docker Client](#get-dockers-configuration-from-a-docker-client) <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Create Docker Client](#create-docker-client) <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Create Middleware Function](#create-middleware-function) <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Run it!](#run-it) <br/>
-[CIS Benchmark](#cis-benchmark) <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Understanding CIS Benchmark](#understanding-cis-benchmark) <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Why is it important?](#why-is-it-important) <br/>
-[Validate if Your Docker Configuration is Secure](#validate-if-your-docker-configuration-is-secure) <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Ensure live restore is enabled](#ensure-live-restore-is-enabled) <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Run it!](#run-it) <br/>
-[Conclusion](#conclusion) <br/>
++++ d
 
 # Overview
 
