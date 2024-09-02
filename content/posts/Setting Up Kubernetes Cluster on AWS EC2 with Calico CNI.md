@@ -24,7 +24,7 @@ First, I created a VPC for this task. To avoid using the same CIDR range as the 
 
 ## For Master
 
-You now need to create security groups for the master and worker nodes, respectively. You can see the ports that need to be opened.
+You now need to create security groups for the master and worker nodes, respectively. You can see [the ports](https://kubernetes.io/docs/reference/networking/ports-and-protocols/) that need to be opened.
 
 ![Below](https://github.com/user-attachments/assets/1fc46aad-ae7a-4eab-b1e2-b62e43ea9e30)
 
@@ -34,7 +34,7 @@ The security group displayed below is the result of the initial configuration. A
 
 ## For Workers
 
-For the next step, create the worker node's security group. This security group needs to include ports for the kubelet API, kube-proxy, and the port range for NodePort services.
+For the next step, create the worker node's security group. This security group needs to include [ports](https://kubernetes.io/docs/reference/networking/ports-and-protocols/) for the kubelet API, kube-proxy, and the port range for NodePort services.
 
 ![image.png](https://github.com/user-attachments/assets/92270fec-a749-4847-bf90-d87579301e7e)
 
