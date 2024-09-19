@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" integrity="sha384-oGm59HWAkwO32h2w8u0B98wKBZJwd6MbWtAJwQKCTffZjOXHXrnyv9Syjovgc+UV" crossorigin="anonymous">
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://g-song-i.github.io/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+Cecil&#x27;s Note | The Way to Access to Google Workspace with Google Cloud’s Service Account
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NXE14VB61W"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-NXE14VB61W");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;g-song-i.github.io">Cecil&#x27;s Note</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;posts">
+            Posts
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;categories">
+            Categories
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            The Way to Access to Google Workspace with Google Cloud’s Service Account
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Cecil Gwak published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2024-06-21">June 21, 2024</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>5 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>949 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://g-song-i.github.io/categories/ciem/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>CIEM</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://g-song-i.github.io/categories/google-cloud/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Google Cloud</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://g-song-i.github.io/categories/google-workspace/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Google Workspace</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://g-song-i.github.io/tags/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <h1 id="table-of-contents">Table of contents</h1>
+<p><a href="https://g-song-i.github.io/posts/way-to-access-to-google-workspace-with-service-account/#overview">Overview</a> <br/>
+<a href="https://g-song-i.github.io/posts/way-to-access-to-google-workspace-with-service-account/#problem-statement">Problem Statement</a> <br/>
+        <a href="https://g-song-i.github.io/posts/way-to-access-to-google-workspace-with-service-account/#error-message">Error Message</a> <br/>
+        <a href="https://g-song-i.github.io/posts/way-to-access-to-google-workspace-with-service-account/#method-1-setting-the-quota-project">Method 1: Setting the Quota Project</a> <br/>
+        <a href="https://g-song-i.github.io/posts/way-to-access-to-google-workspace-with-service-account/#method-2-impersonating-as-a-workspace-user-with-a-service-account">Method 2: Impersonating as a Workspace User with a Service Account</a> <br/>
+<a href="https://g-song-i.github.io/posts/way-to-access-to-google-workspace-with-service-account/#review">REVIEW</a> <br/>
+<a href="https://g-song-i.github.io/posts/way-to-access-to-google-workspace-with-service-account/#ref">REF</a> <br/></p>
+<h1 id="overview">Overview</h1>
+<p>In this post, I will explain some challenges I encountered while implementing a function to access Google Workspace using Google Cloud’s Service Account. <strong>Although I'm not certain this is the correct way to access Google Workspace,</strong> my initial goal was to utilize a single service account with privileges to manage accounts as an administrator of an organization.</p>
+<p>Before proceeding, ensure:</p>
+<ul>
+<li>The project that includes the service account has the Google Admin SDK API activated.</li>
+<li>The service account you intend to use to connect to Google Workspace is enabled with Domain-wide delegation.</li>
+</ul>
+<h1 id="problem-statement">Problem Statement</h1>
+<p>While developing a prototype for Cloud Identity and Entitlements Management (CIEM) solutions for Google Cloud, <strong>I faced an issue listing workspace users with the Google Admin SDK API using a Google Cloud service account.</strong></p>
+<p>Here's my initial code:</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#6c7079;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#cd74e8;">package </span><span style="color:#eb6772;">workspace
+</span><span style="color:#abb2bf;">
+</span><span style="color:#cd74e8;">import </span><span style="color:#abb2bf;">(
+</span><span style="color:#abb2bf;">	</span><span style="color:#9acc76;">&quot;context&quot;
+</span><span style="color:#abb2bf;">	</span><span style="color:#9acc76;">&quot;fmt&quot;
+</span><span style="color:#abb2bf;">	</span><span style="color:#9acc76;">&quot;log&quot;
+</span><span style="color:#abb2bf;">
+</span><span style="color:#abb2bf;">	</span><span style="color:#eb6772;">admin </span><span style="color:#9acc76;">&quot;google.golang.org/api/admin/directory/v1&quot;
+</span><span style="color:#abb2bf;">	</span><span style="color:#9acc76;">&quot;google.golang.org/api/option&quot;
+</span><span style="color:#abb2bf;">	
+</span><span style="color:#abb2bf;">	</span><span style="color:#9acc76;">&quot;my-project/auth&quot;
+</span><span style="color:#abb2bf;">	</span><span style="color:#9acc76;">&quot;my-project/config&quot;
+</span><span style="color:#abb2bf;">)
+</span><span style="color:#abb2bf;">
+</span><span style="color:#cd74e8;">func </span><span style="color:#5cb3fa;">GetWorkspaceUserList</span><span style="color:#abb2bf;">() ([]</span><span style="color:#adb7c9;">*</span><span style="color:#eb6772;">admin</span><span style="color:#abb2bf;">.</span><span style="color:#cd74e8;">User</span><span style="color:#abb2bf;">, </span><span style="color:#cd74e8;">error</span><span style="color:#abb2bf;">) {
+</span><span style="color:#abb2bf;">	</span><span style="color:#eb6772;">ctx </span><span style="color:#adb7c9;">:= </span><span style="color:#eb6772;">context</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">Background</span><span style="color:#abb2bf;">()
+</span><span style="color:#abb2bf;">	</span><span style="color:#eb6772;">credentialsPath </span><span style="color:#adb7c9;">:= </span><span style="color:#eb6772;">config</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">ServiceAccountFilePath
+</span><span style="color:#abb2bf;">
+</span><span style="color:#abb2bf;">	</span><span style="color:#eb6772;">serviceInterface</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">err </span><span style="color:#adb7c9;">:= </span><span style="color:#eb6772;">auth</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">NewService</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">ctx</span><span style="color:#abb2bf;">, </span><span style="color:#9acc76;">&quot;admin&quot;</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">option</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">WithHTTPClient</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">config</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">Client</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">ctx</span><span style="color:#abb2bf;">)))
+</span><span style="color:#abb2bf;">    </span><span style="color:#cd74e8;">if </span><span style="color:#eb6772;">err </span><span style="color:#adb7c9;">!= </span><span style="color:#db9d63;">nil </span><span style="color:#abb2bf;">{
+</span><span style="color:#abb2bf;">			</span><span style="color:#cd74e8;">return </span><span style="color:#db9d63;">nil</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">err
+</span><span style="color:#abb2bf;">    }
+</span><span style="color:#abb2bf;">	</span><span style="color:#eb6772;">service</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">ok </span><span style="color:#adb7c9;">:= </span><span style="color:#eb6772;">serviceInterface</span><span style="color:#abb2bf;">.(</span><span style="color:#adb7c9;">*</span><span style="color:#eb6772;">admin</span><span style="color:#abb2bf;">.</span><span style="color:#cd74e8;">Service</span><span style="color:#abb2bf;">)
+</span><span style="color:#abb2bf;">    </span><span style="color:#cd74e8;">if </span><span style="color:#adb7c9;">!</span><span style="color:#eb6772;">ok </span><span style="color:#abb2bf;">{
+</span><span style="color:#abb2bf;">			</span><span style="color:#cd74e8;">return </span><span style="color:#db9d63;">nil</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">fmt</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">Errorf</span><span style="color:#abb2bf;">(</span><span style="color:#9acc76;">&quot;failed to convert service interface&quot;</span><span style="color:#abb2bf;">)
+</span><span style="color:#abb2bf;">    }
+</span><span style="color:#abb2bf;">
+</span><span style="color:#abb2bf;">	</span><span style="color:#cd74e8;">var </span><span style="color:#eb6772;">users </span><span style="color:#abb2bf;">[]</span><span style="color:#adb7c9;">*</span><span style="color:#eb6772;">admin</span><span style="color:#abb2bf;">.</span><span style="color:#cd74e8;">User
+</span><span style="color:#abb2bf;">	</span><span style="color:#eb6772;">req </span><span style="color:#adb7c9;">:= </span><span style="color:#eb6772;">service</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">Users</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">List</span><span style="color:#abb2bf;">().</span><span style="color:#eb6772;">Customer</span><span style="color:#abb2bf;">(</span><span style="color:#9acc76;">&quot;my_customer&quot;</span><span style="color:#abb2bf;">).</span><span style="color:#eb6772;">MaxResults</span><span style="color:#abb2bf;">(</span><span style="color:#db9d63;">500</span><span style="color:#abb2bf;">).</span><span style="color:#eb6772;">OrderBy</span><span style="color:#abb2bf;">(</span><span style="color:#9acc76;">&quot;email&quot;</span><span style="color:#abb2bf;">)
+</span><span style="color:#abb2bf;">
+</span><span style="color:#abb2bf;">	</span><span style="color:#eb6772;">err </span><span style="color:#adb7c9;">= </span><span style="color:#eb6772;">req</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">Pages</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">ctx</span><span style="color:#abb2bf;">, </span><span style="color:#cd74e8;">func</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">page </span><span style="color:#adb7c9;">*</span><span style="color:#eb6772;">admin</span><span style="color:#abb2bf;">.</span><span style="color:#cd74e8;">Users</span><span style="color:#abb2bf;">) </span><span style="color:#cd74e8;">error </span><span style="color:#abb2bf;">{
+</span><span style="color:#abb2bf;">		</span><span style="color:#eb6772;">users </span><span style="color:#adb7c9;">= </span><span style="color:#5ebfcc;">append</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">users</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">page</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">Users</span><span style="color:#adb7c9;">...</span><span style="color:#abb2bf;">)
+</span><span style="color:#abb2bf;">		</span><span style="color:#cd74e8;">return </span><span style="color:#db9d63;">nil
+</span><span style="color:#abb2bf;">	})
+</span><span style="color:#abb2bf;">	</span><span style="color:#cd74e8;">if </span><span style="color:#eb6772;">err </span><span style="color:#adb7c9;">!= </span><span style="color:#db9d63;">nil </span><span style="color:#abb2bf;">{
+</span><span style="color:#abb2bf;">		</span><span style="color:#eb6772;">log</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">Printf</span><span style="color:#abb2bf;">(</span><span style="color:#9acc76;">&quot;Failed to list Workspace users: </span><span style="color:#db9d63;">%v</span><span style="color:#9acc76;">&quot;</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">err</span><span style="color:#abb2bf;">)
+</span><span style="color:#abb2bf;">		</span><span style="color:#cd74e8;">return </span><span style="color:#db9d63;">nil</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">err
+</span><span style="color:#abb2bf;">	}
+</span><span style="color:#abb2bf;">
+</span><span style="color:#abb2bf;">	</span><span style="color:#cd74e8;">return </span><span style="color:#eb6772;">users</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">nil
+</span><span style="color:#abb2bf;">}
+</span></code></pre>
+<p>This configuration might be confusing:</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#6c7079;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#eb6772;">req </span><span style="color:#adb7c9;">:= </span><span style="color:#eb6772;">service</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">Users</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">List</span><span style="color:#abb2bf;">().</span><span style="color:#eb6772;">Customer</span><span style="color:#abb2bf;">(</span><span style="color:#9acc76;">&quot;my_customer&quot;</span><span style="color:#abb2bf;">).</span><span style="color:#eb6772;">MaxResults</span><span style="color:#abb2bf;">(</span><span style="color:#db9d63;">500</span><span style="color:#abb2bf;">).</span><span style="color:#eb6772;">OrderBy</span><span style="color:#abb2bf;">(</span><span style="color:#9acc76;">&quot;email&quot;</span><span style="color:#abb2bf;">)
+</span></code></pre>
+<p>According to the Google Workspace’s documentation it refers to:</p>
+<blockquote>
+<p>The unique ID for the customer's Google Workspace account. In case of a multi-domain account, to fetch all users for a customer, use this field instead of <code>domain</code>. You can also use the <code>my_customer</code> alias to represent your account's <code>customerId</code>. The <code>customerId</code> is also returned as part of the <a rel="noopener nofollow noreferrer" target="_blank" href="https://developers.google.com/admin-sdk/directory/v1/reference/users">Users</a> resource. You must provide either the <code>customer</code> or the <code>domain</code> parameter.</p>
+</blockquote>
+<h2 id="error-message">Error Message</h2>
+<p>Anyway! Here is the error I encountered:</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#6c7079;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#eb6772;">Failed to list Workspace users</span><span style="color:#abb2bf;">: </span><span style="color:#eb6772;">googleapi</span><span style="color:#abb2bf;">: </span><span style="color:#eb6772;">Error </span><span style="color:#db9d63;">403</span><span style="color:#abb2bf;">: </span><span style="color:#eb6772;">Your application is authenticating by using local Application Default Credentials</span><span style="color:#abb2bf;">. </span><span style="color:#eb6772;">The admin</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">googleapis</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">com API requires a quota project</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">which is not set by </span><span style="color:#cd74e8;">default</span><span style="color:#abb2bf;">. 
+</span><span style="color:#abb2bf;">
+</span><span style="color:#eb6772;">Details</span><span style="color:#abb2bf;">:
+</span><span style="color:#abb2bf;">[
+</span><span style="color:#abb2bf;">{
+</span><span style="color:#9acc76;">&quot;@type&quot;</span><span style="color:#abb2bf;">: </span><span style="color:#9acc76;">&quot;type.googleapis.com/google.rpc.ErrorInfo&quot;</span><span style="color:#abb2bf;">,
+</span><span style="color:#9acc76;">&quot;domain&quot;</span><span style="color:#abb2bf;">: </span><span style="color:#9acc76;">&quot;googleapis.com&quot;</span><span style="color:#abb2bf;">,
+</span><span style="color:#9acc76;">&quot;metadata&quot;</span><span style="color:#abb2bf;">: {
+</span><span style="color:#9acc76;">&quot;consumer&quot;</span><span style="color:#abb2bf;">: </span><span style="color:#9acc76;">&quot;projects/project-number&quot;</span><span style="color:#abb2bf;">,
+</span><span style="color:#9acc76;">&quot;service&quot;</span><span style="color:#abb2bf;">: </span><span style="color:#9acc76;">&quot;admin.googleapis.com&quot;
+</span><span style="color:#abb2bf;">},
+</span><span style="color:#9acc76;">&quot;reason&quot;</span><span style="color:#abb2bf;">: </span><span style="color:#9acc76;">&quot;SERVICE_DISABLED&quot;
+</span><span style="color:#abb2bf;">}
+</span><span style="color:#abb2bf;">]
+</span></code></pre>
+<ul>
+<li>Initially, I was confused because:
+<ul>
+<li>I was using a Service Account’s key file, which I thought did not utilize Application Default Credentials (ADC).</li>
+<li>The project number listed in the error message’s “consumer” section wasn’t even part of my organization.</li>
+<li>I had already activated the Admin SDK API for my project.</li>
+</ul>
+</li>
+</ul>
+<h2 id="method-1-setting-the-quota-project">Method 1: Setting the Quota Project</h2>
+<p>I attempted to configure a quota project when sending the request since the error message indicated, &quot;The <a rel="noopener nofollow noreferrer" target="_blank" href="http://admin.googleapis.com/">admin.googleapis.com</a> API requires a quota project, which is not set by default.&quot; Here's the revised code:</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#6c7079;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#cd74e8;">func </span><span style="color:#5cb3fa;">ListAllWorkspaceUsers</span><span style="color:#abb2bf;">() </span><span style="color:#cd74e8;">error </span><span style="color:#abb2bf;">{
+</span><span style="color:#abb2bf;">    </span><span style="color:#eb6772;">ctx </span><span style="color:#adb7c9;">:= </span><span style="color:#eb6772;">context</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">Background</span><span style="color:#abb2bf;">()
+</span><span style="color:#abb2bf;">
+</span><span style="color:#abb2bf;">    </span><span style="color:#eb6772;">quotaProjectID </span><span style="color:#adb7c9;">:= </span><span style="color:#9acc76;">&quot;your-project-id&quot;
+</span><span style="color:#abb2bf;">
+</span><span style="color:#abb2bf;">    </span><span style="color:#eb6772;">serviceInterface</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">err </span><span style="color:#adb7c9;">:= </span><span style="color:#eb6772;">auth</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">NewService</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">ctx</span><span style="color:#abb2bf;">, </span><span style="color:#9acc76;">&quot;admin&quot;</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">option</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">WithQuotaProject</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">quotaProjectID</span><span style="color:#abb2bf;">))
+</span><span style="color:#abb2bf;">    </span><span style="color:#cd74e8;">if </span><span style="color:#eb6772;">err </span><span style="color:#adb7c9;">!= </span><span style="color:#db9d63;">nil </span><span style="color:#abb2bf;">{
+</span><span style="color:#abb2bf;">        </span><span style="color:#eb6772;">log</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">Fatalf</span><span style="color:#abb2bf;">(</span><span style="color:#9acc76;">&quot;Service creation failed: </span><span style="color:#db9d63;">%v</span><span style="color:#9acc76;">&quot;</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">err</span><span style="color:#abb2bf;">)
+</span><span style="color:#abb2bf;">        </span><span style="color:#cd74e8;">return </span><span style="color:#eb6772;">err
+</span><span style="color:#abb2bf;">    }
+</span><span style="color:#abb2bf;">
+</span><span style="color:#abb2bf;">    </span><span style="color:#eb6772;">service</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">ok </span><span style="color:#adb7c9;">:= </span><span style="color:#eb6772;">serviceInterface</span><span style="color:#abb2bf;">.(</span><span style="color:#adb7c9;">*</span><span style="color:#eb6772;">admin</span><span style="color:#abb2bf;">.</span><span style="color:#cd74e8;">Service</span><span style="color:#abb2bf;">)
+</span><span style="color:#abb2bf;">    </span><span style="color:#cd74e8;">if </span><span style="color:#adb7c9;">!</span><span style="color:#eb6772;">ok </span><span style="color:#abb2bf;">{
+</span><span style="color:#abb2bf;">        </span><span style="color:#eb6772;">log</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">Fatalf</span><span style="color:#abb2bf;">(</span><span style="color:#9acc76;">&quot;Failed to convert service interface to admin service&quot;</span><span style="color:#abb2bf;">)
+</span><span style="color:#abb2bf;">        </span><span style="color:#cd74e8;">return </span><span style="color:#eb6772;">fmt</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">Errorf</span><span style="color:#abb2bf;">(</span><span style="color:#9acc76;">&quot;Failed to convert service interface&quot;</span><span style="color:#abb2bf;">)
+</span><span style="color:#abb2bf;">    }
+</span><span style="color:#abb2bf;">
+</span><span style="color:#abb2bf;">    </span><span style="color:#eb6772;">req </span><span style="color:#adb7c9;">:= </span><span style="color:#eb6772;">service</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">Users</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">List</span><span style="color:#abb2bf;">().</span><span style="color:#eb6772;">Customer</span><span style="color:#abb2bf;">(</span><span style="color:#9acc76;">&quot;my_customer&quot;</span><span style="color:#abb2bf;">).</span><span style="color:#eb6772;">MaxResults</span><span style="color:#abb2bf;">(</span><span style="color:#db9d63;">500</span><span style="color:#abb2bf;">).</span><span style="color:#eb6772;">OrderBy</span><span style="color:#abb2bf;">(</span><span style="color:#9acc76;">&quot;email&quot;</span><span style="color:#abb2bf;">)
+</span><span style="color:#abb2bf;">    </span><span style="color:#eb6772;">err </span><span style="color:#adb7c9;">= </span><span style="color:#eb6772;">req</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">Pages</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">ctx</span><span style="color:#abb2bf;">, </span><span style="color:#cd74e8;">func</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">page </span><span style="color:#adb7c9;">*</span><span style="color:#eb6772;">admin</span><span style="color:#abb2bf;">.</span><span style="color:#cd74e8;">Users</span><span style="color:#abb2bf;">) </span><span style="color:#cd74e8;">error </span><span style="color:#abb2bf;">{
+</span><span style="color:#abb2bf;">        </span><span style="color:#cd74e8;">for </span><span style="color:#eb6772;">_</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">user </span><span style="color:#adb7c9;">:= </span><span style="color:#cd74e8;">range </span><span style="color:#eb6772;">page</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">Users </span><span style="color:#abb2bf;">{
+</span><span style="color:#abb2bf;">            </span><span style="color:#eb6772;">fmt</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">Printf</span><span style="color:#abb2bf;">(</span><span style="color:#9acc76;">&quot;User: </span><span style="color:#db9d63;">%s</span><span style="color:#9acc76;">, Email: </span><span style="color:#db9d63;">%s</span><span style="color:#5ebfcc;">\n</span><span style="color:#9acc76;">&quot;</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">user</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">Name</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">FullName</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">user</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">PrimaryEmail</span><span style="color:#abb2bf;">)
+</span><span style="color:#abb2bf;">        }
+</span><span style="color:#abb2bf;">        </span><span style="color:#cd74e8;">return </span><span style="color:#db9d63;">nil
+</span><span style="color:#abb2bf;">    })
+</span><span style="color:#abb2bf;">    </span><span style="color:#cd74e8;">if </span><span style="color:#eb6772;">err </span><span style="color:#adb7c9;">!= </span><span style="color:#db9d63;">nil </span><span style="color:#abb2bf;">{
+</span><span style="color:#abb2bf;">        </span><span style="color:#eb6772;">log</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">Printf</span><span style="color:#abb2bf;">(</span><span style="color:#9acc76;">&quot;Failed to list Workspace users: </span><span style="color:#db9d63;">%v</span><span style="color:#9acc76;">&quot;</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">err</span><span style="color:#abb2bf;">)
+</span><span style="color:#abb2bf;">        </span><span style="color:#cd74e8;">return </span><span style="color:#eb6772;">err
+</span><span style="color:#abb2bf;">    }
+</span><span style="color:#abb2bf;">
+</span><span style="color:#abb2bf;">    </span><span style="color:#cd74e8;">return </span><span style="color:#db9d63;">nil
+</span><span style="color:#abb2bf;">}
+</span></code></pre>
+<p>And…. no way! it was failed 😕 the error message here:</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#6c7079;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#eb6772;">Failed to list Workspace users</span><span style="color:#abb2bf;">: </span><span style="color:#eb6772;">googleapi</span><span style="color:#abb2bf;">: </span><span style="color:#eb6772;">Error </span><span style="color:#db9d63;">403</span><span style="color:#abb2bf;">: </span><span style="color:#eb6772;">Not Authorized to access this resource</span><span style="color:#adb7c9;">/</span><span style="color:#eb6772;">api</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">forbidden
+</span></code></pre>
+<h2 id="method-2-impersonating-as-a-workspace-user-with-a-service-account">Method 2: Impersonating as a Workspace User with a Service Account</h2>
+<p>After trying various authentication methods, I discovered <a rel="noopener nofollow noreferrer" target="_blank" href="https://www.googlecloudcommunity.com/gc/Cloud-Hub/Admin-SDK-API-Returning-Status-Code-403-Cannot-Figure-Out-Root/m-p/742710#M6830">a helpful post</a> suggesting that to use the Admin SDK API effectively, the service account must impersonate an administrator of the domain; simply enabling domain-wide delegation was insufficient.</p>
+<p>Okay, we will try. But note that, you should ensure,</p>
+<ul>
+<li>The workspace user you attempt to impersonate is aware of this process.</li>
+<li>Your Service Account has the &quot;https://www.googleapis.com/auth/admin.directory.user.readonly&quot; permission set in the Workspace Admin Console, indicating that the workspace administrator is aware of your activities.</li>
+</ul>
+<p>To implement this, configure your service account as follows:</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#6c7079;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#eb6772;">config </span><span style="color:#adb7c9;">:= &amp;</span><span style="color:#eb6772;">jwt</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">Config</span><span style="color:#abb2bf;">{
+</span><span style="color:#abb2bf;">        </span><span style="color:#eb6772;">Email</span><span style="color:#abb2bf;">:      </span><span style="color:#eb6772;">cred</span><span style="color:#abb2bf;">[</span><span style="color:#9acc76;">&quot;client_email&quot;</span><span style="color:#abb2bf;">].(</span><span style="color:#cd74e8;">string</span><span style="color:#abb2bf;">),
+</span><span style="color:#abb2bf;">        </span><span style="color:#eb6772;">PrivateKey</span><span style="color:#abb2bf;">: []</span><span style="color:#cd74e8;">byte</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">privateKey</span><span style="color:#abb2bf;">),
+</span><span style="color:#abb2bf;">        </span><span style="color:#eb6772;">TokenURL</span><span style="color:#abb2bf;">:   </span><span style="color:#eb6772;">google</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">JWTTokenURL</span><span style="color:#abb2bf;">,
+</span><span style="color:#abb2bf;">        </span><span style="color:#eb6772;">Scopes</span><span style="color:#abb2bf;">:     []</span><span style="color:#cd74e8;">string</span><span style="color:#abb2bf;">{</span><span style="color:#eb6772;">admin</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">AdminDirectoryUserReadonlyScope</span><span style="color:#abb2bf;">},
+</span><span style="color:#abb2bf;">        </span><span style="color:#eb6772;">Subject</span><span style="color:#abb2bf;">:    </span><span style="color:#eb6772;">config</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">AdminEmail</span><span style="color:#abb2bf;">,
+</span><span style="color:#abb2bf;">    }
+</span></code></pre>
+<p>In my code, config library works getting global configuration for the code. So it gets admin email, which you impersonate. Otherwise, cred and privateKey are from the Service Account’s key fie. Other process are same to before. </p>
+<p>And… IT FINALLY SUCCEEDED! 😂</p>
+<h1 id="review">REVIEW</h1>
+<p>I believe this method succeeded because it authenticated correctly with the necessary permissions and within the proper administrative context. Although the service account was granted permissions through its client ID, Google Workspace is designed for organizations and their human employees, necessitating this specific authentication procedure. Despite the challenges, I found the experience both stressful and enjoyable!</p>
+<h1 id="ref">REF</h1>
+<ol>
+<li>https://www.googlecloudcommunity.com/gc/Cloud-Hub/Admin-SDK-API-Returning-Status-Code-403-Cannot-Figure-Out-Root/m-p/742710#M6830</li>
+<li>https://developers.google.com/admin-sdk/directory/reference/rest/v1/users/list#query-parameters</li>
+</ol>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+               
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;posts&#x2F;how-to-manage-your-kubernetes-01-rancher&#x2F;">
+              How to manage your kubernetes cluster 01: Rancher<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@8.13.5/dist/mermaid.min.js" integrity="sha384-0yWn54pSGtfKCU+skfA69l25VsCw+MZt4LQov3xNRoS7YkAMrFokGgSBnAWSK4pv" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.xkcd@1.1.13/dist/chart.xkcd.min.js" integrity="sha384-xC3h1+IHXK8seA+8KfT79Z4e0GPsznjXBoMa5nd8ooWKplPyXx92NOmljWxLC/cs" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js" integrity="sha384-Pulw7+h73841BQIK0LzJCydKRPChJUF9w8h8W0o3h+cLtoyNPJS847bQauLWOTwg" crossorigin="anonymous"></script>
+  
+  <script src="https://g-song-i.github.io/elasticlunr.min.js"></script>
+  <script src="https://g-song-i.github.io/search_index.en.js"></script><script src="https://g-song-i.github.io/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>

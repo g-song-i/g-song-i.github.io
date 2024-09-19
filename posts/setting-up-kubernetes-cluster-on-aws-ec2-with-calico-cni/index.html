@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" integrity="sha384-oGm59HWAkwO32h2w8u0B98wKBZJwd6MbWtAJwQKCTffZjOXHXrnyv9Syjovgc+UV" crossorigin="anonymous">
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://g-song-i.github.io/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+Cecil&#x27;s Note | Setting Up Kubernetes Cluster on AWS EC2 with Calico CNI
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NXE14VB61W"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-NXE14VB61W");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;g-song-i.github.io">Cecil&#x27;s Note</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;posts">
+            Posts
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;categories">
+            Categories
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Setting Up Kubernetes Cluster on AWS EC2 with Calico CNI
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Cecil Gwak published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2024-09-02">September 02, 2024</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>11 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>2025 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://g-song-i.github.io/categories/kubernetes/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Kubernetes</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://g-song-i.github.io/categories/aws/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>AWS</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://g-song-i.github.io/categories/ec2/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>EC2</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://g-song-i.github.io/categories/calico/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Calico</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://g-song-i.github.io/tags/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <h1 id="overview">Overview</h1>
+<p>In this post, I am going to explain how to set up a Kubernetes cluster within the AWS infrastructure. Here, I set up a master node and two worker nodes using AWS EC2 instances. I refer to <a rel="noopener nofollow noreferrer" target="_blank" href="https://mrmaheshrajput.medium.com/deploy-kubernetes-cluster-on-aws-ec2-instances-f3eeca9e95f1">this post</a> for this task, but I utilize Calico as the CNI plugin instead of WeaveNet, which was used in the post I mentioned. The choice of CNI plugin is up to you.</p>
+<h1 id="infra-info">Infra Info</h1>
+<p><img src="https://github.com/user-attachments/assets/09e38d81-057c-4516-8241-9883e9ac6d74" alt="K8S_ARCH_AWS.png" /></p>
+<h1 id="create-vpc">Create VPC</h1>
+<p>First, I created a VPC for this task. To avoid using the same CIDR range as the Calico network, I chose the “172.16.0.0/16” range. Since this cluster is not intended for active development or production, I opted to use just one availability zone and one subnet. You can add more if needed.</p>
+<p><img src="https://github.com/user-attachments/assets/4fad8d5a-4c93-4f6b-940c-f20983eeaf44" alt="image.png" /></p>
+<h1 id="create-sg">Create SG</h1>
+<h2 id="for-master">For Master</h2>
+<p>You now need to create security groups for the master and worker nodes, respectively. You can see <a rel="noopener nofollow noreferrer" target="_blank" href="https://kubernetes.io/docs/reference/networking/ports-and-protocols/">the ports</a> that need to be opened.</p>
+<p><img src="https://github.com/user-attachments/assets/1fc46aad-ae7a-4eab-b1e2-b62e43ea9e30" alt="Below" /></p>
+<p>The security group displayed below is the result of the initial configuration. Additional ports will need to be added later for the CNI plugin (Calico, in my case).</p>
+<p><img src="https://github.com/user-attachments/assets/e2bed3c3-28e3-4c79-bc63-7bbab501ff82" alt="image.png" /></p>
+<h2 id="for-workers">For Workers</h2>
+<p>For the next step, create the worker node's security group. This security group needs to include <a rel="noopener nofollow noreferrer" target="_blank" href="https://kubernetes.io/docs/reference/networking/ports-and-protocols/">ports</a> for the kubelet API, kube-proxy, and the port range for NodePort services.</p>
+<p><img src="https://github.com/user-attachments/assets/92270fec-a749-4847-bf90-d87579301e7e" alt="image.png" /></p>
+<h1 id="create-ec2">Create EC2</h1>
+<p>You will now create EC2 instances for the cluster. You are free to choose the configurations, but you should pay particular attention to the <a rel="noopener nofollow noreferrer" target="_blank" href="https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/">instance type</a> and networking settings. In my case, I selected a t2.xlarge instance for the master and t2.large instances for the workers. For network settings, choose a public subnet to enable SSH access to the instance, and apply the security group you previously configured.</p>
+<p><img src="https://github.com/user-attachments/assets/4c64596b-9b9d-43b8-b773-680dcb02e1e7" alt="image.png" /></p>
+<h1 id="create-eip-elastic-ip">Create EIP (Elastic IP)</h1>
+<p>Since the instance does not have a public IP (though you can configure one using the auto-assign public IP function), you will need to associate an Elastic IP (EIP) with the instance. First, allocate 3 EIPs under EC2 &gt; Network &amp; Security &gt; Elastic IPs. Once allocated, you can associate each EIP with an instance. Now, you will be able to connect to your EC2 instance.</p>
+<h2 id="allocate-eip">Allocate EIP</h2>
+<p><img src="https://github.com/user-attachments/assets/36e0a293-e023-4f06-a38e-6eb17a460870" alt="image.png" /></p>
+<h2 id="associate-eip">Associate EIP</h2>
+<p><img src="https://github.com/user-attachments/assets/6d12366a-ffdd-4eab-9f75-bd8358673395" alt="image.png" /></p>
+<h1 id="install-cri-kubeadm-kubelet-and-kubectl">Install CRI, kubeadm, kubelet and kubectl</h1>
+<p>Once connected to the instances, it is time to install the Container Runtime Interface (CRI) and some packages for Kubernetes installation. Before that, you need to turn off the swap. Swap space is an extension of physical RAM and helps maintain system stability and performance by providing virtual memory <a rel="noopener nofollow noreferrer" target="_blank" href="https://phoenixnap.com/kb/swap-space">[2]</a>.</p>
+<p>But why is turning off swap necessary?</p>
+<ul>
+<li>The debates about this are extremely interesting. So, I am going to share them.</li>
+<li>First, we essentially need to turn off swap to utilize all Kubernetes functionalities appropriately, according to <a rel="noopener nofollow noreferrer" target="_blank" href="https://github.com/kubernetes/kubernetes/issues/53533">this discussion</a>:</li>
+</ul>
+<blockquote>
+<p>Support for swap is non-trivial. Guaranteed pods should never require swap. Burstable pods should have their requests met without requiring swap. BestEffort pods have no guarantee. The kubelet right now lacks the smarts to provide the right amount of predictable behavior here across pods.</p>
+</blockquote>
+<ul>
+<li>However, there is an interesting official post from <a rel="noopener nofollow noreferrer" target="_blank" href="https://kubernetes.io/blog/2023/08/24/swap-linux-beta/">Kubernetes</a>. You can now use the beta version of support for using swap on Linux! Quite interesting, right? You can read the articles I embedded:</li>
+</ul>
+<blockquote>
+<p>This was due to the inherent difficulty in guaranteeing and accounting for pod memory utilization when swap memory was involved. As a result, swap support was deemed out of scope in the initial design of Kubernetes, and the default behavior of a kubelet was to fail to start if swap memory was detected on a node.</p>
+</blockquote>
+<blockquote>
+<p>Swap in Kubernetes has numerous use cases for a wide range of users. As a result, the Node Special Interest Group within the Kubernetes project has invested significant effort into supporting swap on Linux nodes for beta. Compared to the alpha, the kubelet's support for running with swap enabled is more stable and robust, more user-friendly, and addresses many known shortcomings. This graduation to beta represents a crucial step towards achieving the goal of fully supporting swap in Kubernetes.</p>
+</blockquote>
+<h2 id="swap-off-and-set-the-host-name-optional">Swap off and Set the host name (optional)</h2>
+<pre data-lang="bash" style="background-color:#2b303b;color:#6c7079;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#eb6772;">$</span><span style="color:#abb2bf;"> sudo swapoff</span><span style="color:#eb6772;"> -a
+</span><span style="color:#eb6772;">$</span><span style="color:#abb2bf;"> sudo vim /etc/hosts
+</span><span style="color:#abb2bf;">
+</span><span style="color:#eb6772;">$</span><span style="color:#abb2bf;"> sudo hostnamectl set-hostname control-plane
+</span><span style="color:#eb6772;">$</span><span style="color:#abb2bf;"> sudo hostnamectl set-hostname worker1
+</span><span style="color:#eb6772;">$</span><span style="color:#abb2bf;"> sudo hostnamectl set-hostname worker2
+</span></code></pre>
+<h2 id="update-etc-hosts-file">Update /etc/hosts file</h2>
+<p>After naming each host, update the <code>/etc/hosts</code> file on each node with their IP addresses and corresponding host names. This ensures that every host in the network can recognize each other by their new host names. You may also need to configure your VPC by enabling DNS hostnames.</p>
+<p>Then, exit the terminal and reconnect to the instances to see that the host names have been changed.</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#6c7079;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#eb6772;">$</span><span style="color:#abb2bf;"> sudo vim /etc/hosts
+</span></code></pre>
+<h2 id="install-containerd">Install containerd</h2>
+<p>In this step, you will install containerd as the Container Runtime Interface (CRI). I used a script from <a rel="noopener nofollow noreferrer" target="_blank" href="https://mrmaheshrajput.medium.com/deploy-kubernetes-cluster-on-aws-ec2-instances-f3eeca9e95f1">this post</a>, which you can also refer to. I uploaded the script to the instances and executed it; it worked for me. </p>
+<p>The script performs several critical setup tasks: it loads necessary kernel modules, configures system settings for network traffic management, updates the package list, installs containerd, generates a default configuration for containerd, and restarts the service to apply all changes.</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#6c7079;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="font-style:italic;color:#5f697a;"># you can utilize the installation script here
+</span><span style="color:#eb6772;">$</span><span style="color:#abb2bf;"> vim ./containerd-install.sh
+</span><span style="color:#eb6772;">$</span><span style="color:#abb2bf;"> chmod u+x ./containerd-install.sh
+</span><span style="color:#eb6772;">$</span><span style="color:#abb2bf;"> ./containerd-install.sh
+</span><span style="color:#eb6772;">$</span><span style="color:#abb2bf;"> service containerd status
+</span></code></pre>
+<h3 id="installation-script">Installation Script</h3>
+<pre data-lang="bash" style="background-color:#2b303b;color:#6c7079;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#5ebfcc;">echo </span><span style="color:#9acc76;">&quot;Make script executable using chmod u+x FILE_NAME.sh&quot;
+</span><span style="color:#abb2bf;">
+</span><span style="color:#5ebfcc;">echo </span><span style="color:#9acc76;">&quot;Containerd installation script&quot;
+</span><span style="color:#5ebfcc;">echo </span><span style="color:#9acc76;">&quot;Instructions from https://kubernetes.io/docs/setup/production-environment/container-runtimes/&quot;
+</span><span style="color:#abb2bf;">
+</span><span style="color:#5ebfcc;">echo </span><span style="color:#9acc76;">&quot;Creating containerd configuration file with list of necessary modules that need to be loaded with containerd&quot;
+</span><span style="color:#eb6772;">cat </span><span style="color:#adb7c9;">&lt;&lt;</span><span style="color:#cd74e8;">EOF </span><span style="color:#adb7c9;">| </span><span style="color:#eb6772;">sudo</span><span style="color:#abb2bf;"> tee /etc/modules-load.d/k8s.conf
+</span><span style="color:#9acc76;">overlay
+</span><span style="color:#9acc76;">br_netfilter
+</span><span style="color:#cd74e8;">EOF
+</span><span style="color:#abb2bf;">
+</span><span style="color:#5ebfcc;">echo </span><span style="color:#9acc76;">&quot;Load containerd modules&quot;
+</span><span style="color:#eb6772;">sudo</span><span style="color:#abb2bf;"> modprobe overlay
+</span><span style="color:#eb6772;">sudo</span><span style="color:#abb2bf;"> modprobe br_netfilter
+</span><span style="color:#abb2bf;">
+</span><span style="color:#5ebfcc;">echo </span><span style="color:#9acc76;">&quot;Creates configuration file for kubernetes-cri file (changed to k8s.conf)&quot;
+</span><span style="font-style:italic;color:#5f697a;"># sysctl params required by setup, params persist across reboots
+</span><span style="color:#eb6772;">cat </span><span style="color:#adb7c9;">&lt;&lt;</span><span style="color:#cd74e8;">EOF </span><span style="color:#adb7c9;">| </span><span style="color:#eb6772;">sudo</span><span style="color:#abb2bf;"> tee /etc/sysctl.d/k8s.conf
+</span><span style="color:#9acc76;">net.bridge.bridge-nf-call-iptables  = 1
+</span><span style="color:#9acc76;">net.bridge.bridge-nf-call-ip6tables = 1
+</span><span style="color:#9acc76;">net.ipv4.ip_forward                 = 1
+</span><span style="color:#cd74e8;">EOF
+</span><span style="color:#abb2bf;">
+</span><span style="color:#5ebfcc;">echo </span><span style="color:#9acc76;">&quot;Applying sysctl params&quot;
+</span><span style="color:#eb6772;">sudo</span><span style="color:#abb2bf;"> sysctl</span><span style="color:#eb6772;"> --system
+</span><span style="color:#abb2bf;">
+</span><span style="color:#5ebfcc;">echo </span><span style="color:#9acc76;">&quot;Verify that the br_netfilter, overlay modules are loaded by running the following commands:&quot;
+</span><span style="color:#eb6772;">lsmod </span><span style="color:#adb7c9;">| </span><span style="color:#eb6772;">grep</span><span style="color:#abb2bf;"> br_netfilter
+</span><span style="color:#eb6772;">lsmod </span><span style="color:#adb7c9;">| </span><span style="color:#eb6772;">grep</span><span style="color:#abb2bf;"> overlay
+</span><span style="color:#abb2bf;">
+</span><span style="color:#5ebfcc;">echo </span><span style="color:#9acc76;">&quot;Verify that the net.bridge.bridge-nf-call-iptables, net.bridge.bridge-nf-call-ip6tables, and net.ipv4.ip_forward system variables are set to 1 in your sysctl config by running the following command:&quot;
+</span><span style="color:#eb6772;">sysctl</span><span style="color:#abb2bf;"> net.bridge.bridge-nf-call-iptables net.bridge.bridge-nf-call-ip6tables net.ipv4.ip_forward
+</span><span style="color:#abb2bf;">
+</span><span style="color:#5ebfcc;">echo </span><span style="color:#9acc76;">&quot;Update packages list&quot;
+</span><span style="color:#eb6772;">sudo</span><span style="color:#abb2bf;"> apt-get update
+</span><span style="color:#abb2bf;">
+</span><span style="color:#5ebfcc;">echo </span><span style="color:#9acc76;">&quot;Install containerd&quot;
+</span><span style="color:#eb6772;">sudo</span><span style="color:#abb2bf;"> apt-get</span><span style="color:#eb6772;"> -y</span><span style="color:#abb2bf;"> install containerd
+</span><span style="color:#abb2bf;">
+</span><span style="color:#5ebfcc;">echo </span><span style="color:#9acc76;">&quot;Create a default config file at default location&quot;
+</span><span style="color:#eb6772;">sudo</span><span style="color:#abb2bf;"> mkdir</span><span style="color:#eb6772;"> -p</span><span style="color:#abb2bf;"> /etc/containerd
+</span><span style="color:#eb6772;">sudo</span><span style="color:#abb2bf;"> containerd config default </span><span style="color:#adb7c9;">| </span><span style="color:#eb6772;">sudo</span><span style="color:#abb2bf;"> tee /etc/containerd/config.toml
+</span><span style="color:#abb2bf;">
+</span><span style="color:#5ebfcc;">echo </span><span style="color:#9acc76;">&quot;Restarting containerd&quot;
+</span><span style="color:#eb6772;">sudo</span><span style="color:#abb2bf;"> systemctl restart containerd
+</span></code></pre>
+<p>You should also modify containerd’s configuration file as shown below (then you should restart the service):</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#6c7079;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="font-style:italic;color:#5f697a;"># change configiration file (/etc/containerd/config.toml)
+</span><span style="color:#eb6772;">[plugins.</span><span style="color:#9acc76;">&quot;io.containerd.grpc.v1.cri&quot;</span><span style="color:#eb6772;">.containerd.runtimes.runc]
+</span><span style="color:#abb2bf;">  </span><span style="color:#eb6772;">…
+</span><span style="color:#abb2bf;">  </span><span style="color:#eb6772;">[plugins.</span><span style="color:#9acc76;">&quot;io.containerd.grpc.v1.cri&quot;</span><span style="color:#eb6772;">.containerd.runtimes.runc.options]
+</span><span style="color:#abb2bf;">    </span><span style="color:#eb6772;">SystemdCgroup</span><span style="color:#abb2bf;"> = true
+</span></code></pre>
+<p><img src="https://github.com/user-attachments/assets/1f1647e2-bc81-481c-9836-34beb5217f3a" alt="image.png" /></p>
+<h2 id="install-kubeadm-kubelet-and-kubectl"><strong>Install kubeadm, kubelet and kubectl</strong></h2>
+<p>Now, install kubeadm, kubelet, and kubectl using the script from <a rel="noopener nofollow noreferrer" target="_blank" href="https://mrmaheshrajput.medium.com/deploy-kubernetes-cluster-on-aws-ec2-instances-f3eeca9e95f1">this post</a>. The script updates the package list, establishes a new Kubernetes software repository, and installs the latest versions of kubeadm, kubelet, and kubectl. It also fixes these packages at their current versions to prevent automatic updates.</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#6c7079;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#eb6772;">$</span><span style="color:#abb2bf;"> vim ./kube-install.sh
+</span><span style="color:#eb6772;">$</span><span style="color:#abb2bf;"> chmod u+x ./kube-install.sh
+</span><span style="color:#eb6772;">$</span><span style="color:#abb2bf;"> ./kube-install.sh
+</span><span style="color:#eb6772;">$</span><span style="color:#abb2bf;"> kubeadm version
+</span><span style="color:#eb6772;">$</span><span style="color:#abb2bf;"> service kubelet status
+</span></code></pre>
+<h3 id="installation-script-1">Installation Script</h3>
+<pre data-lang="bash" style="background-color:#2b303b;color:#6c7079;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#5ebfcc;">echo </span><span style="color:#9acc76;">&quot;Make script executable using chmod u+x FILE_NAME.sh&quot;
+</span><span style="color:#abb2bf;">
+</span><span style="color:#eb6772;">sudo</span><span style="color:#abb2bf;"> apt-get update
+</span><span style="color:#abb2bf;">
+</span><span style="font-style:italic;color:#5f697a;"># apt-transport-https may be a dummy package; if so, you can skip that package
+</span><span style="color:#eb6772;">sudo</span><span style="color:#abb2bf;"> apt-get install</span><span style="color:#eb6772;"> -y</span><span style="color:#abb2bf;"> apt-transport-https ca-certificates curl gpg
+</span><span style="color:#abb2bf;">
+</span><span style="color:#eb6772;">curl -fsSL</span><span style="color:#abb2bf;"> https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key </span><span style="color:#adb7c9;">| </span><span style="color:#eb6772;">sudo</span><span style="color:#abb2bf;"> gpg</span><span style="color:#eb6772;"> --dearmor -o</span><span style="color:#abb2bf;"> /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+</span><span style="color:#abb2bf;">
+</span><span style="color:#5ebfcc;">echo </span><span style="color:#9acc76;">&#39;deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.29/deb/ /&#39; </span><span style="color:#adb7c9;">| </span><span style="color:#eb6772;">sudo</span><span style="color:#abb2bf;"> tee /etc/apt/sources.list.d/kubernetes.list
+</span><span style="color:#abb2bf;">
+</span><span style="color:#eb6772;">sudo</span><span style="color:#abb2bf;"> apt-get update
+</span><span style="color:#abb2bf;">
+</span><span style="color:#5ebfcc;">echo </span><span style="color:#9acc76;">&quot;Installing latest versions&quot;
+</span><span style="color:#eb6772;">sudo</span><span style="color:#abb2bf;"> apt-get install</span><span style="color:#eb6772;"> -y</span><span style="color:#abb2bf;"> kubelet kubeadm kubectl
+</span><span style="color:#abb2bf;">
+</span><span style="color:#5ebfcc;">echo </span><span style="color:#9acc76;">&quot;Fixate version to prevent upgrades&quot;
+</span><span style="color:#eb6772;">sudo</span><span style="color:#abb2bf;"> apt-mark hold kubelet kubeadm kubectl
+</span></code></pre>
+<h1 id="initialize-cluster">Initialize Cluster</h1>
+<p>Here, you will initialize the cluster using the kubeadm command. Before that, you need to set IPADDR, which is your current IP address, to be used as --apiserver-advertise-address, and also set POD_CIDR. Since these two are on the same network level, their subnets should not overlap. In the case of Calico, the default CIDR is 192.168.0.0/16; that’s why I chose this range for POD_CIDR and another range for the VPC.</p>
+<p>After initialization, you should copy your kubeconfig and set the privileges appropriately using the commands below. Alternatively, you can use the commands with sudo. Be sure to retain the join command, which allows worker nodes to join your cluster.</p>
+<h2 id="init-kubeadm">Init Kubeadm</h2>
+<pre data-lang="bash" style="background-color:#2b303b;color:#6c7079;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#eb6772;">$</span><span style="color:#abb2bf;"> IPADDR=</span><span style="color:#9acc76;">&quot;172.16.2.84&quot;
+</span><span style="color:#eb6772;">$</span><span style="color:#abb2bf;"> POD_CIDR=</span><span style="color:#9acc76;">&quot;192.168.0.0/16&quot;
+</span><span style="color:#eb6772;">$</span><span style="color:#abb2bf;"> sudo kubeadm init</span><span style="color:#eb6772;"> --apiserver-advertise-address</span><span style="color:#adb7c9;">=</span><span style="color:#abb2bf;">$</span><span style="color:#eb6772;">IPADDR --pod-network-cidr</span><span style="color:#adb7c9;">=</span><span style="color:#abb2bf;">$</span><span style="color:#eb6772;">POD_CIDR
+</span><span style="color:#abb2bf;">
+</span><span style="color:#eb6772;">$</span><span style="color:#abb2bf;"> mkdir</span><span style="color:#eb6772;"> -p </span><span style="color:#abb2bf;">$</span><span style="color:#eb6772;">HOME</span><span style="color:#abb2bf;">/.kube
+</span><span style="color:#eb6772;">$</span><span style="color:#abb2bf;"> sudo cp</span><span style="color:#eb6772;"> -i</span><span style="color:#abb2bf;"> /etc/kubernetes/admin.conf $</span><span style="color:#eb6772;">HOME</span><span style="color:#abb2bf;">/.kube/config
+</span><span style="color:#eb6772;">$</span><span style="color:#abb2bf;"> sudo chown $(</span><span style="color:#eb6772;">id -u</span><span style="color:#abb2bf;">):$(</span><span style="color:#eb6772;">id -g</span><span style="color:#abb2bf;">) $</span><span style="color:#eb6772;">HOME</span><span style="color:#abb2bf;">/.kube/config
+</span><span style="color:#abb2bf;">
+</span><span style="font-style:italic;color:#5f697a;"># you can use it when join worker nodes
+</span><span style="color:#eb6772;">$</span><span style="color:#abb2bf;"> kubeadm join 172.16.2.84:6443</span><span style="color:#eb6772;"> --token </span><span style="color:#adb7c9;">&lt;</span><span style="color:#abb2bf;">token</span><span style="color:#adb7c9;">&gt; </span><span style="color:#abb2bf;">\
+</span><span style="color:#eb6772;">	--discovery-token-ca-cert-hash </span><span style="color:#adb7c9;">&lt;</span><span style="color:#abb2bf;">cert-hash</span><span style="color:#adb7c9;">&gt;
+</span></code></pre>
+<h1 id="install-calico-as-cni-plugin">Install Calico as CNI plugin</h1>
+<p>Now it is time to install a CNI (Container Network Interface) plugin. So far, you might find that the master node is in a 'not ready' status, and some pods, like core-dns, are not operational. This is because, without a network interface provided by a CNI, the pods cannot establish network connections necessary for their operations. A CNI plugin is essential for facilitating communication between pods across the cluster. It configures the network layer by assigning IP addresses to pods and managing the network routes so that pods can communicate with each other and with the external network.</p>
+<p>You can download the calico.yaml file and apply it! However, make sure to remove the 'NoSchedule' taint from the master’s configuration, so that Calico pods can be scheduled on the master node.</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#6c7079;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#eb6772;">$</span><span style="color:#abb2bf;"> wget https://docs.projectcalico.org/manifests/calico.yaml
+</span><span style="color:#eb6772;">$</span><span style="color:#abb2bf;"> kubectl apply</span><span style="color:#eb6772;"> -f</span><span style="color:#abb2bf;"> calico.yaml
+</span><span style="color:#abb2bf;">
+</span><span style="font-style:italic;color:#5f697a;"># find taint configuration
+</span><span style="color:#eb6772;">$</span><span style="color:#abb2bf;"> kubectl get nodes</span><span style="color:#eb6772;"> -o</span><span style="color:#adb7c9;">=</span><span style="color:#abb2bf;">jsonpath=</span><span style="color:#9acc76;">&#39;{range .items[*]}{.metadata.name}{&quot;\t&quot;}{.spec.taints}{&quot;\n&quot;}{end}&#39;
+</span><span style="color:#abb2bf;">
+</span><span style="color:#eb6772;">result:</span><span style="color:#abb2bf;"> control-plane	</span><span style="color:#cd74e8;">[</span><span style="color:#abb2bf;">{</span><span style="color:#9acc76;">&quot;effect&quot;</span><span style="color:#abb2bf;">:</span><span style="color:#9acc76;">&quot;NoSchedule&quot;</span><span style="color:#abb2bf;">,</span><span style="color:#9acc76;">&quot;key&quot;</span><span style="color:#abb2bf;">:</span><span style="color:#9acc76;">&quot;node-role.kubernetes.io/control-plane&quot;</span><span style="color:#abb2bf;">}</span><span style="color:#cd74e8;">]
+</span><span style="color:#abb2bf;">
+</span><span style="font-style:italic;color:#5f697a;"># untaint so that calico pods can be scheduled on the master node
+</span><span style="color:#eb6772;">$</span><span style="color:#abb2bf;"> kubectl taint nodes control-plane node-role.kubernetes.io/control-plane-
+</span></code></pre>
+<h2 id="open-ports-in-sg-for-calico">Open ports in SG for Calico</h2>
+<p>Additionally, you must include a security group rule for the Calico port, which is TCP 179, for both master and worker nodes</p>
+<h1 id="joind-worker-nodes">Joind Worker Nodes</h1>
+<p>Now, all you need to do for the worker nodes is to execute the command <code>sudo kubeadm join</code> so that they can be recognized and utilized by the master node. After joining you can check their status with <code>kubectl</code> command in the master node.</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#6c7079;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#eb6772;">$</span><span style="color:#abb2bf;"> sudo kubeadm join 172.16.2.84:6443</span><span style="color:#eb6772;"> --token </span><span style="color:#adb7c9;">&lt;</span><span style="color:#abb2bf;">token</span><span style="color:#adb7c9;">&gt; </span><span style="color:#abb2bf;">\
+</span><span style="color:#eb6772;">	--discovery-token-ca-cert-hash </span><span style="color:#adb7c9;">&lt;</span><span style="color:#abb2bf;">cert-hash</span><span style="color:#adb7c9;">&gt;
+</span></code></pre>
+<p><img src="https://github.com/user-attachments/assets/d89c45be-4b2b-439e-84bb-a27333e57d94" alt="image.png" /></p>
+<h1 id="conclusion">Conclusion</h1>
+<p>In this post, we walked through the detailed steps of setting up a Kubernetes cluster on AWS with EC2 instances for the master and worker nodes, utilizing Calico as the CNI plugin. I hope this post helps you understand the process and the importance of each step. If you have any questions or feedback, please feel free to reach out to me. Thank you for reading! 🚀</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;posts&#x2F;how-to-validate-docker-is-secure&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              How to Validate That Your Docker Configuration is Secure Using the Go SDK
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;posts&#x2F;w-where-tf-is-docker-daemon-json-file&#x2F;">
+              W(Where)TF is Docker daemon.json File?<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@8.13.5/dist/mermaid.min.js" integrity="sha384-0yWn54pSGtfKCU+skfA69l25VsCw+MZt4LQov3xNRoS7YkAMrFokGgSBnAWSK4pv" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.xkcd@1.1.13/dist/chart.xkcd.min.js" integrity="sha384-xC3h1+IHXK8seA+8KfT79Z4e0GPsznjXBoMa5nd8ooWKplPyXx92NOmljWxLC/cs" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js" integrity="sha384-Pulw7+h73841BQIK0LzJCydKRPChJUF9w8h8W0o3h+cLtoyNPJS847bQauLWOTwg" crossorigin="anonymous"></script>
+  
+  <script src="https://g-song-i.github.io/elasticlunr.min.js"></script>
+  <script src="https://g-song-i.github.io/search_index.en.js"></script><script src="https://g-song-i.github.io/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" integrity="sha384-oGm59HWAkwO32h2w8u0B98wKBZJwd6MbWtAJwQKCTffZjOXHXrnyv9Syjovgc+UV" crossorigin="anonymous">
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://g-song-i.github.io/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+Cecil&#x27;s Note | W(Where)TF is Docker daemon.json File?
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NXE14VB61W"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-NXE14VB61W");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;g-song-i.github.io">Cecil&#x27;s Note</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;posts">
+            Posts
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;categories">
+            Categories
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            W(Where)TF is Docker daemon.json File?
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Cecil Gwak published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2024-09-09">September 09, 2024</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>6 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>1177 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://g-song-i.github.io/categories/docker/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Docker</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://g-song-i.github.io/categories/docker-daemon/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Docker Daemon</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://g-song-i.github.io/categories/daemon-configuration/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>daemon configuration</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://g-song-i.github.io/tags/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <h1 id="overview">Overview</h1>
+<p>This article looks into the details of Docker daemon configurations after I noticed that the <code>daemon.json</code> file was missing from my host system. It explains what the Docker daemon is, what it does, and why the <code>daemon.json</code> file is missing. The discussion includes how Docker is typically set up and how to access and understand the daemon's settings. </p>
+<h1 id="backgrounds">Backgrounds</h1>
+<h2 id="what-is-docker-daemon">What is Docker Daemon?</h2>
+<p>Let's grab some background first. What do you think the Docker daemon is?</p>
+<p>The Docker daemon is a part of the Docker engine, running on the host OS as a process. According to <a rel="noopener nofollow noreferrer" target="_blank" href="https://www.aquasec.com/cloud-native-academy/docker-container/docker-architecture/#:~:text=Docker%20Daemon%3A%20A%20persistent%20background,API%20requests%20and%20processes%20them">Aqua Security</a>, the Docker daemon is described as follows:</p>
+<blockquote>
+<p>A persistent background process that manages Docker images, containers, networks, and storage volumes. The Docker daemon constantly listens for Docker API requests and processes them.</p>
+</blockquote>
+<h2 id="what-is-docker-s-daemon-json">What is Docker’s daemon.json?</h2>
+<p>The <code>daemon.json</code> file is used for configuring the Docker daemon. According to the official Docker <a rel="noopener nofollow noreferrer" target="_blank" href="https://docs.docker.com/engine/daemon/start/">documentation</a>, there are two ways to configure the Docker daemon:</p>
+<blockquote>
+<ul>
+<li>Use a JSON configuration file. This is the preferred option, since it keeps all configurations in a single place.</li>
+<li>Use flags when starting <code>dockerd</code>.</li>
+</ul>
+</blockquote>
+<p>You can use both ways for configuring the daemon. According to <a rel="noopener nofollow noreferrer" target="_blank" href="https://www.devopsschool.com/blog/how-to-configure-docker-daemon-with-a-configuration-file/">this post</a>, setting it with a JSON file is preferred, but I'm not sure (it's not from the official documentation). </p>
+<h1 id="how-to-get-docker-daemon-configuration">How to get Docker daemon configuration?</h1>
+<p>Now you know that the Docker daemon is a process responsible for managing Docker's components, and there is a file named <code>daemon.json</code> that contains configurations for the Docker daemon. So, how do you get the Docker daemon's configuration when Docker is running? There are two options:</p>
+<ul>
+<li><strong>Get the configuration from the <code>daemon.json</code> file if the daemon is started with it</strong></li>
+<li><strong>Get the configuration using the <code>docker info</code> command</strong></li>
+</ul>
+<p>You can use the <code>ps</code> command to inspect the <code>dockerd</code> process, but it might not display all the configurations we need. Additionally, you can check the configuration file, <code>daemon.json</code>, but there is no direct way to confirm whether the current Docker daemon was started using that specific file.</p>
+<p>But, we can assume that if the <code>ps</code> command returns a path to a file with the <a rel="noopener nofollow noreferrer" target="_blank" href="https://docs.docker.com/engine/daemon/#configuration-file"><code>--config-file</code></a> parameter, then <code>dockerd</code> was started with that file. <strong>If not, <code>dockerd</code> was started with the default configuration, either from their default location or the configuration</strong> embedded in the software upon installation. You can refer <a rel="noopener nofollow noreferrer" target="_blank" href="https://github.com/moby/moby/tree/master/daemon/config">here</a> to see the code for default configuration.</p>
+<h2 id="daemon-file-s-default-location">Daemon file’s default location</h2>
+<p>According to <a rel="noopener nofollow noreferrer" target="_blank" href="https://docs.docker.com/engine/daemon/#configuration-file">this post</a> from the Docker docs, the Docker daemon expects to find the configuration file by default at this location:</p>
+<table><thead><tr><th>OS</th><th>File</th></tr></thead><tbody>
+<tr><td>Linux, regular setup</td><td>/etc/docker/daemon.json</td></tr>
+<tr><td>Linux, rootless mode</td><td>~/.config/docker/daemon.json</td></tr>
+<tr><td>Windows</td><td>C:\ProgramData\docker\config\daemon.json</td></tr>
+</tbody></table>
+<h2 id="w-where-tf-is-my-daemon-json">W(Where)TF is my daemon.json????</h2>
+<p>This part is the most important in this post. I couldn’t find my <code>daemon.json</code> in the default location. What’s happening? Like what I said, Dockerd can be started with the default configuration without a configuration file, as <a rel="noopener nofollow noreferrer" target="_blank" href="https://stackoverflow.com/questions/43689271/wheres-dockers-daemon-json-missing">it is not created automatically</a>. That’s the reason you can’t find it in your location.</p>
+<p>You can create the file if you want to boot Dockerd with that in the default location, or you can use another location and specify the customized location manually. So, do not panic if there is no <code>daemon.json</code>; you can still get the daemon’s configuration in other ways</p>
+<h1 id="get-the-current-dockerd-configuration">Get the current Dockerd configuration</h1>
+<p>Here, I describe ways to get the Dockerd configuration. As I mentioned before, you can find it in the <code>daemon.json</code> file or use the <code>docker info</code> command. Let’s assume that you have not created a <code>daemon.json</code> file before. Then, there are two options:</p>
+<ul>
+<li>Get the configuration using the <code>docker info</code> command.</li>
+<li>Get the configuration with the code.</li>
+</ul>
+<p>Hah? Another option pops up, right? Let’s start!</p>
+<h2 id="get-the-configuration-with-docker-info">Get the configuration with docker info</h2>
+<p>First, you can see your daemon's configuration using the <code>docker info</code> command. Here is what the result looks like:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#6c7079;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#eb6772;">$</span><span style="color:#abb2bf;"> docker info
+</span><span style="color:#eb6772;">Client:</span><span style="color:#abb2bf;"> Docker Engine - Community
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">Version:</span><span style="color:#abb2bf;">    27.0.3
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">Context:</span><span style="color:#abb2bf;">    default
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">Debug</span><span style="color:#abb2bf;"> Mode: false
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">Plugins:
+</span><span style="color:#abb2bf;">  </span><span style="color:#eb6772;">buildx:</span><span style="color:#abb2bf;"> Docker Buildx (Docker Inc.)
+</span><span style="color:#abb2bf;">    </span><span style="color:#eb6772;">Version:</span><span style="color:#abb2bf;">  v0.15.1
+</span><span style="color:#abb2bf;">    </span><span style="color:#eb6772;">Path:</span><span style="color:#abb2bf;">     /usr/libexec/docker/cli-plugins/docker-buildx
+</span><span style="color:#abb2bf;">  </span><span style="color:#eb6772;">compose:</span><span style="color:#abb2bf;"> Docker Compose (Docker Inc.)
+</span><span style="color:#abb2bf;">    </span><span style="color:#eb6772;">Version:</span><span style="color:#abb2bf;">  v2.28.1
+</span><span style="color:#abb2bf;">    </span><span style="color:#eb6772;">Path:</span><span style="color:#abb2bf;">     /usr/libexec/docker/cli-plugins/docker-compose
+</span><span style="color:#abb2bf;">
+</span><span style="color:#eb6772;">Server:
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">Containers:</span><span style="color:#abb2bf;"> 18
+</span><span style="color:#abb2bf;">  </span><span style="color:#eb6772;">Running:</span><span style="color:#abb2bf;"> 17
+</span><span style="color:#abb2bf;">  </span><span style="color:#eb6772;">Paused:</span><span style="color:#abb2bf;"> 0
+</span><span style="color:#abb2bf;">  </span><span style="color:#eb6772;">Stopped:</span><span style="color:#abb2bf;"> 1
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">Images:</span><span style="color:#abb2bf;"> 22
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">Server</span><span style="color:#abb2bf;"> Version: 27.0.3
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">Storage</span><span style="color:#abb2bf;"> Driver: overlay2
+</span><span style="color:#abb2bf;">  </span><span style="color:#eb6772;">Backing</span><span style="color:#abb2bf;"> Filesystem: extfs
+</span><span style="color:#abb2bf;">  </span><span style="color:#eb6772;">Supports</span><span style="color:#abb2bf;"> d_type: true
+</span><span style="color:#abb2bf;">  </span><span style="color:#eb6772;">Using</span><span style="color:#abb2bf;"> metacopy: false
+</span><span style="color:#abb2bf;">  </span><span style="color:#eb6772;">Native</span><span style="color:#abb2bf;"> Overlay Diff: true
+</span><span style="color:#abb2bf;">  </span><span style="color:#eb6772;">userxattr:</span><span style="color:#abb2bf;"> false
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">Logging</span><span style="color:#abb2bf;"> Driver: json-file
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">Cgroup</span><span style="color:#abb2bf;"> Driver: systemd
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">Cgroup</span><span style="color:#abb2bf;"> Version: 2
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">Plugins:
+</span><span style="color:#abb2bf;">  </span><span style="color:#eb6772;">Volume:</span><span style="color:#abb2bf;"> local
+</span><span style="color:#abb2bf;">  </span><span style="color:#eb6772;">Network:</span><span style="color:#abb2bf;"> bridge host ipvlan macvlan null overlay
+</span><span style="color:#abb2bf;">  </span><span style="color:#eb6772;">Log:</span><span style="color:#abb2bf;"> awslogs fluentd gcplogs gelf journald json-file local splunk syslog
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">Swarm:</span><span style="color:#abb2bf;"> inactive
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">Runtimes:</span><span style="color:#abb2bf;"> runc io.containerd.runc.v2
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">Default</span><span style="color:#abb2bf;"> Runtime: runc
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">Init</span><span style="color:#abb2bf;"> Binary: docker-init
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">containerd</span><span style="color:#abb2bf;"> version: ae71819c4f5e67bb4d5ae76a6b735f29cc25774e
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">runc</span><span style="color:#abb2bf;"> version: v1.1.13-0-g58aa920
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">init</span><span style="color:#abb2bf;"> version: de40ad0
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">Security</span><span style="color:#abb2bf;"> Options:
+</span><span style="color:#abb2bf;">  </span><span style="color:#eb6772;">apparmor
+</span><span style="color:#abb2bf;">  </span><span style="color:#eb6772;">seccomp
+</span><span style="color:#abb2bf;">   </span><span style="color:#eb6772;">Profile:</span><span style="color:#abb2bf;"> builtin
+</span><span style="color:#abb2bf;">  </span><span style="color:#eb6772;">cgroupns
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">Kernel</span><span style="color:#abb2bf;"> Version: 6.5.0-44-generic
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">Operating</span><span style="color:#abb2bf;"> System: Ubuntu 22.04.4 LTS
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">OSType:</span><span style="color:#abb2bf;"> linux
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">Architecture:</span><span style="color:#abb2bf;"> x86_64
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">CPUs:</span><span style="color:#abb2bf;"> 16
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">Total</span><span style="color:#abb2bf;"> Memory: 62.88GiB
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">Name: </span><span style="color:#adb7c9;">&lt;</span><span style="color:#abb2bf;">hostname</span><span style="color:#adb7c9;">&gt;
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">ID:</span><span style="color:#abb2bf;"> b3f46722-9862-43fd-913d-c8a4bd6a349e
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">Docker</span><span style="color:#abb2bf;"> Root Dir: /var/lib/docker
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">Debug</span><span style="color:#abb2bf;"> Mode: false
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">Experimental:</span><span style="color:#abb2bf;"> false
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">Insecure</span><span style="color:#abb2bf;"> Registries:
+</span><span style="color:#abb2bf;">  </span><span style="color:#eb6772;">127.0.0.0/8
+</span><span style="color:#abb2bf;"> </span><span style="color:#eb6772;">Live</span><span style="color:#abb2bf;"> Restore Enabled: false
+</span></code></pre>
+<h2 id="get-the-configuration-with-the-code-go-sdk">Get the configuration with the code (Go SDK)</h2>
+<p>Moreover, you can write code to retrieve the configuration! I use the Go SDK for this purpose. Here is an example, and you will need to configure the way to handle the result appropriately.</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#6c7079;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#cd74e8;">package </span><span style="color:#eb6772;">collector
+</span><span style="color:#abb2bf;">
+</span><span style="color:#cd74e8;">import </span><span style="color:#abb2bf;">(
+</span><span style="color:#abb2bf;">    </span><span style="color:#9acc76;">&quot;context&quot;
+</span><span style="color:#abb2bf;">    </span><span style="color:#9acc76;">&quot;agentless-for-docker-dev/util/client&quot;
+</span><span style="color:#abb2bf;">    </span><span style="color:#9acc76;">&quot;github.com/docker/docker/api/types/system&quot;
+</span><span style="color:#abb2bf;">)
+</span><span style="color:#abb2bf;">
+</span><span style="color:#cd74e8;">func </span><span style="color:#5cb3fa;">GetDetailedSystemInfo</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">dockerClient </span><span style="color:#adb7c9;">*</span><span style="color:#eb6772;">client</span><span style="color:#abb2bf;">.</span><span style="color:#cd74e8;">DockerClient</span><span style="color:#abb2bf;">) (</span><span style="color:#eb6772;">system</span><span style="color:#abb2bf;">.</span><span style="color:#cd74e8;">Info</span><span style="color:#abb2bf;">, </span><span style="color:#cd74e8;">error</span><span style="color:#abb2bf;">) {
+</span><span style="color:#abb2bf;">    </span><span style="color:#eb6772;">info</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">err </span><span style="color:#adb7c9;">:= </span><span style="color:#eb6772;">dockerClient</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">Client</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">Info</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">context</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">Background</span><span style="color:#abb2bf;">())
+</span><span style="color:#abb2bf;">    </span><span style="color:#cd74e8;">if </span><span style="color:#eb6772;">err </span><span style="color:#adb7c9;">!= </span><span style="color:#db9d63;">nil </span><span style="color:#abb2bf;">{
+</span><span style="color:#abb2bf;">        </span><span style="color:#cd74e8;">return </span><span style="color:#eb6772;">system</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">Info</span><span style="color:#abb2bf;">{}, </span><span style="color:#eb6772;">err
+</span><span style="color:#abb2bf;">    }
+</span><span style="color:#abb2bf;">    </span><span style="color:#cd74e8;">return </span><span style="color:#eb6772;">info</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">nil
+</span><span style="color:#abb2bf;">}
+</span></code></pre>
+<p>The result contains a lot of data, as described <a rel="noopener nofollow noreferrer" target="_blank" href="https://github.com/moby/moby/blob/master/api/types/system/info.go">here</a>. It might differ from the result of the command in some ways, so you need to make an effort to identify the differences and choose the right option for you. Part of the result looks like this:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#6c7079;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#abb2bf;">{
+</span><span style="color:#abb2bf;">  </span><span style="color:#9acc76;">&quot;ID&quot;</span><span style="color:#eb6772;">: </span><span style="color:#9acc76;">&quot;b3f46722-9862-43fd-913d-c8a4bd6a349e&quot;</span><span style="color:#abb2bf;">,
+</span><span style="color:#abb2bf;">  </span><span style="color:#9acc76;">&quot;Containers&quot;</span><span style="color:#eb6772;">:</span><span style="color:#abb2bf;"> 18,
+</span><span style="color:#abb2bf;">  </span><span style="color:#9acc76;">&quot;ContainersRunning&quot;</span><span style="color:#eb6772;">:</span><span style="color:#abb2bf;"> 17,
+</span><span style="color:#abb2bf;">  </span><span style="color:#9acc76;">&quot;ContainersPaused&quot;</span><span style="color:#eb6772;">:</span><span style="color:#abb2bf;"> 0,
+</span><span style="color:#abb2bf;">  </span><span style="color:#9acc76;">&quot;ContainersStopped&quot;</span><span style="color:#eb6772;">:</span><span style="color:#abb2bf;"> 1,
+</span><span style="color:#abb2bf;">  </span><span style="color:#9acc76;">&quot;Images&quot;</span><span style="color:#eb6772;">:</span><span style="color:#abb2bf;"> 22,
+</span><span style="color:#abb2bf;">  </span><span style="color:#9acc76;">&quot;Driver&quot;</span><span style="color:#eb6772;">: </span><span style="color:#9acc76;">&quot;overlay2&quot;</span><span style="color:#abb2bf;">,
+</span><span style="color:#abb2bf;">  </span><span style="color:#9acc76;">&quot;DriverStatus&quot;</span><span style="color:#eb6772;">:</span><span style="color:#abb2bf;"> [
+</span><span style="color:#abb2bf;">    </span><span style="color:#5ebfcc;">[
+</span><span style="color:#abb2bf;">      </span><span style="color:#9acc76;">&quot;Backing Filesystem&quot;</span><span style="color:#eb6772;">,
+</span><span style="color:#abb2bf;">      </span><span style="color:#9acc76;">&quot;extfs&quot;
+</span><span style="color:#abb2bf;">    </span><span style="color:#eb6772;">],
+</span><span style="color:#abb2bf;">    </span><span style="color:#5ebfcc;">[
+</span><span style="color:#abb2bf;">      </span><span style="color:#9acc76;">&quot;Supports d_type&quot;</span><span style="color:#eb6772;">,
+</span><span style="color:#abb2bf;">      </span><span style="color:#9acc76;">&quot;true&quot;
+</span><span style="color:#abb2bf;">    </span><span style="color:#eb6772;">],
+</span><span style="color:#abb2bf;">    </span><span style="color:#5ebfcc;">[
+</span><span style="color:#abb2bf;">      </span><span style="color:#9acc76;">&quot;Using metacopy&quot;</span><span style="color:#eb6772;">,
+</span><span style="color:#abb2bf;">      </span><span style="color:#9acc76;">&quot;false&quot;
+</span><span style="color:#abb2bf;">    </span><span style="color:#eb6772;">],
+</span><span style="color:#abb2bf;">    </span><span style="color:#5ebfcc;">[
+</span><span style="color:#abb2bf;">      </span><span style="color:#9acc76;">&quot;Native Overlay Diff&quot;</span><span style="color:#eb6772;">,
+</span><span style="color:#abb2bf;">      </span><span style="color:#9acc76;">&quot;true&quot;
+</span><span style="color:#abb2bf;">    </span><span style="color:#eb6772;">],
+</span><span style="color:#abb2bf;">    </span><span style="color:#5ebfcc;">[
+</span><span style="color:#abb2bf;">      </span><span style="color:#9acc76;">&quot;userxattr&quot;</span><span style="color:#eb6772;">,
+</span><span style="color:#abb2bf;">      </span><span style="color:#9acc76;">&quot;false&quot;
+</span><span style="color:#abb2bf;">    </span><span style="color:#eb6772;">]
+</span><span style="color:#abb2bf;">  </span><span style="color:#eb6772;">],
+</span><span style="color:#abb2bf;">  </span><span style="color:#9acc76;">&quot;Plugins&quot;</span><span style="color:#eb6772;">: </span><span style="color:#abb2bf;">{
+</span><span style="color:#abb2bf;">    </span><span style="color:#9acc76;">&quot;Volume&quot;</span><span style="color:#abb2bf;">: [
+</span><span style="color:#abb2bf;">      </span><span style="color:#9acc76;">&quot;local&quot;
+</span><span style="color:#abb2bf;">    ],
+</span><span style="color:#abb2bf;">    </span><span style="color:#9acc76;">&quot;Network&quot;</span><span style="color:#abb2bf;">: [
+</span><span style="color:#abb2bf;">      </span><span style="color:#9acc76;">&quot;bridge&quot;</span><span style="color:#abb2bf;">,
+</span><span style="color:#abb2bf;">      </span><span style="color:#9acc76;">&quot;host&quot;</span><span style="color:#abb2bf;">,
+</span><span style="color:#abb2bf;">      </span><span style="color:#9acc76;">&quot;ipvlan&quot;</span><span style="color:#abb2bf;">,
+</span><span style="color:#abb2bf;">      </span><span style="color:#9acc76;">&quot;macvlan&quot;</span><span style="color:#abb2bf;">,
+</span><span style="color:#abb2bf;">      </span><span style="color:#9acc76;">&quot;null&quot;</span><span style="color:#abb2bf;">,
+</span><span style="color:#abb2bf;">      </span><span style="color:#9acc76;">&quot;overlay&quot;
+</span><span style="color:#abb2bf;">    ],
+</span><span style="color:#abb2bf;">    </span><span style="color:#9acc76;">&quot;Authorization&quot;</span><span style="color:#abb2bf;">: null,
+</span><span style="color:#abb2bf;">    </span><span style="color:#9acc76;">&quot;Log&quot;</span><span style="color:#abb2bf;">: [
+</span><span style="color:#abb2bf;">      </span><span style="color:#9acc76;">&quot;awslogs&quot;</span><span style="color:#abb2bf;">,
+</span><span style="color:#abb2bf;">      </span><span style="color:#9acc76;">&quot;fluentd&quot;</span><span style="color:#abb2bf;">,
+</span><span style="color:#abb2bf;">      </span><span style="color:#9acc76;">&quot;gcplogs&quot;</span><span style="color:#abb2bf;">,
+</span><span style="color:#abb2bf;">      </span><span style="color:#9acc76;">&quot;gelf&quot;</span><span style="color:#abb2bf;">,
+</span><span style="color:#abb2bf;">      </span><span style="color:#9acc76;">&quot;journald&quot;</span><span style="color:#abb2bf;">,
+</span><span style="color:#abb2bf;">      </span><span style="color:#9acc76;">&quot;json-file&quot;</span><span style="color:#abb2bf;">,
+</span><span style="color:#abb2bf;">      </span><span style="color:#9acc76;">&quot;local&quot;</span><span style="color:#abb2bf;">,
+</span><span style="color:#abb2bf;">      </span><span style="color:#9acc76;">&quot;splunk&quot;</span><span style="color:#abb2bf;">,
+</span><span style="color:#abb2bf;">      </span><span style="color:#9acc76;">&quot;syslog&quot;
+</span><span style="color:#abb2bf;">    ]
+</span><span style="color:#abb2bf;">  },
+</span><span style="color:#abb2bf;">  </span><span style="color:#9acc76;">&quot;MemoryLimit&quot;</span><span style="color:#eb6772;">:</span><span style="color:#abb2bf;"> true,
+</span><span style="color:#abb2bf;">  </span><span style="color:#9acc76;">&quot;SwapLimit&quot;</span><span style="color:#eb6772;">:</span><span style="color:#abb2bf;"> true,
+</span><span style="color:#abb2bf;">  </span><span style="color:#9acc76;">&quot;CpuCfsPeriod&quot;</span><span style="color:#eb6772;">:</span><span style="color:#abb2bf;"> true,
+</span><span style="color:#abb2bf;">  </span><span style="color:#9acc76;">&quot;CpuCfsQuota&quot;</span><span style="color:#eb6772;">:</span><span style="color:#abb2bf;"> true,
+</span><span style="color:#abb2bf;">  </span><span style="color:#9acc76;">&quot;CPUShares&quot;</span><span style="color:#eb6772;">:</span><span style="color:#abb2bf;"> true,
+</span><span style="color:#abb2bf;">  </span><span style="color:#9acc76;">&quot;CPUSet&quot;</span><span style="color:#eb6772;">:</span><span style="color:#abb2bf;"> true,
+</span><span style="color:#abb2bf;">  </span><span style="color:#9acc76;">&quot;PidsLimit&quot;</span><span style="color:#eb6772;">:</span><span style="color:#abb2bf;"> true,
+</span><span style="color:#abb2bf;">  </span><span style="color:#9acc76;">&quot;IPv4Forwarding&quot;</span><span style="color:#eb6772;">:</span><span style="color:#abb2bf;"> true,
+</span><span style="color:#abb2bf;">  </span><span style="color:#9acc76;">&quot;BridgeNfIptables&quot;</span><span style="color:#eb6772;">:</span><span style="color:#abb2bf;"> true,
+</span><span style="color:#abb2bf;">  </span><span style="color:#9acc76;">&quot;BridgeNfIp6tables&quot;</span><span style="color:#eb6772;">:</span><span style="color:#abb2bf;"> true,
+</span><span style="color:#abb2bf;">  </span><span style="color:#9acc76;">&quot;Debug&quot;</span><span style="color:#eb6772;">:</span><span style="color:#abb2bf;"> false,
+</span><span style="color:#abb2bf;">  </span><span style="color:#eb6772;">...
+</span></code></pre>
+<h1 id="conclusion">Conclusion</h1>
+<p>To wrap up, I found out why the <code>daemon.json</code> file was missing from my host system. It was because the Docker daemon was started with the default configuration. I also learned how to get the Docker daemon's configuration using the <code>docker info</code> command and the Go SDK. I hope this post helps you understand the Docker daemon and its configuration better. Thank you for reading!</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;posts&#x2F;setting-up-kubernetes-cluster-on-aws-ec2-with-calico-cni&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Setting Up Kubernetes Cluster on AWS EC2 with Calico CNI
+            </a>
+          </div>
+           
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@8.13.5/dist/mermaid.min.js" integrity="sha384-0yWn54pSGtfKCU+skfA69l25VsCw+MZt4LQov3xNRoS7YkAMrFokGgSBnAWSK4pv" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.xkcd@1.1.13/dist/chart.xkcd.min.js" integrity="sha384-xC3h1+IHXK8seA+8KfT79Z4e0GPsznjXBoMa5nd8ooWKplPyXx92NOmljWxLC/cs" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js" integrity="sha384-Pulw7+h73841BQIK0LzJCydKRPChJUF9w8h8W0o3h+cLtoyNPJS847bQauLWOTwg" crossorigin="anonymous"></script>
+  
+  <script src="https://g-song-i.github.io/elasticlunr.min.js"></script>
+  <script src="https://g-song-i.github.io/search_index.en.js"></script><script src="https://g-song-i.github.io/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>

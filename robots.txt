@@ -1,0 +1,2 @@
+User-agent: *
+Sitemap: https://g-song-i.github.io/sitemap.xml

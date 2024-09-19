@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" integrity="sha384-oGm59HWAkwO32h2w8u0B98wKBZJwd6MbWtAJwQKCTffZjOXHXrnyv9Syjovgc+UV" crossorigin="anonymous">
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://g-song-i.github.io/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+Cecil&#x27;s Note | Trade-off between Code Abstraction and Performance
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NXE14VB61W"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-NXE14VB61W");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;g-song-i.github.io">Cecil&#x27;s Note</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;posts">
+            Posts
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;categories">
+            Categories
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Trade-off between Code Abstraction and Performance
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Cecil Gwak published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2024-07-10">July 10, 2024</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>7 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>1271 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://g-song-i.github.io/categories/clean-code/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Clean Code</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://g-song-i.github.io/categories/coding-convention/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Coding Convention</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://g-song-i.github.io/tags/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <h1 id="before-reading">Before Reading…</h1>
+<p>When I was in graduate school, I didn’t really need to code in a “well-structured” manner. What I needed was to implement code to prove that my academic theories worked. So, I had an idea of “how to code,” but it definitely differed from “how to code well.”</p>
+<p>Now, I am working as a research engineer in a company. This role still does not require me to code “well,” but I want to ensure my work is presentable and shareable with the development department. In this post, I will share the challenges I have encountered while coding.</p>
+<h1 id="chaotic-situation">Chaotic Situation</h1>
+<p>While developing a proof of concept (PoC) code, I encountered a quite chaotic situation. I wrote the code in Go, with two primary components: the <strong>collector</strong> and the <strong>evaluator</strong>. The objectives are:
+- <strong>Collector</strong>: To fetch cloud configurations from a Cloud Service Provider (CSP) using an Open API.
+- <strong>Evaluator</strong>: To assess these configurations to determine their security.
+Below is a portion of my project structure:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#6c7079;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#eb6772;">$</span><span style="color:#abb2bf;"> tree
+</span><span style="color:#5ebfcc;">.
+</span><span style="color:#eb6772;">├──</span><span style="color:#abb2bf;"> config.yaml
+</span><span style="color:#eb6772;">├──</span><span style="color:#abb2bf;"> docs
+</span><span style="color:#eb6772;">├──</span><span style="color:#abb2bf;"> main.go
+</span><span style="color:#eb6772;">├──</span><span style="color:#abb2bf;"> Makefile
+</span><span style="color:#eb6772;">├──</span><span style="color:#abb2bf;"> pkg
+</span><span style="color:#eb6772;">│</span><span style="color:#abb2bf;">   ├── audit
+</span><span style="color:#eb6772;">│</span><span style="color:#abb2bf;">   │   ├── firewall
+</span><span style="color:#eb6772;">│</span><span style="color:#abb2bf;">   │   │   ├── common.go
+</span><span style="color:#eb6772;">│</span><span style="color:#abb2bf;">   │   │   ├── common_test.go
+</span><span style="color:#eb6772;">│</span><span style="color:#abb2bf;">   │   │   └── types.go
+</span><span style="color:#eb6772;">│</span><span style="color:#abb2bf;">   │   ├── security_group
+</span><span style="color:#eb6772;">│</span><span style="color:#abb2bf;">   │   │   ├── common.go
+</span><span style="color:#eb6772;">│</span><span style="color:#abb2bf;">   │   │   ├── SCP_VPC_002.go
+</span><span style="color:#eb6772;">│</span><span style="color:#abb2bf;">   │   │   ├── SCP_VPC_003.go
+</span><span style="color:#eb6772;">│</span><span style="color:#abb2bf;">   │   │   ├── SCP_VPC_004.go
+</span><span style="color:#eb6772;">│</span><span style="color:#abb2bf;">   │   │   ├── SCP_VPC_005.go
+</span><span style="color:#eb6772;">│</span><span style="color:#abb2bf;">   │   │   └── types.go
+</span><span style="color:#eb6772;">│</span><span style="color:#abb2bf;">   ├── auth
+</span><span style="color:#eb6772;">│</span><span style="color:#abb2bf;">   │   └── create_request.go
+</span><span style="color:#eb6772;">│</span><span style="color:#abb2bf;">   ├── config
+</span><span style="color:#eb6772;">│</span><span style="color:#abb2bf;">   │   └── config.go
+</span><span style="color:#eb6772;">│</span><span style="color:#abb2bf;">   └── util
+</span><span style="color:#eb6772;">│</span><span style="color:#abb2bf;">       └── httpclient
+</span><span style="color:#eb6772;">│</span><span style="color:#abb2bf;">           └── httpclient.go
+</span><span style="color:#eb6772;">├──</span><span style="color:#abb2bf;"> scp-cspm // binary
+</span></code></pre>
+<ul>
+<li>
+<p>Each directory contains a <code>common.go</code>, which defines common functions used by the evaluator, and <code>types.go</code>, which is utilized when receiving responses from the CSP. Other components mainly belong to the evaluator.</p>
+</li>
+<li>
+<p>Here is an example from <code>security_group/common.go</code>:</p>
+</li>
+</ul>
+<pre data-lang="go" style="background-color:#2b303b;color:#6c7079;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#cd74e8;">package </span><span style="color:#eb6772;">file_storage
+</span><span style="color:#abb2bf;">
+</span><span style="color:#cd74e8;">import </span><span style="color:#abb2bf;">(
+</span><span style="color:#abb2bf;">	</span><span style="color:#9acc76;">&quot;mypath/pkg/config&quot;
+</span><span style="color:#abb2bf;">	</span><span style="color:#9acc76;">&quot;mypath/pkg/util/httpclient&quot;
+</span><span style="color:#abb2bf;">)
+</span><span style="color:#abb2bf;">
+</span><span style="color:#cd74e8;">func </span><span style="color:#5cb3fa;">listFileStorage</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">projectId </span><span style="color:#cd74e8;">string</span><span style="color:#abb2bf;">) (</span><span style="color:#adb7c9;">*</span><span style="color:#cd74e8;">ListResponseFileStoragesResponse</span><span style="color:#abb2bf;">, </span><span style="color:#cd74e8;">error</span><span style="color:#abb2bf;">) {
+</span><span style="color:#abb2bf;">	</span><span style="color:#eb6772;">fullURL </span><span style="color:#adb7c9;">:= </span><span style="color:#eb6772;">config</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">URLsConfig</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">PREFIX</span><span style="color:#abb2bf;">[</span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">] </span><span style="color:#adb7c9;">+ </span><span style="color:#eb6772;">config</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">URLsConfig</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">FILESTORAGE</span><span style="color:#abb2bf;">[</span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">]
+</span><span style="color:#abb2bf;">	</span><span style="color:#cd74e8;">return </span><span style="color:#eb6772;">httpclient</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">SendRequest</span><span style="color:#abb2bf;">[</span><span style="color:#eb6772;">ListResponseFileStoragesResponse</span><span style="color:#abb2bf;">](</span><span style="color:#9acc76;">&quot;GET&quot;</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">fullURL</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">config</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">AppConfig</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">AccessKey</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">config</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">AppConfig</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">AccessSecretKey</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">projectId</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">config</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">AppConfig</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">HeaderClientType</span><span style="color:#abb2bf;">)
+</span><span style="color:#abb2bf;">}
+</span><span style="color:#abb2bf;">
+</span><span style="color:#cd74e8;">func </span><span style="color:#5cb3fa;">getFileStorageDetail</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">projectId</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">fileStorageId </span><span style="color:#cd74e8;">string</span><span style="color:#abb2bf;">) (</span><span style="color:#adb7c9;">*</span><span style="color:#cd74e8;">FileStorageDetailResponseV3</span><span style="color:#abb2bf;">, </span><span style="color:#cd74e8;">error</span><span style="color:#abb2bf;">) {
+</span><span style="color:#abb2bf;">    </span><span style="color:#eb6772;">fullURL </span><span style="color:#adb7c9;">:= </span><span style="color:#eb6772;">config</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">URLsConfig</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">PREFIX</span><span style="color:#abb2bf;">[</span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">] </span><span style="color:#adb7c9;">+ </span><span style="color:#eb6772;">config</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">URLsConfig</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">FILESTORAGE</span><span style="color:#abb2bf;">[</span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">] </span><span style="color:#adb7c9;">+ </span><span style="color:#9acc76;">&quot;/&quot; </span><span style="color:#adb7c9;">+ </span><span style="color:#eb6772;">fileStorageId
+</span><span style="color:#abb2bf;">	</span><span style="color:#cd74e8;">return </span><span style="color:#eb6772;">httpclient</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">SendRequest</span><span style="color:#abb2bf;">[</span><span style="color:#eb6772;">FileStorageDetailResponseV3</span><span style="color:#abb2bf;">](</span><span style="color:#9acc76;">&quot;GET&quot;</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">fullURL</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">config</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">AppConfig</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">AccessKey</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">config</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">AppConfig</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">AccessSecretKey</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">projectId</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">config</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">AppConfig</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">HeaderClientType</span><span style="color:#abb2bf;">)
+</span><span style="color:#abb2bf;">}
+</span></code></pre>
+<ul>
+<li>Funtionalities of this code:
+<ul>
+<li>It calls <code>SendRequest</code> with a specified type from <code>types.go</code>.</li>
+<li>It processes the response and returns it.</li>
+</ul>
+</li>
+<li>Characteristics of this code:
+<ul>
+<li>It is an internal function, as indicated by the lowercase first letter of the function name.</li>
+<li>It uses <code>config</code>, which may <strong>not seem directly related to this function's primary operations</strong>.</li>
+</ul>
+</li>
+<li>Although I was initially uncomfortable using <code>config</code> in this function, as it seemed indirectly related to the function’s core duties, the fact that four evaluators are already using this function led me to continue its use.</li>
+</ul>
+<h1 id="testing-operation-more-chaotic">Testing Operation: More Chaotic</h1>
+<p>After this, I integrated the Go-Gin framework into the project to create RESTful APIs and expose API documentation to the development team. Given the increased complexity of the project structure, it became necessary to create test code for each function.</p>
+<ul>
+<li>Consequently, I added a new <code>common.go</code> under the firewall directory:</li>
+</ul>
+<pre data-lang="go" style="background-color:#2b303b;color:#6c7079;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#cd74e8;">func </span><span style="color:#5cb3fa;">listFirewall</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">projectId </span><span style="color:#cd74e8;">string</span><span style="color:#abb2bf;">) (</span><span style="color:#adb7c9;">*</span><span style="color:#cd74e8;">ListResponseFirewallListItemResponse</span><span style="color:#abb2bf;">, </span><span style="color:#cd74e8;">error</span><span style="color:#abb2bf;">) {
+</span><span style="color:#abb2bf;">	</span><span style="color:#eb6772;">fullURL </span><span style="color:#adb7c9;">:= </span><span style="color:#eb6772;">config</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">URLsConfig</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">PREFIX</span><span style="color:#abb2bf;">[</span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">] </span><span style="color:#adb7c9;">+ </span><span style="color:#eb6772;">config</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">URLsConfig</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">FILESTORAGE</span><span style="color:#abb2bf;">[</span><span style="color:#db9d63;">0</span><span style="color:#abb2bf;">]
+</span><span style="color:#abb2bf;">	</span><span style="color:#cd74e8;">return </span><span style="color:#eb6772;">httpclient</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">SendRequest</span><span style="color:#abb2bf;">[</span><span style="color:#eb6772;">ListResponseFirewallListItemResponse</span><span style="color:#abb2bf;">](</span><span style="color:#9acc76;">&quot;GET&quot;</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">fullURL</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">config</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">AppConfig</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">AccessKey</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">config</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">AppConfig</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">AccessSecretKey</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">projectId</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">config</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">AppConfig</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">HeaderClientType</span><span style="color:#abb2bf;">)
+</span><span style="color:#abb2bf;">}
+</span></code></pre>
+<ul>
+<li>However, when I tried to test it, I encountered an error because I could not initialize the <code>config()</code> function during local tests; it does not support this since <code>config</code> locates the executable path and imports <code>config.yaml</code> from that position. I considered rewriting <code>config</code> to use a relative path, but I realized that would not address the core problem.</li>
+<li>To resolve this, I modified the code as follows:</li>
+</ul>
+<pre data-lang="go" style="background-color:#2b303b;color:#6c7079;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#cd74e8;">func </span><span style="color:#5cb3fa;">listFirewall</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">projectId </span><span style="color:#cd74e8;">string</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">fullURL </span><span style="color:#cd74e8;">string</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">accessKey </span><span style="color:#cd74e8;">string</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">accessSecretKey </span><span style="color:#cd74e8;">string</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">headerClientType </span><span style="color:#cd74e8;">string</span><span style="color:#abb2bf;">) (</span><span style="color:#adb7c9;">*</span><span style="color:#cd74e8;">ListResponseFirewallListItemResponse</span><span style="color:#abb2bf;">, </span><span style="color:#cd74e8;">error</span><span style="color:#abb2bf;">) {
+</span><span style="color:#abb2bf;">	</span><span style="color:#cd74e8;">return </span><span style="color:#eb6772;">httpclient</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">SendRequest</span><span style="color:#abb2bf;">[</span><span style="color:#eb6772;">ListResponseFirewallListItemResponse</span><span style="color:#abb2bf;">](</span><span style="color:#9acc76;">&quot;GET&quot;</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">fullURL</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">accessKey</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">accessSecretKey</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">projectId</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">headerClientType</span><span style="color:#abb2bf;">)
+</span><span style="color:#abb2bf;">}
+</span></code></pre>
+<ul>
+<li>I also created common_test.go to include the test code:</li>
+</ul>
+<pre data-lang="go" style="background-color:#2b303b;color:#6c7079;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#cd74e8;">func </span><span style="color:#5cb3fa;">TestListFirewall</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">t </span><span style="color:#adb7c9;">*</span><span style="color:#eb6772;">testing</span><span style="color:#abb2bf;">.</span><span style="color:#cd74e8;">T</span><span style="color:#abb2bf;">) {
+</span><span style="color:#abb2bf;">	</span><span style="color:#eb6772;">projectID </span><span style="color:#adb7c9;">:= </span><span style="color:#9acc76;">&quot;&quot;
+</span><span style="color:#abb2bf;">	</span><span style="color:#eb6772;">fullURL </span><span style="color:#adb7c9;">:= </span><span style="color:#9acc76;">&quot;&quot;
+</span><span style="color:#abb2bf;">	</span><span style="color:#eb6772;">accessKey </span><span style="color:#adb7c9;">:= </span><span style="color:#9acc76;">&quot;&quot;
+</span><span style="color:#abb2bf;">	</span><span style="color:#eb6772;">accessSecretKey </span><span style="color:#adb7c9;">:= </span><span style="color:#9acc76;">&quot;&quot;
+</span><span style="color:#abb2bf;">	</span><span style="color:#eb6772;">headerClientType </span><span style="color:#adb7c9;">:= </span><span style="color:#9acc76;">&quot;OpenApi&quot;
+</span><span style="color:#abb2bf;">
+</span><span style="color:#abb2bf;">	</span><span style="color:#eb6772;">response</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">err </span><span style="color:#adb7c9;">:= </span><span style="color:#eb6772;">listFirewall</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">projectID</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">fullURL</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">accessKey</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">accessSecretKey</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">headerClientType</span><span style="color:#abb2bf;">)
+</span><span style="color:#abb2bf;">	</span><span style="color:#cd74e8;">if </span><span style="color:#eb6772;">err </span><span style="color:#adb7c9;">!= </span><span style="color:#db9d63;">nil </span><span style="color:#abb2bf;">{
+</span><span style="color:#abb2bf;">		</span><span style="color:#eb6772;">t</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">Errorf</span><span style="color:#abb2bf;">(</span><span style="color:#9acc76;">&quot;Failed to list firewall: </span><span style="color:#db9d63;">%v</span><span style="color:#9acc76;">&quot;</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">err</span><span style="color:#abb2bf;">)
+</span><span style="color:#abb2bf;">	}
+</span><span style="color:#abb2bf;">	</span><span style="color:#eb6772;">fmt</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">Println</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">response</span><span style="color:#abb2bf;">)
+</span><span style="color:#abb2bf;">}
+</span></code></pre>
+<p>This modification successfully resolved the issue.</p>
+<h2 id="isn-t-it-too-abstract">Isn’t it too abstract?</h2>
+<p>Okay, now I've resolved the problem. But have I really addressed the root issue? Let me summarize the current situation:</p>
+<ul>
+<li>Common functions, such as <code>listFirewall</code>, merely act as bridges between callers and evaluators.</li>
+<li>They do not directly use <code>config</code>.</li>
+<li>They are internal functions and can only be called from evaluators when needed.</li>
+</ul>
+<p>This setup seems simple, but is it appropriately abstract or efficient? I find myself facing new complexities.</p>
+<p>I tried this to test performance of two functions:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#6c7079;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#cd74e8;">for</span><span style="color:#abb2bf;"> i </span><span style="color:#cd74e8;">in </span><span style="color:#abb2bf;">{1..10}</span><span style="color:#adb7c9;">; </span><span style="color:#cd74e8;">do </span><span style="color:#eb6772;">curl -X </span><span style="color:#9acc76;">&#39;GET&#39; &#39;http://172.16.0.120:10902/Firewall/test-01&#39;</span><span style="color:#eb6772;"> -H </span><span style="color:#9acc76;">&#39;accept: application/json&#39;</span><span style="color:#adb7c9;">; </span><span style="color:#eb6772;">sleep</span><span style="color:#abb2bf;"> 1</span><span style="color:#adb7c9;">;
+</span></code></pre>
+<p>(I &quot;planned to upload testing result as images&quot;, but I was too lazy, sorry 🤣)</p>
+<ul>
+<li>Performance:
+<ul>
+<li>With an abstraction layer: approximately 400ms overall</li>
+<li>Directly sending requests: approximately 325ms overall</li>
+</ul>
+</li>
+<li>Of course, the difference isn't significant, as it's just a small abstraction layer in action. Also, I can't be entirely sure about the constant responsiveness of the CSP’s server, but I wanted to run this test anyway. It was more about satisfying my curiosity and seeing the practical impact of the abstraction, rather than expecting major discrepancies. Testing like this helps me understand the overhead introduced by additional layers in our architecture, even if minimal. It’s an essential part of optimizing and ensuring that we’re making informed decisions when it comes to the balance between code maintainability and system performance.</li>
+</ul>
+<h1 id="how-to-decide-to-abstract-or-not-to-abstract">How to decide to abstract or not to abstract?</h1>
+<p>Here, I summarize some points, which can be discussed when you decide whether to abstract the code or not. I read articles and papers, then discuss them with GPT. 🙂 Hope it will be fun</p>
+<h2 id="reusability">Reusability</h2>
+<p>Reusability is paramount in software development as it significantly reduces the time and effort required to develop and maintain code. By designing modules and components that can be reused in different parts of the application or even in different projects, developers can ensure consistency, reduce errors, and accelerate development cycles. Effective reusability promotes a DRY (Don't Repeat Yourself) approach and can lead to more efficient, cleaner code.</p>
+<h2 id="complexity">Complexity</h2>
+<p>Managing complexity effectively is crucial for maintaining the readability and maintainability of the codebase. Complexity can arise from various factors, such as intricate control flow, high inter-module dependencies, or simply from trying to incorporate too many features at once. Simplifying complex systems through well-thought-out design patterns, clear documentation, and modular architecture can help in minimizing the cognitive load on developers and maintaining the system more manageable over time.</p>
+<h2 id="testability">Testability</h2>
+<p>Testability is a measure of how easily a software system can be tested. This is crucial for ensuring long-term reliability and ease of changes. Highly testable systems are modular, have clear boundaries, and minimal dependencies, which allow for more straightforward unit testing. Investing in testability leads to software that is less prone to bugs and easier to update and expand without introducing errors.</p>
+<h2 id="scalability">Scalability</h2>
+<p>Scalability must be considered to accommodate growth in user demand, data volume, and computational intensity without compromising performance. Designing systems that can scale effectively involves considerations of load balancing, resource management, and the ability to upgrade or expand components without significant disruptions. Scalability ensures that the software continues to perform optimally as it grows and adapts to increased operational demands.</p>
+<h1 id="results">Results?</h1>
+<p>Finally, I decided to abstract my code for the following reasons:</p>
+<ul>
+<li>My code is primarily for a <strong>Proof of Concept (PoC)</strong>, so <strong>it does not currently need to scale significantly</strong>. The current level of abstraction should suffice.</li>
+<li>However, since the development team will review my code, <strong>clarity is crucial.</strong> Clear, well-abstracted code facilitates easier understanding and maintenance.</li>
+<li>Some interface code, such as authentication, making requests, and common functions, may be reused by the development team. This <strong>reusability</strong> underscores the need for clarity.</li>
+<li>The code must be <strong>easy to test</strong> whenever new functions are introduced, ensuring reliability and ease of maintenance.</li>
+</ul>
+<p>Through this exploration, I found the process of optimizing and abstracting code to be quite engaging. It provided a valuable opportunity to reconsider best practices in coding within the context of a real-world application.</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;posts&#x2F;how-to-manage-your-kubernetes-01-rancher&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              How to manage your kubernetes cluster 01: Rancher
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;posts&#x2F;how-to-validate-docker-is-secure&#x2F;">
+              How to Validate That Your Docker Configuration is Secure Using the Go SDK<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@8.13.5/dist/mermaid.min.js" integrity="sha384-0yWn54pSGtfKCU+skfA69l25VsCw+MZt4LQov3xNRoS7YkAMrFokGgSBnAWSK4pv" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.xkcd@1.1.13/dist/chart.xkcd.min.js" integrity="sha384-xC3h1+IHXK8seA+8KfT79Z4e0GPsznjXBoMa5nd8ooWKplPyXx92NOmljWxLC/cs" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js" integrity="sha384-Pulw7+h73841BQIK0LzJCydKRPChJUF9w8h8W0o3h+cLtoyNPJS847bQauLWOTwg" crossorigin="anonymous"></script>
+  
+  <script src="https://g-song-i.github.io/elasticlunr.min.js"></script>
+  <script src="https://g-song-i.github.io/search_index.en.js"></script><script src="https://g-song-i.github.io/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>
