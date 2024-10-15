@@ -168,10 +168,10 @@ galleria.enabled = true
 
 navbar_items = [
     { code = "en", nav_items = [
-        { url = "$BASE_URL/", name = "Home" },
-        { url = "$BASE_URL/posts", name = "Posts" },
-        { url = "$BASE_URL/tags", name = "Tags" },
-        { url = "$BASE_URL/categories", name = "Categories" },
+        { url = "https://g-song-i.github.io/", name = "Home" },
+        { url = "https://g-song-i.github.io/posts", name = "Posts" },
+        { url = "https://g-song-i.github.io/tags", name = "Tags" },
+        { url = "https://g-song-i.github.io/categories", name = "Categories" },
     ] },
 ]
 
