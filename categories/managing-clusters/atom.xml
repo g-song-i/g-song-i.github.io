@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>Cecil&#x27;s Note - Managing Clusters</title>
+    <subtitle>Theory will only take you so far</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://g-song-i.github.io/categories/managing-clusters/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://g-song-i.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2024-07-04T00:00:00+00:00</updated>
+    <id>https://g-song-i.github.io/categories/managing-clusters/atom.xml</id>
+    <entry xml:lang="en">
+        <title>How to manage your kubernetes cluster 01: Rancher</title>
+        <published>2024-07-04T00:00:00+00:00</published>
+        <updated>2024-07-04T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://g-song-i.github.io/posts/how-to-manage-your-kubernetes-01-rancher/"/>
+        <id>https://g-song-i.github.io/posts/how-to-manage-your-kubernetes-01-rancher/</id>
+        
+        <content type="html" xml:base="https://g-song-i.github.io/posts/how-to-manage-your-kubernetes-01-rancher/">&lt;h1 id=&quot;table-of-contents&quot;&gt;Table of Contents&lt;&#x2F;h1&gt;
+&lt;p&gt;&lt;a href=&quot;https:&#x2F;&#x2F;g-song-i.github.io&#x2F;posts&#x2F;how-to-manage-your-kubernetes-01-rancher&#x2F;#overview&quot;&gt;Overview&lt;&#x2F;a&gt; &lt;br&#x2F;&gt;
+        &lt;a href=&quot;https:&#x2F;&#x2F;g-song-i.github.io&#x2F;posts&#x2F;how-to-manage-your-kubernetes-01-rancher&#x2F;#install-rancher-with-docker&quot;&gt;Install Rancher with Docker&lt;&#x2F;a&gt; &lt;br&#x2F;&gt;
+        &lt;a href=&quot;https:&#x2F;&#x2F;g-song-i.github.io&#x2F;posts&#x2F;how-to-manage-your-kubernetes-01-rancher&#x2F;#dive-into-rancher&quot;&gt;Dive into Rancher&lt;&#x2F;a&gt; &lt;br&#x2F;&gt;
+            &lt;a href=&quot;https:&#x2F;&#x2F;g-song-i.github.io&#x2F;posts&#x2F;how-to-manage-your-kubernetes-01-rancher&#x2F;#login&quot;&gt;Login&lt;&#x2F;a&gt; &lt;br&#x2F;&gt;
+            &lt;a href=&quot;https:&#x2F;&#x2F;g-song-i.github.io&#x2F;posts&#x2F;how-to-manage-your-kubernetes-01-rancher&#x2F;#importing-your-existing-cluster&quot;&gt;Importing your existing cluster&lt;&#x2F;a&gt; &lt;br&#x2F;&gt;
+            &lt;a href=&quot;https:&#x2F;&#x2F;g-song-i.github.io&#x2F;posts&#x2F;how-to-manage-your-kubernetes-01-rancher&#x2F;#explore-dashboard&quot;&gt;Explore Dashboard&lt;&#x2F;a&gt; &lt;br&#x2F;&gt;
+&lt;a href=&quot;https:&#x2F;&#x2F;g-song-i.github.io&#x2F;posts&#x2F;how-to-manage-your-kubernetes-01-rancher&#x2F;#more&quot;&gt;More...&lt;&#x2F;a&gt; &lt;br&#x2F;&gt;
+        &lt;a href=&quot;https:&#x2F;&#x2F;g-song-i.github.io&#x2F;posts&#x2F;how-to-manage-your-kubernetes-01-rancher&#x2F;#logging-in-rancher&quot;&gt;Logging in Rancher&lt;&#x2F;a&gt; &lt;br&#x2F;&gt;
+        &lt;a href=&quot;https:&#x2F;&#x2F;g-song-i.github.io&#x2F;posts&#x2F;how-to-manage-your-kubernetes-01-rancher&#x2F;#setting-up-alerts&quot;&gt;Setting Up Alerts&lt;&#x2F;a&gt; &lt;br&#x2F;&gt;
+&lt;a href=&quot;https:&#x2F;&#x2F;g-song-i.github.io&#x2F;posts&#x2F;how-to-manage-your-kubernetes-01-rancher&#x2F;#when-is-using-rancher-a-good-choice&quot;&gt;When Is Using Rancher a Good Choice?&lt;&#x2F;a&gt; &lt;br&#x2F;&gt;
+        &lt;a href=&quot;https:&#x2F;&#x2F;g-song-i.github.io&#x2F;posts&#x2F;how-to-manage-your-kubernetes-01-rancher&#x2F;#user-friendliness-for-non-terminal-users&quot;&gt;User-Friendliness for Non-Terminal Users&lt;&#x2F;a&gt; &lt;br&#x2F;&gt;
+        &lt;a href=&quot;https:&#x2F;&#x2F;g-song-i.github.io&#x2F;posts&#x2F;how-to-manage-your-kubernetes-01-rancher&#x2F;#comprehensive-management-from-a-single-pane&quot;&gt;Comprehensive Management from a Single Pane&lt;&#x2F;a&gt; &lt;br&#x2F;&gt;
+        &lt;a href=&quot;https:&#x2F;&#x2F;g-song-i.github.io&#x2F;posts&#x2F;how-to-manage-your-kubernetes-01-rancher&#x2F;#extensive-catalog-of-applications&quot;&gt;Extensive Catalog of Applications&lt;&#x2F;a&gt; &lt;br&#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;overview&quot;&gt;Overview&lt;&#x2F;h1&gt;
+&lt;p&gt;Do you want to manage your Kubernetes cluster? There are several ways to manage it such as using the kubectl CLI if you are familiar with the terminal interface, Rancher from SUSE if you prefer managing through a console, and k9s if you want a more stylish approach!&lt;&#x2F;p&gt;
+&lt;p&gt;In this post, I will explain how to install Rancher for managing Kubernetes and discuss when it is a good choice.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;install-rancher-with-docker&quot;&gt;Install Rancher with Docker&lt;&#x2F;h2&gt;
+&lt;p&gt;Note that this method of installation is just for testing and demonstration purposes as described at &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;ranchermanager.docs.rancher.com&#x2F;getting-started&#x2F;installation-and-upgrade#docker-install&quot;&gt;Rancher documentation&lt;&#x2F;a&gt;. You should choose another method if it is for production use.&lt;&#x2F;p&gt;
+&lt;p&gt;Here I have a single docker-compose file to set up and tear down the Rancher container:&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#6c7079;&quot;&gt;&lt;code&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;version: &amp;#39;3&amp;#39;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;services:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  rancher:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    image: rancher&#x2F;rancher:v2.8-head
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    container_name: rancher_test
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    restart: always
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    ports:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    - &amp;quot;80:80&#x2F;tcp&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    - &amp;quot;443:443&#x2F;tcp&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    volumes:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    - &amp;quot;.&#x2F;rancher-data:&#x2F;var&#x2F;lib&#x2F;rancher&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    environment:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    - CATTLE_BOOTSTRAP_PASSWORD=1234
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    privileged: true
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Now you just need to run the command (you might need &amp;quot;sudo&amp;quot; privileges):&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#2b303b;color:#6c7079;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;$&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; docker-compose up
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Creating&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; network &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;rancher_default&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; with the default driver
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Pulling&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; rancher (rancher&#x2F;rancher:v2.8-head)&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;v2.8-head:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; Pulling from rancher&#x2F;rancher
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;088fce18aff4:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; Pull complete
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;8c6a13d6a83e:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; Pull complete
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;378e6ec2cbbc:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; Pull complete
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;dive-into-rancher&quot;&gt;Dive into Rancher&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;login&quot;&gt;Login&lt;&#x2F;h3&gt;
+&lt;p&gt;Now you can access the website via &amp;quot;http&amp;quot;. Then you might see the login screen. Since we already defined the bootstrap password (CATTLE_BOOTSTRAP_PASSWORD) in the docker-compose file, enter &amp;quot;1234&amp;quot;.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;github.com&#x2F;g-song-i&#x2F;g-song-i.github.io&#x2F;assets&#x2F;57793091&#x2F;7dd8709b-29d3-42a1-9185-a923d0cb5a37&quot; alt=&quot;RancherBootstrapLogin&quot; &#x2F;&gt; &lt;br&#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;importing-your-existing-cluster&quot;&gt;Importing your existing cluster&lt;&#x2F;h3&gt;
+&lt;p&gt;Let&#x27;s import your existing cluster. To import the cluster into Rancher, you must have &amp;quot;cluster-admin&amp;quot; privileges. You can apply a clusterrolebinding as follows:&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#6c7079;&quot;&gt;&lt;code&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;kubectl create clusterrolebinding cluster-admin-binding \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  --clusterrole cluster-admin \
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  --user [USER_ACCOUNT]
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;You can check which account you are using with the command (user in context):&lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#6c7079;&quot;&gt;&lt;code&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;kubectl config view --minify
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;(or) kubectl config current-context
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Now click &amp;quot;Import Existing&amp;quot;, 
+&lt;img src=&quot;https:&#x2F;&#x2F;github.com&#x2F;g-song-i&#x2F;g-song-i.github.io&#x2F;assets&#x2F;57793091&#x2F;1f96795c-4e36-46ea-8f4c-2657949ddd59&quot; alt=&quot;ImportingClusterButton&quot; &#x2F;&gt; &lt;br&#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Write the cluster&#x27;s name, and press the create button. 
+&lt;img src=&quot;https:&#x2F;&#x2F;github.com&#x2F;g-song-i&#x2F;g-song-i.github.io&#x2F;assets&#x2F;57793091&#x2F;14c6563b-29d4-4786-9649-3547f586adc1&quot; alt=&quot;CreateCluster&quot; &#x2F;&gt; &lt;br&#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;Then you might see some command lines to apply Rancher&#x27;s YAML to create some pods for importing. I tried the first one &lt;code&gt;kubectl apply -f https:&#x2F;&#x2F;~.yaml&lt;&#x2F;code&gt;, but I encountered the message &lt;code&gt;Unable to connect to the server: tls: failed to verify certificate: x509: certificate signed by unknown authority&lt;&#x2F;code&gt;, I tried the second line &lt;code&gt;curl --insecure --sfL ... | kubectl apply -f -&lt;&#x2F;code&gt;, and it worked for me.&lt;&#x2F;p&gt;
+&lt;p&gt;You can enter the command &lt;code&gt;kubectl get pods -A&lt;&#x2F;code&gt; just to see what pods are created for this work. &lt;&#x2F;p&gt;
+&lt;pre style=&quot;background-color:#2b303b;color:#6c7079;&quot;&gt;&lt;code&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;$ kubectl get pods -A
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;NAMESPACE       NAME                                       READY   STATUS              RESTARTS   AGE
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;cattle-system   cattle-cluster-agent-845554d4f8-qnksl      0&#x2F;1     ContainerCreating   0          12s
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;And now you can explore your cluster and their resources on the Rancher dashboard!
+&lt;img src=&quot;https:&#x2F;&#x2F;github.com&#x2F;g-song-i&#x2F;g-song-i.github.io&#x2F;assets&#x2F;57793091&#x2F;6dc20e0f-03f3-4b68-8760-505c1957fbfe&quot; alt=&quot;dashborad&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;explore-dashboard&quot;&gt;Explore Dashboard&lt;&#x2F;h3&gt;
+&lt;p&gt;From here, you can see useful cluster information to inspect and debug your cluster. Rancher&#x27;s dashboard offers a comprehensive overview of your cluster&#x27;s health, resource usage, and more. You can utilize the dashboard to manage workloads, configure network policies, and set up service discovery.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;more&quot;&gt;More...&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;logging-in-rancher&quot;&gt;Logging in Rancher&lt;&#x2F;h3&gt;
+&lt;p&gt;Rancher enhances the management of Kubernetes clusters by providing comprehensive logging capabilities that are crucial for monitoring the health and activities within your cluster. Here’s a brief overview of the logging features in Rancher:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Centralized Logging&lt;&#x2F;li&gt;
+&lt;li&gt;Integration with Multiple Logging Backends&lt;&#x2F;li&gt;
+&lt;li&gt;Log Analysis and Troubleshooting&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;setting-up-alerts&quot;&gt;Setting Up Alerts&lt;&#x2F;h3&gt;
+&lt;p&gt;Rancher allows you to set up &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;ranchermanager.docs.rancher.com&#x2F;v2.0-v2.4&#x2F;reference-guides&#x2F;rancher-project-tools&#x2F;project-alerts&quot;&gt;alerts&lt;&#x2F;a&gt; for various events within your cluster. This feature helps in proactive monitoring and can alert administrators about critical issues before they impact your operations. Setting up alerts involves specifying the conditions and thresholds that trigger notifications.&lt;&#x2F;p&gt;
+&lt;p&gt;By integrating these features into your daily operations, you can maintain a robust, efficient, and secure Kubernetes environment, ensuring your applications run smoothly and reliably.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;when-is-using-rancher-a-good-choice&quot;&gt;When Is Using Rancher a Good Choice?&lt;&#x2F;h1&gt;
+&lt;p&gt;While tools like kubectl and k9s offer powerful ways to interact with Kubernetes, each has its context where it excels. Rancher, in particular, stands out in several scenarios:&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;user-friendliness-for-non-terminal-users&quot;&gt;User-Friendliness for Non-Terminal Users&lt;&#x2F;h2&gt;
+&lt;p&gt;One of the primary advantages of using Rancher is its user-friendly graphical interface. If you or your team are not familiar or comfortable with command-line interfaces, Rancher provides a more accessible entry point into managing Kubernetes. Its dashboard presents complex cluster information and operations in a visual format, making it easier to understand and manage without deep command-line expertise.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;comprehensive-management-from-a-single-pane&quot;&gt;Comprehensive Management from a Single Pane&lt;&#x2F;h2&gt;
+&lt;p&gt;Rancher offers a centralized management pane for all Kubernetes clusters. This is particularly useful for organizations managing multiple clusters, possibly across different environments (cloud and on-prem). Instead of switching between different terminal windows or scripts, Rancher gives you a unified overview and control point for deploying, managing, and scaling applications across all your clusters.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;extensive-catalog-of-applications&quot;&gt;Extensive Catalog of Applications&lt;&#x2F;h2&gt;
+&lt;p&gt;Rancher comes with a built-in catalog of Helm charts and other applications, which can be deployed with just a few clicks. This is particularly advantageous for teams looking to rapidly deploy and test new applications without going through the CLI-based setup of Helm or other package managers.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>

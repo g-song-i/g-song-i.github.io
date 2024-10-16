@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" integrity="sha384-oGm59HWAkwO32h2w8u0B98wKBZJwd6MbWtAJwQKCTffZjOXHXrnyv9Syjovgc+UV" crossorigin="anonymous">
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://g-song-i.github.io/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+Cecil&#x27;s Note | How to Validate That Your Docker Configuration is Secure Using the Go SDK
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NXE14VB61W"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-NXE14VB61W");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;g-song-i.github.io">Cecil&#x27;s Note</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;posts">
+            Posts
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;categories">
+            Categories
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            How to Validate That Your Docker Configuration is Secure Using the Go SDK
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Cecil Gwak published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2024-08-27">August 27, 2024</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>4 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>756 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://g-song-i.github.io/categories/docker/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Docker</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://g-song-i.github.io/categories/compliance/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Compliance</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://g-song-i.github.io/categories/cis-benchmark/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>CIS Benchmark</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://g-song-i.github.io/tags/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <h1 id="overview">Overview</h1>
+<p>Today, I'll discuss how to interact with Docker on your host using the Go SDK. The 'go-docker' project by the Docker group was archived on March 11, 2024, and integrated into the Moby project. This change has modified how it is used.</p>
+<p>Next, I will explain how to verify if your Docker environment is properly configured for production. I will reference the CIS benchmark and discuss how to maintain a secure environment in compliance with these standards.</p>
+<h1 id="get-docker-s-configuration-from-a-docker-client">Get Docker’s Configuration from a Docker Client</h1>
+<h2 id="create-docker-client">Create Docker Client</h2>
+<p>To retrieve Docker’s configuration from the Docker daemon, you first need to create a Docker client. Creating a new Docker client with the following code is recommended for efficiency and reusability:</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#6c7079;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#cd74e8;">package </span><span style="color:#eb6772;">client
+</span><span style="color:#abb2bf;">
+</span><span style="color:#cd74e8;">import </span><span style="color:#abb2bf;">(
+</span><span style="color:#abb2bf;">    </span><span style="color:#9acc76;">&quot;github.com/docker/docker/client&quot;
+</span><span style="color:#abb2bf;">    </span><span style="color:#9acc76;">&quot;context&quot;
+</span><span style="color:#abb2bf;">    </span><span style="color:#9acc76;">&quot;log&quot;
+</span><span style="color:#abb2bf;">)
+</span><span style="color:#abb2bf;">
+</span><span style="color:#cd74e8;">type </span><span style="color:#abb2bf;">DockerClient </span><span style="color:#cd74e8;">struct </span><span style="color:#abb2bf;">{
+</span><span style="color:#abb2bf;">    </span><span style="color:#eb6772;">Client </span><span style="color:#adb7c9;">*</span><span style="color:#eb6772;">client</span><span style="color:#abb2bf;">.</span><span style="color:#cd74e8;">Client
+</span><span style="color:#abb2bf;">}
+</span><span style="color:#abb2bf;">
+</span><span style="color:#cd74e8;">func </span><span style="color:#5cb3fa;">NewDockerClient</span><span style="color:#abb2bf;">() (</span><span style="color:#adb7c9;">*</span><span style="color:#cd74e8;">DockerClient</span><span style="color:#abb2bf;">, </span><span style="color:#cd74e8;">error</span><span style="color:#abb2bf;">) {
+</span><span style="color:#abb2bf;">    </span><span style="color:#eb6772;">cli</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">err </span><span style="color:#adb7c9;">:= </span><span style="color:#eb6772;">client</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">NewClientWithOpts</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">client</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">FromEnv</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">client</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">WithAPIVersionNegotiation</span><span style="color:#abb2bf;">())
+</span><span style="color:#abb2bf;">    </span><span style="color:#cd74e8;">if </span><span style="color:#eb6772;">err </span><span style="color:#adb7c9;">!= </span><span style="color:#db9d63;">nil </span><span style="color:#abb2bf;">{
+</span><span style="color:#abb2bf;">        </span><span style="color:#cd74e8;">return </span><span style="color:#db9d63;">nil</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">err
+</span><span style="color:#abb2bf;">    }
+</span><span style="color:#abb2bf;">    </span><span style="color:#cd74e8;">return </span><span style="color:#adb7c9;">&amp;</span><span style="color:#eb6772;">DockerClient</span><span style="color:#abb2bf;">{</span><span style="color:#eb6772;">Client</span><span style="color:#abb2bf;">: </span><span style="color:#eb6772;">cli</span><span style="color:#abb2bf;">}, </span><span style="color:#db9d63;">nil
+</span><span style="color:#abb2bf;">}
+</span></code></pre>
+<h2 id="create-middleware-function">Create Middleware Function</h2>
+<p>This process can be skipped as it merely replicates the original functionality. I created the middleware function for the SDK for convenience:</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#6c7079;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#cd74e8;">package </span><span style="color:#eb6772;">collector
+</span><span style="color:#abb2bf;">
+</span><span style="color:#cd74e8;">import </span><span style="color:#abb2bf;">(
+</span><span style="color:#abb2bf;">    </span><span style="color:#9acc76;">&quot;context&quot;
+</span><span style="color:#abb2bf;">    </span><span style="color:#9acc76;">&quot;agentless-for-docker-dev/util/client&quot;
+</span><span style="color:#abb2bf;">    </span><span style="color:#9acc76;">&quot;github.com/docker/docker/api/types/system&quot;
+</span><span style="color:#abb2bf;">)
+</span><span style="color:#abb2bf;">
+</span><span style="color:#cd74e8;">func </span><span style="color:#5cb3fa;">GetDetailedSystemInfo</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">dockerClient </span><span style="color:#adb7c9;">*</span><span style="color:#eb6772;">client</span><span style="color:#abb2bf;">.</span><span style="color:#cd74e8;">DockerClient</span><span style="color:#abb2bf;">) (</span><span style="color:#eb6772;">system</span><span style="color:#abb2bf;">.</span><span style="color:#cd74e8;">Info</span><span style="color:#abb2bf;">, </span><span style="color:#cd74e8;">error</span><span style="color:#abb2bf;">) {
+</span><span style="color:#abb2bf;">    </span><span style="color:#eb6772;">info</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">err </span><span style="color:#adb7c9;">:= </span><span style="color:#eb6772;">dockerClient</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">Client</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">Info</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">context</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">Background</span><span style="color:#abb2bf;">())
+</span><span style="color:#abb2bf;">    </span><span style="color:#cd74e8;">if </span><span style="color:#eb6772;">err </span><span style="color:#adb7c9;">!= </span><span style="color:#db9d63;">nil </span><span style="color:#abb2bf;">{
+</span><span style="color:#abb2bf;">        </span><span style="color:#cd74e8;">return </span><span style="color:#eb6772;">system</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">Info</span><span style="color:#abb2bf;">{}, </span><span style="color:#eb6772;">err
+</span><span style="color:#abb2bf;">    }
+</span><span style="color:#abb2bf;">    </span><span style="color:#cd74e8;">return </span><span style="color:#eb6772;">info</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">nil
+</span><span style="color:#abb2bf;">}
+</span><span style="color:#abb2bf;">
+</span></code></pre>
+<h2 id="run-it">Run it!</h2>
+<p>Now, you can run the code in your desired manner. In my case, I expose this code via the go-gin web framework and Swagger API docs, allowing you to simply click the “Execute” button to retrieve the data. The result provides comprehensive information about your Docker system.</p>
+<p><img src="https://github.com/user-attachments/assets/18f13d19-7271-4dd9-932d-13eefe592846" alt="Swagger Docs" /></p>
+<h1 id="cis-benchmark">CIS Benchmark</h1>
+<h2 id="understanding-cis-benchmark">Understanding CIS Benchmark</h2>
+<p>Before starting the evaluation of the security benchmark, let's explore what the CIS benchmark is and why it is important to adhere to it.</p>
+<h3 id="cis-benchmark-1">CIS Benchmark</h3>
+<p>The CIS (Center for Internet Security) Benchmarks are consensus-based best practice standards for security configurations. They offer detailed guidelines for various platforms and systems to ensure secure configurations.</p>
+<h3 id="why-is-it-important">Why is it important?</h3>
+<ul>
+<li><strong>Enhanced Security:</strong> CIS Benchmarks provide technical controls to mitigate vulnerabilities and protect assets from cyber attacks.</li>
+<li><strong>Compliance:</strong> Adhering to CIS Benchmarks helps meet regulatory requirements aligned with standards such as HIPAA, PCI-DSS, and SOX.</li>
+<li><strong>Consistent Implementation:</strong> Following CIS Benchmarks enables organizations to implement consistent security policies and procedures, standardizing security across systems and ensuring uniform security levels.</li>
+</ul>
+<h1 id="validate-if-your-docker-configuration-is-secure">Validate if Your Docker Configuration is Secure</h1>
+<h2 id="ensure-live-restore-is-enabled"><strong>Ensure live restore is enabled</strong></h2>
+<p>One critical aspect of the CIS Docker Benchmark is “<strong>2.15 Ensure live restore is enabled</strong>.” Here’s a quote from the CIS Benchmark explaining its importance:</p>
+<blockquote>
+<p>The <code>--live-restore</code> option enables full support of daemon-less containers within Docker. It ensures that Docker does not stop containers on shutdown or restore and that it properly reconnects to the container when restarted.</p>
+</blockquote>
+<p>Then, how can we get this one? According to the CIS Benchmark, we can check this configuration through docker command like <code>docker info --format '{{ .LiveRestoreEnabled }}'</code>  or simple use ps command like <code>ps -ef | grep dockerd</code> .</p>
+<p>But we want this to be programmatic, right?</p>
+<p>To do that, you can use the function we wrote above. The code looks like this:</p>
+<pre data-lang="go" style="background-color:#2b303b;color:#6c7079;" class="language-go "><code class="language-go" data-lang="go"><span style="color:#cd74e8;">package </span><span style="color:#eb6772;">evaluator
+</span><span style="color:#abb2bf;">
+</span><span style="color:#cd74e8;">import </span><span style="color:#abb2bf;">(
+</span><span style="color:#abb2bf;">    </span><span style="color:#9acc76;">&quot;fmt&quot;
+</span><span style="color:#abb2bf;">
+</span><span style="color:#abb2bf;">    </span><span style="color:#9acc76;">&quot;agentless-for-docker-dev/pkg/evaluator/types&quot;
+</span><span style="color:#abb2bf;">    </span><span style="color:#9acc76;">&quot;agentless-for-docker-dev/util/client&quot;
+</span><span style="color:#abb2bf;">    </span><span style="color:#9acc76;">&quot;agentless-for-docker-dev/pkg/collector&quot;
+</span><span style="color:#abb2bf;">)
+</span><span style="color:#abb2bf;">
+</span><span style="color:#cd74e8;">const </span><span style="color:#abb2bf;">(
+</span><span style="color:#abb2bf;">    </span><span style="color:#eb6772;">TargetConfiguration            </span><span style="color:#adb7c9;">= </span><span style="color:#9acc76;">&quot;LiveRestoreEnabled&quot;
+</span><span style="color:#abb2bf;">    </span><span style="color:#eb6772;">DesiredLiveRestoreEnabledState </span><span style="color:#adb7c9;">= </span><span style="color:#9acc76;">&quot;true&quot;
+</span><span style="color:#abb2bf;">    </span><span style="color:#eb6772;">DefaultLiveRestoreEnabledState </span><span style="color:#adb7c9;">= </span><span style="color:#9acc76;">&quot;false&quot;
+</span><span style="color:#abb2bf;">)
+</span><span style="color:#abb2bf;">
+</span><span style="color:#cd74e8;">func </span><span style="color:#5cb3fa;">EvaluateLiveRestoreEnabled</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">dockerClient </span><span style="color:#adb7c9;">*</span><span style="color:#eb6772;">client</span><span style="color:#abb2bf;">.</span><span style="color:#cd74e8;">DockerClient</span><span style="color:#abb2bf;">) (</span><span style="color:#eb6772;">types</span><span style="color:#abb2bf;">.</span><span style="color:#cd74e8;">AuditResult</span><span style="color:#abb2bf;">, </span><span style="color:#cd74e8;">error</span><span style="color:#abb2bf;">) {
+</span><span style="color:#abb2bf;">    </span><span style="color:#eb6772;">systemInfo</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">err </span><span style="color:#adb7c9;">:= </span><span style="color:#eb6772;">collector</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">GetDetailedSystemInfo</span><span style="color:#abb2bf;">(</span><span style="color:#eb6772;">dockerClient</span><span style="color:#abb2bf;">)
+</span><span style="color:#abb2bf;">    </span><span style="color:#cd74e8;">if </span><span style="color:#eb6772;">err </span><span style="color:#adb7c9;">!= </span><span style="color:#db9d63;">nil </span><span style="color:#abb2bf;">{
+</span><span style="color:#abb2bf;">        </span><span style="color:#cd74e8;">return </span><span style="color:#eb6772;">types</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">NewAuditResult</span><span style="color:#abb2bf;">(</span><span style="color:#9acc76;">&quot;&quot;</span><span style="color:#abb2bf;">, </span><span style="color:#9acc76;">&quot;Failed to retrieve system info&quot;</span><span style="color:#abb2bf;">, </span><span style="color:#db9d63;">nil</span><span style="color:#abb2bf;">), </span><span style="color:#eb6772;">err
+</span><span style="color:#abb2bf;">    }
+</span><span style="color:#abb2bf;">
+</span><span style="color:#abb2bf;">    </span><span style="color:#eb6772;">constMap </span><span style="color:#adb7c9;">:= </span><span style="color:#cd74e8;">map</span><span style="color:#abb2bf;">[</span><span style="color:#cd74e8;">string</span><span style="color:#abb2bf;">]</span><span style="color:#cd74e8;">string</span><span style="color:#abb2bf;">{
+</span><span style="color:#abb2bf;">        </span><span style="color:#9acc76;">&quot;DesiredLiveRestoreEnabledState&quot;</span><span style="color:#abb2bf;">: </span><span style="color:#eb6772;">DesiredLiveRestoreEnabledState</span><span style="color:#abb2bf;">,
+</span><span style="color:#abb2bf;">        </span><span style="color:#9acc76;">&quot;DefaultLiveRestoreEnabledState&quot;</span><span style="color:#abb2bf;">: </span><span style="color:#eb6772;">DefaultLiveRestoreEnabledState</span><span style="color:#abb2bf;">,
+</span><span style="color:#abb2bf;">        </span><span style="color:#9acc76;">&quot;TargetConfiguration&quot;</span><span style="color:#abb2bf;">:            </span><span style="color:#eb6772;">TargetConfiguration</span><span style="color:#abb2bf;">,
+</span><span style="color:#abb2bf;">    }
+</span><span style="color:#abb2bf;">
+</span><span style="color:#abb2bf;">    </span><span style="color:#eb6772;">actualState </span><span style="color:#adb7c9;">:= </span><span style="color:#eb6772;">fmt</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">Sprintf</span><span style="color:#abb2bf;">(</span><span style="color:#9acc76;">&quot;</span><span style="color:#db9d63;">%v</span><span style="color:#9acc76;">&quot;</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">systemInfo</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">LiveRestoreEnabled</span><span style="color:#abb2bf;">)
+</span><span style="color:#abb2bf;">    </span><span style="color:#eb6772;">auditResult </span><span style="color:#adb7c9;">:= </span><span style="color:#9acc76;">&quot;FAIL&quot;
+</span><span style="color:#abb2bf;">    </span><span style="color:#cd74e8;">if </span><span style="color:#eb6772;">actualState </span><span style="color:#adb7c9;">== </span><span style="color:#eb6772;">DesiredLiveRestoreEnabledState </span><span style="color:#abb2bf;">{
+</span><span style="color:#abb2bf;">        </span><span style="color:#eb6772;">auditResult </span><span style="color:#adb7c9;">= </span><span style="color:#9acc76;">&quot;PASS&quot;
+</span><span style="color:#abb2bf;">    }
+</span><span style="color:#abb2bf;">    </span><span style="color:#eb6772;">auditMessage </span><span style="color:#adb7c9;">:= </span><span style="color:#eb6772;">fmt</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">Sprintf</span><span style="color:#abb2bf;">(</span><span style="color:#9acc76;">&quot;</span><span style="color:#db9d63;">%s</span><span style="color:#9acc76;"> is set to </span><span style="color:#db9d63;">%s</span><span style="color:#9acc76;">&quot;</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">TargetConfiguration</span><span style="color:#abb2bf;">, </span><span style="color:#eb6772;">actualState</span><span style="color:#abb2bf;">)
+</span><span style="color:#abb2bf;">
+</span><span style="color:#abb2bf;">    </span><span style="color:#cd74e8;">return </span><span style="color:#eb6772;">types</span><span style="color:#abb2bf;">.</span><span style="color:#eb6772;">NewAuditResult</span><span style="color:#abb2bf;">(
+</span><span style="color:#abb2bf;">        </span><span style="color:#eb6772;">auditResult</span><span style="color:#abb2bf;">,
+</span><span style="color:#abb2bf;">        </span><span style="color:#eb6772;">auditMessage</span><span style="color:#abb2bf;">,
+</span><span style="color:#abb2bf;">        </span><span style="color:#eb6772;">constMap</span><span style="color:#abb2bf;">,
+</span><span style="color:#abb2bf;">    ), </span><span style="color:#db9d63;">nil
+</span><span style="color:#abb2bf;">}
+</span></code></pre>
+<h2 id="run-it-1">Run it!</h2>
+<p>Execute the code using go-gin and Swagger for API documentation. You can then determine if your Docker configuration meets the CIS Benchmark standards.</p>
+<p><img src="https://github.com/user-attachments/assets/792a4d53-f0b2-4f29-bd19-1c9538fe071c" alt="Swagger Docs" /></p>
+<h1 id="conclusion">Conclusion</h1>
+<p>This post demonstrated how to interact with Docker using the Go SDK, specifically focusing on secure configuration practices as outlined by the CIS benchmark. By programmatically assessing and validating Docker security settings, this approach serves as a foundational method for implementing <strong>Cloud Security Posture Management</strong> (CSPM). It ensures compliance with regulatory standards such as HIPAA, PCI-DSS, and SOX, while standardizing security practices across all cloud and container environments. Such proactive security measures are crucial for maintaining integrity and security in today’s complex cloud landscapes, ensuring that environments are not only compliant but resilient against potential threats.</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;posts&#x2F;trade-off-between-code-abstraction-and-performance&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Trade-off between Code Abstraction and Performance
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;posts&#x2F;setting-up-kubernetes-cluster-on-aws-ec2-with-calico-cni&#x2F;">
+              Setting Up Kubernetes Cluster on AWS EC2 with Calico CNI<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@8.13.5/dist/mermaid.min.js" integrity="sha384-0yWn54pSGtfKCU+skfA69l25VsCw+MZt4LQov3xNRoS7YkAMrFokGgSBnAWSK4pv" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.xkcd@1.1.13/dist/chart.xkcd.min.js" integrity="sha384-xC3h1+IHXK8seA+8KfT79Z4e0GPsznjXBoMa5nd8ooWKplPyXx92NOmljWxLC/cs" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js" integrity="sha384-Pulw7+h73841BQIK0LzJCydKRPChJUF9w8h8W0o3h+cLtoyNPJS847bQauLWOTwg" crossorigin="anonymous"></script>
+  
+  <script src="https://g-song-i.github.io/elasticlunr.min.js"></script>
+  <script src="https://g-song-i.github.io/search_index.en.js"></script><script src="https://g-song-i.github.io/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>

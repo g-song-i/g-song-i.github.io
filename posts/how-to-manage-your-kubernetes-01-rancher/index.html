@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.css" integrity="sha384-oGm59HWAkwO32h2w8u0B98wKBZJwd6MbWtAJwQKCTffZjOXHXrnyv9Syjovgc+UV" crossorigin="anonymous">
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://g-song-i.github.io/deep-thought.css" rel="stylesheet" />
+  
+  
+
+  <title>
+    
+Cecil&#x27;s Note | How to manage your kubernetes cluster 01: Rancher
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NXE14VB61W"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-NXE14VB61W");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;g-song-i.github.io">Cecil&#x27;s Note</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;posts">
+            Posts
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;categories">
+            Categories
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            How to manage your kubernetes cluster 01: Rancher
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Cecil Gwak published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2024-07-04">July 04, 2024</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>6 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>1091 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://g-song-i.github.io/categories/managing-clusters/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Managing Clusters</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://g-song-i.github.io/categories/kubernetes/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Kubernetes</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://g-song-i.github.io/categories/rancher/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Rancher</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://g-song-i.github.io/categories/suse/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>SUSE</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://g-song-i.github.io/tags/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <h1 id="table-of-contents">Table of Contents</h1>
+<p><a href="https://g-song-i.github.io/posts/how-to-manage-your-kubernetes-01-rancher/#overview">Overview</a> <br/>
+        <a href="https://g-song-i.github.io/posts/how-to-manage-your-kubernetes-01-rancher/#install-rancher-with-docker">Install Rancher with Docker</a> <br/>
+        <a href="https://g-song-i.github.io/posts/how-to-manage-your-kubernetes-01-rancher/#dive-into-rancher">Dive into Rancher</a> <br/>
+            <a href="https://g-song-i.github.io/posts/how-to-manage-your-kubernetes-01-rancher/#login">Login</a> <br/>
+            <a href="https://g-song-i.github.io/posts/how-to-manage-your-kubernetes-01-rancher/#importing-your-existing-cluster">Importing your existing cluster</a> <br/>
+            <a href="https://g-song-i.github.io/posts/how-to-manage-your-kubernetes-01-rancher/#explore-dashboard">Explore Dashboard</a> <br/>
+<a href="https://g-song-i.github.io/posts/how-to-manage-your-kubernetes-01-rancher/#more">More...</a> <br/>
+        <a href="https://g-song-i.github.io/posts/how-to-manage-your-kubernetes-01-rancher/#logging-in-rancher">Logging in Rancher</a> <br/>
+        <a href="https://g-song-i.github.io/posts/how-to-manage-your-kubernetes-01-rancher/#setting-up-alerts">Setting Up Alerts</a> <br/>
+<a href="https://g-song-i.github.io/posts/how-to-manage-your-kubernetes-01-rancher/#when-is-using-rancher-a-good-choice">When Is Using Rancher a Good Choice?</a> <br/>
+        <a href="https://g-song-i.github.io/posts/how-to-manage-your-kubernetes-01-rancher/#user-friendliness-for-non-terminal-users">User-Friendliness for Non-Terminal Users</a> <br/>
+        <a href="https://g-song-i.github.io/posts/how-to-manage-your-kubernetes-01-rancher/#comprehensive-management-from-a-single-pane">Comprehensive Management from a Single Pane</a> <br/>
+        <a href="https://g-song-i.github.io/posts/how-to-manage-your-kubernetes-01-rancher/#extensive-catalog-of-applications">Extensive Catalog of Applications</a> <br/></p>
+<h1 id="overview">Overview</h1>
+<p>Do you want to manage your Kubernetes cluster? There are several ways to manage it such as using the kubectl CLI if you are familiar with the terminal interface, Rancher from SUSE if you prefer managing through a console, and k9s if you want a more stylish approach!</p>
+<p>In this post, I will explain how to install Rancher for managing Kubernetes and discuss when it is a good choice.</p>
+<h2 id="install-rancher-with-docker">Install Rancher with Docker</h2>
+<p>Note that this method of installation is just for testing and demonstration purposes as described at <a rel="noopener nofollow noreferrer" target="_blank" href="https://ranchermanager.docs.rancher.com/getting-started/installation-and-upgrade#docker-install">Rancher documentation</a>. You should choose another method if it is for production use.</p>
+<p>Here I have a single docker-compose file to set up and tear down the Rancher container:</p>
+<pre style="background-color:#2b303b;color:#6c7079;"><code><span style="color:#abb2bf;">version: &#39;3&#39;
+</span><span style="color:#abb2bf;">
+</span><span style="color:#abb2bf;">services:
+</span><span style="color:#abb2bf;">  rancher:
+</span><span style="color:#abb2bf;">    image: rancher/rancher:v2.8-head
+</span><span style="color:#abb2bf;">    container_name: rancher_test
+</span><span style="color:#abb2bf;">    restart: always
+</span><span style="color:#abb2bf;">    ports:
+</span><span style="color:#abb2bf;">    - &quot;80:80/tcp&quot;
+</span><span style="color:#abb2bf;">    - &quot;443:443/tcp&quot;
+</span><span style="color:#abb2bf;">    volumes:
+</span><span style="color:#abb2bf;">    - &quot;./rancher-data:/var/lib/rancher&quot;
+</span><span style="color:#abb2bf;">    environment:
+</span><span style="color:#abb2bf;">    - CATTLE_BOOTSTRAP_PASSWORD=1234
+</span><span style="color:#abb2bf;">    privileged: true
+</span><span style="color:#abb2bf;">
+</span></code></pre>
+<p>Now you just need to run the command (you might need &quot;sudo&quot; privileges):</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#6c7079;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#eb6772;">$</span><span style="color:#abb2bf;"> docker-compose up
+</span><span style="color:#eb6772;">Creating</span><span style="color:#abb2bf;"> network </span><span style="color:#9acc76;">&quot;rancher_default&quot;</span><span style="color:#abb2bf;"> with the default driver
+</span><span style="color:#eb6772;">Pulling</span><span style="color:#abb2bf;"> rancher (rancher/rancher:v2.8-head)</span><span style="color:#eb6772;">...
+</span><span style="color:#eb6772;">v2.8-head:</span><span style="color:#abb2bf;"> Pulling from rancher/rancher
+</span><span style="color:#eb6772;">088fce18aff4:</span><span style="color:#abb2bf;"> Pull complete
+</span><span style="color:#eb6772;">8c6a13d6a83e:</span><span style="color:#abb2bf;"> Pull complete
+</span><span style="color:#eb6772;">378e6ec2cbbc:</span><span style="color:#abb2bf;"> Pull complete
+</span><span style="color:#eb6772;">...
+</span></code></pre>
+<h2 id="dive-into-rancher">Dive into Rancher</h2>
+<h3 id="login">Login</h3>
+<p>Now you can access the website via &quot;http&quot;. Then you might see the login screen. Since we already defined the bootstrap password (CATTLE_BOOTSTRAP_PASSWORD) in the docker-compose file, enter &quot;1234&quot;.</p>
+<p><img src="https://github.com/g-song-i/g-song-i.github.io/assets/57793091/7dd8709b-29d3-42a1-9185-a923d0cb5a37" alt="RancherBootstrapLogin" /> <br/></p>
+<h3 id="importing-your-existing-cluster">Importing your existing cluster</h3>
+<p>Let's import your existing cluster. To import the cluster into Rancher, you must have &quot;cluster-admin&quot; privileges. You can apply a clusterrolebinding as follows:</p>
+<pre style="background-color:#2b303b;color:#6c7079;"><code><span style="color:#abb2bf;">kubectl create clusterrolebinding cluster-admin-binding \
+</span><span style="color:#abb2bf;">  --clusterrole cluster-admin \
+</span><span style="color:#abb2bf;">  --user [USER_ACCOUNT]
+</span></code></pre>
+<p>You can check which account you are using with the command (user in context):</p>
+<pre style="background-color:#2b303b;color:#6c7079;"><code><span style="color:#abb2bf;">kubectl config view --minify
+</span><span style="color:#abb2bf;">(or) kubectl config current-context
+</span></code></pre>
+<p>Now click &quot;Import Existing&quot;, 
+<img src="https://github.com/g-song-i/g-song-i.github.io/assets/57793091/1f96795c-4e36-46ea-8f4c-2657949ddd59" alt="ImportingClusterButton" /> <br/></p>
+<p>Write the cluster's name, and press the create button. 
+<img src="https://github.com/g-song-i/g-song-i.github.io/assets/57793091/14c6563b-29d4-4786-9649-3547f586adc1" alt="CreateCluster" /> <br/></p>
+<p>Then you might see some command lines to apply Rancher's YAML to create some pods for importing. I tried the first one <code>kubectl apply -f https://~.yaml</code>, but I encountered the message <code>Unable to connect to the server: tls: failed to verify certificate: x509: certificate signed by unknown authority</code>, I tried the second line <code>curl --insecure --sfL ... | kubectl apply -f -</code>, and it worked for me.</p>
+<p>You can enter the command <code>kubectl get pods -A</code> just to see what pods are created for this work. </p>
+<pre style="background-color:#2b303b;color:#6c7079;"><code><span style="color:#abb2bf;">$ kubectl get pods -A
+</span><span style="color:#abb2bf;">NAMESPACE       NAME                                       READY   STATUS              RESTARTS   AGE
+</span><span style="color:#abb2bf;">cattle-system   cattle-cluster-agent-845554d4f8-qnksl      0/1     ContainerCreating   0          12s
+</span></code></pre>
+<p>And now you can explore your cluster and their resources on the Rancher dashboard!
+<img src="https://github.com/g-song-i/g-song-i.github.io/assets/57793091/6dc20e0f-03f3-4b68-8760-505c1957fbfe" alt="dashborad" /></p>
+<h3 id="explore-dashboard">Explore Dashboard</h3>
+<p>From here, you can see useful cluster information to inspect and debug your cluster. Rancher's dashboard offers a comprehensive overview of your cluster's health, resource usage, and more. You can utilize the dashboard to manage workloads, configure network policies, and set up service discovery.</p>
+<h2 id="more">More...</h2>
+<h3 id="logging-in-rancher">Logging in Rancher</h3>
+<p>Rancher enhances the management of Kubernetes clusters by providing comprehensive logging capabilities that are crucial for monitoring the health and activities within your cluster. Here’s a brief overview of the logging features in Rancher:</p>
+<ul>
+<li>Centralized Logging</li>
+<li>Integration with Multiple Logging Backends</li>
+<li>Log Analysis and Troubleshooting</li>
+</ul>
+<h3 id="setting-up-alerts">Setting Up Alerts</h3>
+<p>Rancher allows you to set up <a rel="noopener nofollow noreferrer" target="_blank" href="https://ranchermanager.docs.rancher.com/v2.0-v2.4/reference-guides/rancher-project-tools/project-alerts">alerts</a> for various events within your cluster. This feature helps in proactive monitoring and can alert administrators about critical issues before they impact your operations. Setting up alerts involves specifying the conditions and thresholds that trigger notifications.</p>
+<p>By integrating these features into your daily operations, you can maintain a robust, efficient, and secure Kubernetes environment, ensuring your applications run smoothly and reliably.</p>
+<h1 id="when-is-using-rancher-a-good-choice">When Is Using Rancher a Good Choice?</h1>
+<p>While tools like kubectl and k9s offer powerful ways to interact with Kubernetes, each has its context where it excels. Rancher, in particular, stands out in several scenarios:</p>
+<h2 id="user-friendliness-for-non-terminal-users">User-Friendliness for Non-Terminal Users</h2>
+<p>One of the primary advantages of using Rancher is its user-friendly graphical interface. If you or your team are not familiar or comfortable with command-line interfaces, Rancher provides a more accessible entry point into managing Kubernetes. Its dashboard presents complex cluster information and operations in a visual format, making it easier to understand and manage without deep command-line expertise.</p>
+<h2 id="comprehensive-management-from-a-single-pane">Comprehensive Management from a Single Pane</h2>
+<p>Rancher offers a centralized management pane for all Kubernetes clusters. This is particularly useful for organizations managing multiple clusters, possibly across different environments (cloud and on-prem). Instead of switching between different terminal windows or scripts, Rancher gives you a unified overview and control point for deploying, managing, and scaling applications across all your clusters.</p>
+<h2 id="extensive-catalog-of-applications">Extensive Catalog of Applications</h2>
+<p>Rancher comes with a built-in catalog of Helm charts and other applications, which can be deployed with just a few clicks. This is particularly advantageous for teams looking to rapidly deploy and test new applications without going through the CLI-based setup of Helm or other package managers.</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;posts&#x2F;way-to-access-to-google-workspace-with-service-account&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              The Way to Access to Google Workspace with Google Cloud’s Service Account
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;g-song-i.github.io&#x2F;posts&#x2F;trade-off-between-code-abstraction-and-performance&#x2F;">
+              Trade-off between Code Abstraction and Performance<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@8.13.5/dist/mermaid.min.js" integrity="sha384-0yWn54pSGtfKCU+skfA69l25VsCw+MZt4LQov3xNRoS7YkAMrFokGgSBnAWSK4pv" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/chart.xkcd@1.1.13/dist/chart.xkcd.min.js" integrity="sha384-xC3h1+IHXK8seA+8KfT79Z4e0GPsznjXBoMa5nd8ooWKplPyXx92NOmljWxLC/cs" crossorigin="anonymous"></script>
+  
+  
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.6.1/mapbox-gl.js" integrity="sha384-Pulw7+h73841BQIK0LzJCydKRPChJUF9w8h8W0o3h+cLtoyNPJS847bQauLWOTwg" crossorigin="anonymous"></script>
+  
+  <script src="https://g-song-i.github.io/elasticlunr.min.js"></script>
+  <script src="https://g-song-i.github.io/search_index.en.js"></script><script src="https://g-song-i.github.io/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+  
+</body>
+
+</html>

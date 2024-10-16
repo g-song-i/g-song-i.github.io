@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>Cecil&#x27;s Note - Docker</title>
+    <subtitle>Theory will only take you so far</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://g-song-i.github.io/categories/docker/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://g-song-i.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2024-09-09T00:00:00+00:00</updated>
+    <id>https://g-song-i.github.io/categories/docker/atom.xml</id>
+    <entry xml:lang="en">
+        <title>W(Where)TF is Docker daemon.json File?</title>
+        <published>2024-09-09T00:00:00+00:00</published>
+        <updated>2024-09-09T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://g-song-i.github.io/posts/w-where-tf-is-docker-daemon-json-file/"/>
+        <id>https://g-song-i.github.io/posts/w-where-tf-is-docker-daemon-json-file/</id>
+        
+        <content type="html" xml:base="https://g-song-i.github.io/posts/w-where-tf-is-docker-daemon-json-file/">&lt;h1 id=&quot;overview&quot;&gt;Overview&lt;&#x2F;h1&gt;
+&lt;p&gt;This article looks into the details of Docker daemon configurations after I noticed that the &lt;code&gt;daemon.json&lt;&#x2F;code&gt; file was missing from my host system. It explains what the Docker daemon is, what it does, and why the &lt;code&gt;daemon.json&lt;&#x2F;code&gt; file is missing. The discussion includes how Docker is typically set up and how to access and understand the daemon&#x27;s settings. &lt;&#x2F;p&gt;
+&lt;h1 id=&quot;backgrounds&quot;&gt;Backgrounds&lt;&#x2F;h1&gt;
+&lt;h2 id=&quot;what-is-docker-daemon&quot;&gt;What is Docker Daemon?&lt;&#x2F;h2&gt;
+&lt;p&gt;Let&#x27;s grab some background first. What do you think the Docker daemon is?&lt;&#x2F;p&gt;
+&lt;p&gt;The Docker daemon is a part of the Docker engine, running on the host OS as a process. According to &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.aquasec.com&#x2F;cloud-native-academy&#x2F;docker-container&#x2F;docker-architecture&#x2F;#:~:text=Docker%20Daemon%3A%20A%20persistent%20background,API%20requests%20and%20processes%20them&quot;&gt;Aqua Security&lt;&#x2F;a&gt;, the Docker daemon is described as follows:&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;A persistent background process that manages Docker images, containers, networks, and storage volumes. The Docker daemon constantly listens for Docker API requests and processes them.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h2 id=&quot;what-is-docker-s-daemon-json&quot;&gt;What is Docker’s daemon.json?&lt;&#x2F;h2&gt;
+&lt;p&gt;The &lt;code&gt;daemon.json&lt;&#x2F;code&gt; file is used for configuring the Docker daemon. According to the official Docker &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;docs.docker.com&#x2F;engine&#x2F;daemon&#x2F;start&#x2F;&quot;&gt;documentation&lt;&#x2F;a&gt;, there are two ways to configure the Docker daemon:&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;Use a JSON configuration file. This is the preferred option, since it keeps all configurations in a single place.&lt;&#x2F;li&gt;
+&lt;li&gt;Use flags when starting &lt;code&gt;dockerd&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;You can use both ways for configuring the daemon. According to &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;www.devopsschool.com&#x2F;blog&#x2F;how-to-configure-docker-daemon-with-a-configuration-file&#x2F;&quot;&gt;this post&lt;&#x2F;a&gt;, setting it with a JSON file is preferred, but I&#x27;m not sure (it&#x27;s not from the official documentation). &lt;&#x2F;p&gt;
+&lt;h1 id=&quot;how-to-get-docker-daemon-configuration&quot;&gt;How to get Docker daemon configuration?&lt;&#x2F;h1&gt;
+&lt;p&gt;Now you know that the Docker daemon is a process responsible for managing Docker&#x27;s components, and there is a file named &lt;code&gt;daemon.json&lt;&#x2F;code&gt; that contains configurations for the Docker daemon. So, how do you get the Docker daemon&#x27;s configuration when Docker is running? There are two options:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Get the configuration from the &lt;code&gt;daemon.json&lt;&#x2F;code&gt; file if the daemon is started with it&lt;&#x2F;strong&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Get the configuration using the &lt;code&gt;docker info&lt;&#x2F;code&gt; command&lt;&#x2F;strong&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;You can use the &lt;code&gt;ps&lt;&#x2F;code&gt; command to inspect the &lt;code&gt;dockerd&lt;&#x2F;code&gt; process, but it might not display all the configurations we need. Additionally, you can check the configuration file, &lt;code&gt;daemon.json&lt;&#x2F;code&gt;, but there is no direct way to confirm whether the current Docker daemon was started using that specific file.&lt;&#x2F;p&gt;
+&lt;p&gt;But, we can assume that if the &lt;code&gt;ps&lt;&#x2F;code&gt; command returns a path to a file with the &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;docs.docker.com&#x2F;engine&#x2F;daemon&#x2F;#configuration-file&quot;&gt;&lt;code&gt;--config-file&lt;&#x2F;code&gt;&lt;&#x2F;a&gt; parameter, then &lt;code&gt;dockerd&lt;&#x2F;code&gt; was started with that file. &lt;strong&gt;If not, &lt;code&gt;dockerd&lt;&#x2F;code&gt; was started with the default configuration, either from their default location or the configuration&lt;&#x2F;strong&gt; embedded in the software upon installation. You can refer &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;moby&#x2F;moby&#x2F;tree&#x2F;master&#x2F;daemon&#x2F;config&quot;&gt;here&lt;&#x2F;a&gt; to see the code for default configuration.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;daemon-file-s-default-location&quot;&gt;Daemon file’s default location&lt;&#x2F;h2&gt;
+&lt;p&gt;According to &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;docs.docker.com&#x2F;engine&#x2F;daemon&#x2F;#configuration-file&quot;&gt;this post&lt;&#x2F;a&gt; from the Docker docs, the Docker daemon expects to find the configuration file by default at this location:&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;OS&lt;&#x2F;th&gt;&lt;th&gt;File&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;Linux, regular setup&lt;&#x2F;td&gt;&lt;td&gt;&#x2F;etc&#x2F;docker&#x2F;daemon.json&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Linux, rootless mode&lt;&#x2F;td&gt;&lt;td&gt;~&#x2F;.config&#x2F;docker&#x2F;daemon.json&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Windows&lt;&#x2F;td&gt;&lt;td&gt;C:\ProgramData\docker\config\daemon.json&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;h2 id=&quot;w-where-tf-is-my-daemon-json&quot;&gt;W(Where)TF is my daemon.json????&lt;&#x2F;h2&gt;
+&lt;p&gt;This part is the most important in this post. I couldn’t find my &lt;code&gt;daemon.json&lt;&#x2F;code&gt; in the default location. What’s happening? Like what I said, Dockerd can be started with the default configuration without a configuration file, as &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;stackoverflow.com&#x2F;questions&#x2F;43689271&#x2F;wheres-dockers-daemon-json-missing&quot;&gt;it is not created automatically&lt;&#x2F;a&gt;. That’s the reason you can’t find it in your location.&lt;&#x2F;p&gt;
+&lt;p&gt;You can create the file if you want to boot Dockerd with that in the default location, or you can use another location and specify the customized location manually. So, do not panic if there is no &lt;code&gt;daemon.json&lt;&#x2F;code&gt;; you can still get the daemon’s configuration in other ways&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;get-the-current-dockerd-configuration&quot;&gt;Get the current Dockerd configuration&lt;&#x2F;h1&gt;
+&lt;p&gt;Here, I describe ways to get the Dockerd configuration. As I mentioned before, you can find it in the &lt;code&gt;daemon.json&lt;&#x2F;code&gt; file or use the &lt;code&gt;docker info&lt;&#x2F;code&gt; command. Let’s assume that you have not created a &lt;code&gt;daemon.json&lt;&#x2F;code&gt; file before. Then, there are two options:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Get the configuration using the &lt;code&gt;docker info&lt;&#x2F;code&gt; command.&lt;&#x2F;li&gt;
+&lt;li&gt;Get the configuration with the code.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;Hah? Another option pops up, right? Let’s start!&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;get-the-configuration-with-docker-info&quot;&gt;Get the configuration with docker info&lt;&#x2F;h2&gt;
+&lt;p&gt;First, you can see your daemon&#x27;s configuration using the &lt;code&gt;docker info&lt;&#x2F;code&gt; command. Here is what the result looks like:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#2b303b;color:#6c7079;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;$&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; docker info
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Client:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; Docker Engine - Community
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Version:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    27.0.3
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Context:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    default
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Debug&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; Mode: false
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Plugins:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;buildx:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; Docker Buildx (Docker Inc.)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Version:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  v0.15.1
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Path:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;     &#x2F;usr&#x2F;libexec&#x2F;docker&#x2F;cli-plugins&#x2F;docker-buildx
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;compose:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; Docker Compose (Docker Inc.)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Version:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  v2.28.1
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Path:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;     &#x2F;usr&#x2F;libexec&#x2F;docker&#x2F;cli-plugins&#x2F;docker-compose
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Server:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Containers:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; 18
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Running:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; 17
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Paused:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; 0
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Stopped:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; 1
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Images:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; 22
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Server&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; Version: 27.0.3
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Storage&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; Driver: overlay2
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Backing&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; Filesystem: extfs
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Supports&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; d_type: true
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Using&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; metacopy: false
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Native&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; Overlay Diff: true
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;userxattr:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; false
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Logging&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; Driver: json-file
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Cgroup&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; Driver: systemd
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Cgroup&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; Version: 2
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Plugins:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Volume:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; local
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Network:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; bridge host ipvlan macvlan null overlay
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Log:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; awslogs fluentd gcplogs gelf journald json-file local splunk syslog
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Swarm:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; inactive
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Runtimes:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; runc io.containerd.runc.v2
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Default&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; Runtime: runc
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Init&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; Binary: docker-init
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;containerd&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; version: ae71819c4f5e67bb4d5ae76a6b735f29cc25774e
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;runc&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; version: v1.1.13-0-g58aa920
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;init&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; version: de40ad0
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Security&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; Options:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;apparmor
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;seccomp
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;   &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Profile:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; builtin
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;cgroupns
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Kernel&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; Version: 6.5.0-44-generic
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Operating&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; System: Ubuntu 22.04.4 LTS
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;OSType:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; linux
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Architecture:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; x86_64
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;CPUs:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; 16
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Total&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; Memory: 62.88GiB
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Name: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#adb7c9;&quot;&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;hostname&lt;&#x2F;span&gt;&lt;span style=&quot;color:#adb7c9;&quot;&gt;&amp;gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;ID:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; b3f46722-9862-43fd-913d-c8a4bd6a349e
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Docker&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; Root Dir: &#x2F;var&#x2F;lib&#x2F;docker
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Debug&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; Mode: false
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Experimental:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; false
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Insecure&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; Registries:
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;127.0.0.0&#x2F;8
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Live&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; Restore Enabled: false
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;get-the-configuration-with-the-code-go-sdk&quot;&gt;Get the configuration with the code (Go SDK)&lt;&#x2F;h2&gt;
+&lt;p&gt;Moreover, you can write code to retrieve the configuration! I use the Go SDK for this purpose. Here is an example, and you will need to configure the way to handle the result appropriately.&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;go&quot; style=&quot;background-color:#2b303b;color:#6c7079;&quot; class=&quot;language-go &quot;&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;package &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;collector
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;import &lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;(
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;context&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;agentless-for-docker-dev&#x2F;util&#x2F;client&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;github.com&#x2F;docker&#x2F;docker&#x2F;api&#x2F;types&#x2F;system&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;func &lt;&#x2F;span&gt;&lt;span style=&quot;color:#5cb3fa;&quot;&gt;GetDetailedSystemInfo&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;dockerClient &lt;&#x2F;span&gt;&lt;span style=&quot;color:#adb7c9;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;client&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;DockerClient&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;) (&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;system&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;Info&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;error&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;) {
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;info&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;err &lt;&#x2F;span&gt;&lt;span style=&quot;color:#adb7c9;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;dockerClient&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Client&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Info&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;context&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Background&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;())
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;err &lt;&#x2F;span&gt;&lt;span style=&quot;color:#adb7c9;&quot;&gt;!= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#db9d63;&quot;&gt;nil &lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;{
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;system&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Info&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;{}, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;err
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;info&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#db9d63;&quot;&gt;nil
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;The result contains a lot of data, as described &lt;a rel=&quot;noopener nofollow noreferrer&quot; target=&quot;_blank&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;moby&#x2F;moby&#x2F;blob&#x2F;master&#x2F;api&#x2F;types&#x2F;system&#x2F;info.go&quot;&gt;here&lt;&#x2F;a&gt;. It might differ from the result of the command in some ways, so you need to make an effort to identify the differences and choose the right option for you. Part of the result looks like this:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#2b303b;color:#6c7079;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;{
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;ID&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;b3f46722-9862-43fd-913d-c8a4bd6a349e&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;Containers&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; 18,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;ContainersRunning&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; 17,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;ContainersPaused&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; 0,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;ContainersStopped&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; 1,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;Images&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; 22,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;Driver&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;overlay2&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;DriverStatus&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; [
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#5ebfcc;&quot;&gt;[
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;Backing Filesystem&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;extfs&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;],
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#5ebfcc;&quot;&gt;[
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;Supports d_type&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;true&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;],
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#5ebfcc;&quot;&gt;[
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;Using metacopy&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;false&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;],
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#5ebfcc;&quot;&gt;[
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;Native Overlay Diff&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;true&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;],
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#5ebfcc;&quot;&gt;[
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;userxattr&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;false&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;]
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;],
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;Plugins&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;{
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;Volume&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;: [
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;local&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    ],
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;Network&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;: [
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;bridge&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;host&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;ipvlan&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;macvlan&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;null&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;overlay&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    ],
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;Authorization&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;: null,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;Log&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;: [
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;awslogs&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;fluentd&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;gcplogs&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;gelf&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;journald&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;json-file&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;local&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;splunk&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;      &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;syslog&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    ]
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  },
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;MemoryLimit&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; true,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;SwapLimit&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; true,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;CpuCfsPeriod&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; true,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;CpuCfsQuota&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; true,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;CPUShares&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; true,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;CPUSet&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; true,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;PidsLimit&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; true,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;IPv4Forwarding&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; true,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;BridgeNfIptables&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; true,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;BridgeNfIp6tables&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; true,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;Debug&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt; false,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;  &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;...
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;&#x2F;h1&gt;
+&lt;p&gt;To wrap up, I found out why the &lt;code&gt;daemon.json&lt;&#x2F;code&gt; file was missing from my host system. It was because the Docker daemon was started with the default configuration. I also learned how to get the Docker daemon&#x27;s configuration using the &lt;code&gt;docker info&lt;&#x2F;code&gt; command and the Go SDK. I hope this post helps you understand the Docker daemon and its configuration better. Thank you for reading!&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>How to Validate That Your Docker Configuration is Secure Using the Go SDK</title>
+        <published>2024-08-27T00:00:00+00:00</published>
+        <updated>2024-08-27T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://g-song-i.github.io/posts/how-to-validate-docker-is-secure/"/>
+        <id>https://g-song-i.github.io/posts/how-to-validate-docker-is-secure/</id>
+        
+        <content type="html" xml:base="https://g-song-i.github.io/posts/how-to-validate-docker-is-secure/">&lt;h1 id=&quot;overview&quot;&gt;Overview&lt;&#x2F;h1&gt;
+&lt;p&gt;Today, I&#x27;ll discuss how to interact with Docker on your host using the Go SDK. The &#x27;go-docker&#x27; project by the Docker group was archived on March 11, 2024, and integrated into the Moby project. This change has modified how it is used.&lt;&#x2F;p&gt;
+&lt;p&gt;Next, I will explain how to verify if your Docker environment is properly configured for production. I will reference the CIS benchmark and discuss how to maintain a secure environment in compliance with these standards.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;get-docker-s-configuration-from-a-docker-client&quot;&gt;Get Docker’s Configuration from a Docker Client&lt;&#x2F;h1&gt;
+&lt;h2 id=&quot;create-docker-client&quot;&gt;Create Docker Client&lt;&#x2F;h2&gt;
+&lt;p&gt;To retrieve Docker’s configuration from the Docker daemon, you first need to create a Docker client. Creating a new Docker client with the following code is recommended for efficiency and reusability:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;go&quot; style=&quot;background-color:#2b303b;color:#6c7079;&quot; class=&quot;language-go &quot;&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;package &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;client
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;import &lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;(
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;github.com&#x2F;docker&#x2F;docker&#x2F;client&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;context&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;log&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;type &lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;DockerClient &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;struct &lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;{
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Client &lt;&#x2F;span&gt;&lt;span style=&quot;color:#adb7c9;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;client&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;Client
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;}
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;func &lt;&#x2F;span&gt;&lt;span style=&quot;color:#5cb3fa;&quot;&gt;NewDockerClient&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;() (&lt;&#x2F;span&gt;&lt;span style=&quot;color:#adb7c9;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;DockerClient&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;error&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;) {
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;cli&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;err &lt;&#x2F;span&gt;&lt;span style=&quot;color:#adb7c9;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;client&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;NewClientWithOpts&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;client&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;FromEnv&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;client&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;WithAPIVersionNegotiation&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;())
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;err &lt;&#x2F;span&gt;&lt;span style=&quot;color:#adb7c9;&quot;&gt;!= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#db9d63;&quot;&gt;nil &lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;{
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#db9d63;&quot;&gt;nil&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;err
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#adb7c9;&quot;&gt;&amp;amp;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;DockerClient&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;{&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Client&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;cli&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;}, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#db9d63;&quot;&gt;nil
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;create-middleware-function&quot;&gt;Create Middleware Function&lt;&#x2F;h2&gt;
+&lt;p&gt;This process can be skipped as it merely replicates the original functionality. I created the middleware function for the SDK for convenience:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;go&quot; style=&quot;background-color:#2b303b;color:#6c7079;&quot; class=&quot;language-go &quot;&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;package &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;collector
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;import &lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;(
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;context&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;agentless-for-docker-dev&#x2F;util&#x2F;client&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;github.com&#x2F;docker&#x2F;docker&#x2F;api&#x2F;types&#x2F;system&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;func &lt;&#x2F;span&gt;&lt;span style=&quot;color:#5cb3fa;&quot;&gt;GetDetailedSystemInfo&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;dockerClient &lt;&#x2F;span&gt;&lt;span style=&quot;color:#adb7c9;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;client&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;DockerClient&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;) (&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;system&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;Info&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;error&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;) {
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;info&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;err &lt;&#x2F;span&gt;&lt;span style=&quot;color:#adb7c9;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;dockerClient&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Client&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Info&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;context&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Background&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;())
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;err &lt;&#x2F;span&gt;&lt;span style=&quot;color:#adb7c9;&quot;&gt;!= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#db9d63;&quot;&gt;nil &lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;{
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;system&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Info&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;{}, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;err
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;info&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#db9d63;&quot;&gt;nil
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;}
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;run-it&quot;&gt;Run it!&lt;&#x2F;h2&gt;
+&lt;p&gt;Now, you can run the code in your desired manner. In my case, I expose this code via the go-gin web framework and Swagger API docs, allowing you to simply click the “Execute” button to retrieve the data. The result provides comprehensive information about your Docker system.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;github.com&#x2F;user-attachments&#x2F;assets&#x2F;18f13d19-7271-4dd9-932d-13eefe592846&quot; alt=&quot;Swagger Docs&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;cis-benchmark&quot;&gt;CIS Benchmark&lt;&#x2F;h1&gt;
+&lt;h2 id=&quot;understanding-cis-benchmark&quot;&gt;Understanding CIS Benchmark&lt;&#x2F;h2&gt;
+&lt;p&gt;Before starting the evaluation of the security benchmark, let&#x27;s explore what the CIS benchmark is and why it is important to adhere to it.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;cis-benchmark-1&quot;&gt;CIS Benchmark&lt;&#x2F;h3&gt;
+&lt;p&gt;The CIS (Center for Internet Security) Benchmarks are consensus-based best practice standards for security configurations. They offer detailed guidelines for various platforms and systems to ensure secure configurations.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;why-is-it-important&quot;&gt;Why is it important?&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Enhanced Security:&lt;&#x2F;strong&gt; CIS Benchmarks provide technical controls to mitigate vulnerabilities and protect assets from cyber attacks.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Compliance:&lt;&#x2F;strong&gt; Adhering to CIS Benchmarks helps meet regulatory requirements aligned with standards such as HIPAA, PCI-DSS, and SOX.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Consistent Implementation:&lt;&#x2F;strong&gt; Following CIS Benchmarks enables organizations to implement consistent security policies and procedures, standardizing security across systems and ensuring uniform security levels.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h1 id=&quot;validate-if-your-docker-configuration-is-secure&quot;&gt;Validate if Your Docker Configuration is Secure&lt;&#x2F;h1&gt;
+&lt;h2 id=&quot;ensure-live-restore-is-enabled&quot;&gt;&lt;strong&gt;Ensure live restore is enabled&lt;&#x2F;strong&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;One critical aspect of the CIS Docker Benchmark is “&lt;strong&gt;2.15 Ensure live restore is enabled&lt;&#x2F;strong&gt;.” Here’s a quote from the CIS Benchmark explaining its importance:&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The &lt;code&gt;--live-restore&lt;&#x2F;code&gt; option enables full support of daemon-less containers within Docker. It ensures that Docker does not stop containers on shutdown or restore and that it properly reconnects to the container when restarted.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;Then, how can we get this one? According to the CIS Benchmark, we can check this configuration through docker command like &lt;code&gt;docker info --format &#x27;{{ .LiveRestoreEnabled }}&#x27;&lt;&#x2F;code&gt;  or simple use ps command like &lt;code&gt;ps -ef | grep dockerd&lt;&#x2F;code&gt; .&lt;&#x2F;p&gt;
+&lt;p&gt;But we want this to be programmatic, right?&lt;&#x2F;p&gt;
+&lt;p&gt;To do that, you can use the function we wrote above. The code looks like this:&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;go&quot; style=&quot;background-color:#2b303b;color:#6c7079;&quot; class=&quot;language-go &quot;&gt;&lt;code class=&quot;language-go&quot; data-lang=&quot;go&quot;&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;package &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;evaluator
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;import &lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;(
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;fmt&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;agentless-for-docker-dev&#x2F;pkg&#x2F;evaluator&#x2F;types&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;agentless-for-docker-dev&#x2F;util&#x2F;client&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;agentless-for-docker-dev&#x2F;pkg&#x2F;collector&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;const &lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;(
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;TargetConfiguration            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#adb7c9;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;LiveRestoreEnabled&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;DesiredLiveRestoreEnabledState &lt;&#x2F;span&gt;&lt;span style=&quot;color:#adb7c9;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;true&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;DefaultLiveRestoreEnabledState &lt;&#x2F;span&gt;&lt;span style=&quot;color:#adb7c9;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;false&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;func &lt;&#x2F;span&gt;&lt;span style=&quot;color:#5cb3fa;&quot;&gt;EvaluateLiveRestoreEnabled&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;dockerClient &lt;&#x2F;span&gt;&lt;span style=&quot;color:#adb7c9;&quot;&gt;*&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;client&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;DockerClient&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;) (&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;types&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;AuditResult&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;error&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;) {
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;systemInfo&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;err &lt;&#x2F;span&gt;&lt;span style=&quot;color:#adb7c9;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;collector&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;GetDetailedSystemInfo&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;dockerClient&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;err &lt;&#x2F;span&gt;&lt;span style=&quot;color:#adb7c9;&quot;&gt;!= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#db9d63;&quot;&gt;nil &lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;{
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;types&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;NewAuditResult&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;Failed to retrieve system info&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#db9d63;&quot;&gt;nil&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;), &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;err
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;constMap &lt;&#x2F;span&gt;&lt;span style=&quot;color:#adb7c9;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;map&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;string&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;]&lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;string&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;{
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;DesiredLiveRestoreEnabledState&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;DesiredLiveRestoreEnabledState&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;DefaultLiveRestoreEnabledState&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;: &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;DefaultLiveRestoreEnabledState&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;TargetConfiguration&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;:            &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;TargetConfiguration&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;actualState &lt;&#x2F;span&gt;&lt;span style=&quot;color:#adb7c9;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;fmt&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Sprintf&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#db9d63;&quot;&gt;%v&lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;systemInfo&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;LiveRestoreEnabled&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;auditResult &lt;&#x2F;span&gt;&lt;span style=&quot;color:#adb7c9;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;FAIL&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;if &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;actualState &lt;&#x2F;span&gt;&lt;span style=&quot;color:#adb7c9;&quot;&gt;== &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;DesiredLiveRestoreEnabledState &lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;{
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;auditResult &lt;&#x2F;span&gt;&lt;span style=&quot;color:#adb7c9;&quot;&gt;= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;PASS&amp;quot;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    }
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;auditMessage &lt;&#x2F;span&gt;&lt;span style=&quot;color:#adb7c9;&quot;&gt;:= &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;fmt&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;Sprintf&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#db9d63;&quot;&gt;%s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt; is set to &lt;&#x2F;span&gt;&lt;span style=&quot;color:#db9d63;&quot;&gt;%s&lt;&#x2F;span&gt;&lt;span style=&quot;color:#9acc76;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;TargetConfiguration&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;, &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;actualState&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;)
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    &lt;&#x2F;span&gt;&lt;span style=&quot;color:#cd74e8;&quot;&gt;return &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;types&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;NewAuditResult&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;(
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;auditResult&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;auditMessage&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;        &lt;&#x2F;span&gt;&lt;span style=&quot;color:#eb6772;&quot;&gt;constMap&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;,
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;    ), &lt;&#x2F;span&gt;&lt;span style=&quot;color:#db9d63;&quot;&gt;nil
+&lt;&#x2F;span&gt;&lt;span style=&quot;color:#abb2bf;&quot;&gt;}
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;h2 id=&quot;run-it-1&quot;&gt;Run it!&lt;&#x2F;h2&gt;
+&lt;p&gt;Execute the code using go-gin and Swagger for API documentation. You can then determine if your Docker configuration meets the CIS Benchmark standards.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;https:&#x2F;&#x2F;github.com&#x2F;user-attachments&#x2F;assets&#x2F;792a4d53-f0b2-4f29-bd19-1c9538fe071c&quot; alt=&quot;Swagger Docs&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;&#x2F;h1&gt;
+&lt;p&gt;This post demonstrated how to interact with Docker using the Go SDK, specifically focusing on secure configuration practices as outlined by the CIS benchmark. By programmatically assessing and validating Docker security settings, this approach serves as a foundational method for implementing &lt;strong&gt;Cloud Security Posture Management&lt;&#x2F;strong&gt; (CSPM). It ensures compliance with regulatory standards such as HIPAA, PCI-DSS, and SOX, while standardizing security practices across all cloud and container environments. Such proactive security measures are crucial for maintaining integrity and security in today’s complex cloud landscapes, ensuring that environments are not only compliant but resilient against potential threats.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>
