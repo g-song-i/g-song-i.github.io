@@ -200,6 +200,3 @@ disqus = "deepthought-theme"
 [extra.mapbox]
 enabled = true
 access_token = "A"
-
-generate_sitemap = true
-generate_robots_txt = true
